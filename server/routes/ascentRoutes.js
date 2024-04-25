@@ -1,10 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userModel');
-const Ascent = require('../models/ascentModel');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const db = require('../config/database');
 const ascentController = require('../controllers/ascentControllers');
 const authenticate = require('../middleware/authenticate');
  

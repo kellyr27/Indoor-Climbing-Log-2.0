@@ -11,7 +11,7 @@ exports.createAscent = async (req, res) => {
         }
 
         const ascent = new Ascent({
-            user: req.body.user,
+            user: req.user._id,
             route: route._id,
             date: req.body.date,
             tickType: req.body.tickType,
@@ -53,11 +53,25 @@ exports.updateAscent = async (req, res) => {
 
 exports.deleteAscent = async (req, res) => {
     try {
-        const ascent = await Ascent.findByIdAndDelete(req.params.id);
+        const ascent = await Ascent.findById(req.params.id);
         if (!ascent) {
             return res.status(404).json({ message: 'No ascent found with this id' });
         }
-        res.status(200).json({ message: 'Ascent deleted successfully' });
+
+        // Store the route id before deleting the ascent
+        const routeId = ascent.route;
+
+        // Delete the ascent
+        await ascent.remove();
+
+        // Check if there are any other ascents with the same route
+        const otherAscents = await Ascent.find({ route: routeId });
+        if (otherAscents.length === 0) {
+            // If not, delete the route
+            await Route.findByIdAndDelete(routeId);
+        }
+
+        res.status(200).json({ message: 'Ascent (and possibly associated route) deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

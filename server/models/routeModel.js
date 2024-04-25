@@ -14,6 +14,16 @@ const routeSchema = new mongoose.Schema({
         type: Number, 
         required: true 
     }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+routeSchema.virtual('ascents', {
+    ref: 'Ascent',
+    localField: '_id',
+    foreignField: 'route',
+    justOne: false
 });
 
 const Route = mongoose.model('Route', routeSchema);
