@@ -34,7 +34,8 @@ exports.createAscent = async (req, res) => {
 
 exports.getAllAscents = async (req, res) => {
     try {
-        const ascents = await Ascent.find().populate('route');
+        const userId = req.user._id;
+        const ascents = await Ascent.find({ user: userId }).populate('route');
         res.status(200).json(ascents);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -47,6 +48,12 @@ exports.getAscentById = async (req, res) => {
         if (!ascent) {
             return res.status(404).json({ message: 'No ascent found with this id' });
         }
+
+        // Check if the ascent belongs to the logged-in user
+        if (ascent.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You do not have permission to access this ascent' });
+        }
+
         res.status(200).json(ascent);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -64,6 +71,11 @@ exports.updateAscent = async (req, res) => {
         const ascent = await Ascent.findById(req.params.id);
         if (!ascent) {
             return res.status(404).json({ message: 'No ascent found with this id' });
+        }
+
+        // Check if the ascent belongs to the logged-in user
+        if (ascent.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You do not have permission to update this ascent' });
         }
 
         // Check if the route already exists in the database
@@ -92,6 +104,11 @@ exports.deleteAscent = async (req, res) => {
         const ascent = await Ascent.findById(req.params.id);
         if (!ascent) {
             return res.status(404).json({ message: 'No ascent found with this id' });
+        }
+
+        // Check if the ascent belongs to the logged-in user
+        if (ascent.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You do not have permission to delete this ascent' });
         }
 
         // Store the route id before deleting the ascent

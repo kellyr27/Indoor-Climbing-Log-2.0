@@ -13,7 +13,12 @@ const routeSchema = new mongoose.Schema({
     grade: { 
         type: Number, 
         required: true 
-    }
+    },
+    user: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true 
+    },
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
