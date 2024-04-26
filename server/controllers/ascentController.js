@@ -54,7 +54,37 @@ exports.getAscentById = async (req, res) => {
 }
 
 exports.updateAscent = async (req, res) => {
-    // TODO Add ascent validator
+    try {
+        // Validate the request body against the schema
+        const { error } = ascentSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const ascent = await Ascent.findById(req.params.id);
+        if (!ascent) {
+            return res.status(404).json({ message: 'No ascent found with this id' });
+        }
+
+        // Check if the route already exists in the database
+        let route = await Route.findOne({ name: req.body.route.name });
+        if (!route) {
+            route = new Route(req.body.route);
+            await route.save();
+        }
+
+        ascent.user = req.user._id;
+        ascent.route = route._id;
+        ascent.date = req.body.date;
+        ascent.tickType = req.body.tickType;
+        ascent.notes = req.body.notes;
+
+        await ascent.save();
+
+        res.status(200).json(ascent);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 }
 
 exports.deleteAscent = async (req, res) => {

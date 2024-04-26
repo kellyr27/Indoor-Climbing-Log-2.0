@@ -1,12 +1,16 @@
-// userRoutes.test.js
 const request = require('supertest');
 const app = require('../../app'); 
 const User = require('../../models/userModel');
+const mongoose = require('mongoose');
 
 describe('User Routes', () => {
     // Clear the database before each test
     beforeEach(async () => {
         await User.deleteMany();
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.close();
     });
 
     test('Should register a new user', async () => {

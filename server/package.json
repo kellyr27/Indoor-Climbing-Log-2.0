@@ -4,7 +4,7 @@
   "description": "Server for the Indoor Climbing Log",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",

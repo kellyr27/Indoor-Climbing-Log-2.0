@@ -1,5 +1,4 @@
 const User = require('../models/userModel');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
@@ -38,7 +37,7 @@ exports.login = async (req, res) => {
         }
 
         // Create a token 
-        const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY);
+        const token = user.generateAuthToken();
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({ error: error.message });
