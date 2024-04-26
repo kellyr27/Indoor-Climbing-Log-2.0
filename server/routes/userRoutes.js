@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const db = require('../config/database');
 const userController = require('../controllers/userController');
 
 // Create Account

@@ -3,6 +3,12 @@ const Route = require('../models/routeModel');
 
 exports.createAscent = async (req, res) => {
     try {
+        // Validate the request body against the schema
+        const { error } = ascentSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
         // Check if the route already exists in the database
         let route = await Route.findOne({ name: req.body.route.name });
         if (!route) {
@@ -48,7 +54,7 @@ exports.getAscentById = async (req, res) => {
 }
 
 exports.updateAscent = async (req, res) => {
-
+    // TODO Add ascent validator
 }
 
 exports.deleteAscent = async (req, res) => {

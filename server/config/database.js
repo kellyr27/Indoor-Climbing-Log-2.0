@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
 
-// Define the connection URL
-require('dotenv').config();
-const MONGODB_URI = process.env.MONGODB_URI;
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI);
+        console.log('MongoDB connected...');
+    } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+    }
+}
 
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI).then(() => {
-    console.log('Successfully connected to MongoDB');
-}).catch(error => {
-    console.error('Error connecting to MongoDB:', error.message);
-});
-
-// Access the default connection and bind error event
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-module.exports = db;
+module.exports = connectDB;

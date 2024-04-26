@@ -1,6 +1,5 @@
 const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
-const db = require('../config/database');
 
 exports.getAllRoutes = async (req, res) => {
     try {
