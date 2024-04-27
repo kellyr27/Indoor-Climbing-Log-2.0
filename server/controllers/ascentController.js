@@ -1,5 +1,7 @@
 const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
+// const ascentSchema = require('../validators/ascentValidator')
+// const { findAscent, updateAscent } = require('../services/ascentServices')
 
 exports.createAscent = async (req, res) => {
     try {
