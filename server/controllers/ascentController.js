@@ -12,7 +12,6 @@ exports.createAscent = [
         try {
 
             // Check if the route already exists in the database
-            console.log('Passed validateSchema')
             let route = await findOrCreateRoute(req.body.route, req.user._id);
 
             const ascent = new Ascent({

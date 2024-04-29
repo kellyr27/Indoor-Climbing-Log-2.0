@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const User = require('../models/userModel');
+const CustomError = require('../utils/CustomError');
 
-//TODO: Refactor to use CustomError
 const authenticate = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
@@ -11,12 +11,16 @@ const authenticate = async (req, res, next) => {
         req.user = await User.findById(decoded._id);
 
         if (!req.user) {
-            return res.status(401).json({ message: 'Authentication failed' });
+            throw new CustomError('Authentication failed', 401);
         }
 
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Authentication failed', error: error.message });
+        if (error instanceof jwt.JsonWebTokenError) {
+            next(new CustomError('Authentication failed', 401));
+        } else {
+            next(error);
+        }
     }
 }
 
