@@ -30,14 +30,14 @@ exports.createAscent = [
     }
 ]
 
-exports.getAllAscents = async (req, res, next) => {
+exports.getAllAscents = [async (req, res, next) => {
     try {
         const ascents = await Ascent.find({ user: req.user._id }).populate('route');
         res.status(200).json(ascents);
     } catch (error) {
         next(error)
     }
-}
+}]
 
 exports.getAscentById = [async (req, res, next) => {
     try {
@@ -50,7 +50,7 @@ exports.getAscentById = [async (req, res, next) => {
 
 exports.updateAscent = [
     validateSchema(ascentSchema),
-    async (req, res) => {
+    async (req, res, next) => {
         try {
 
             const ascent = await findAscent(req.params.id, req.user._id);
@@ -75,7 +75,7 @@ exports.updateAscent = [
     }
 ]
 
-exports.deleteAscent = async (req, res) => {
+exports.deleteAscent = [async (req, res, next) => {
     try {
         const ascent = await findAscent(req.params.id, req.user._id);
 
@@ -96,4 +96,4 @@ exports.deleteAscent = async (req, res) => {
     } catch (error) {
         next(error)
     }
-}
+}]

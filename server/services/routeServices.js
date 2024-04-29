@@ -28,5 +28,6 @@ exports.updateRoute = (route, newData) => {
     route.name = newData.name;
     route.colour = newData.colour;
     route.grade = newData.grade;
+    route.user = newData.user;
     return route;
 }

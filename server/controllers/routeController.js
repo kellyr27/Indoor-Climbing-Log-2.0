@@ -5,23 +5,23 @@ const {findRoute} = require('../services/routeServices');
 const validateSchema = require('../middleware/validateSchema')
 
 
-exports.getAllRoutes = async (req, res, next) => {
+exports.getAllRoutes = [async (req, res, next) => {
     try {
         const routes = await Route.find({ user: req.user._id }).populate('ascents');
         res.status(200).json(routes);
     } catch (error) {
         next(error)
     }
-}
+}]
 
-exports.getRouteById = async (req, res, next) => {
+exports.getRouteById = [async (req, res, next) => {
     try {
         const route = await findRoute(req.params.id, req.user._id);
         res.status(200).json(route);
     } catch (error) {
         next(error)
     }
-}
+}]
 
 exports.updateRoute = [
     validateSchema(routeSchema),
@@ -46,7 +46,7 @@ exports.updateRoute = [
     }
 ]
 
-exports.getAscentsByRouteId = async (req, res) => {
+exports.getAscentsByRouteId = [async (req, res, next) => {
     try {
         const route = findRoute(req.params.routeId, req.user._id);
         const ascents = await Ascent.find({ route: route._id, user: req.user._id});
@@ -54,4 +54,4 @@ exports.getAscentsByRouteId = async (req, res) => {
     } catch (error) {
         next(error)
     }
-};
+}]

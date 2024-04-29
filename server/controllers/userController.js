@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-exports.register = async (req, res) => {
+exports.register = [async (req, res, next) => {
     try {
         const { username, password } = req.body;
 
@@ -16,11 +16,11 @@ exports.register = async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'Account created successfully' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error)
     }
-}
+}]
 
-exports.login = async (req, res) => {
+exports.login = [async (req, res, next) => {
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
@@ -40,6 +40,6 @@ exports.login = async (req, res) => {
         const token = user.generateAuthToken();
         res.status(200).json({ token });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error)
     }
-}
+}]
