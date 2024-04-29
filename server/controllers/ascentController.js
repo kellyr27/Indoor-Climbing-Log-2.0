@@ -1,117 +1,84 @@
 const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
-// const ascentSchema = require('../validators/ascentValidator')
-// const { findAscent, updateAscent } = require('../services/ascentServices')
+const ascentSchema = require('../validators/ascentValidator')
+const validateSchema = require('../middleware/validateSchema')
+const { findAscent, updateAscent } = require('../services/ascentServices')
+const { findOrCreateRoute } = require('../services/routeServices')
 
-exports.createAscent = async (req, res) => {
-    try {
-        // Validate the request body against the schema
-        const { error } = ascentSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+
+exports.createAscent = [
+    validateSchema(ascentSchema),
+    async (req, res, next) => {
+        try {
+            // Check if the route already exists in the database
+            let route = findOrCreateRoute(req.body.route);
+
+            const ascent = new Ascent({
+                user: req.user._id,
+                route: route._id,
+                date: req.body.date,
+                tickType: req.body.tickType,
+                notes: req.body.notes
+            });
+
+            await ascent.save();
+
+            res.status(201).json(ascent);
+        } catch (error) {
+            next(error)
         }
-
-        // Check if the route already exists in the database
-        let route = await Route.findOne({ name: req.body.route.name });
-        if (!route) {
-            route = new Route(req.body.route);
-            await route.save();
-        }
-
-        const ascent = new Ascent({
-            user: req.user._id,
-            route: route._id,
-            date: req.body.date,
-            tickType: req.body.tickType,
-            notes: req.body.notes
-        });
-
-        await ascent.save();
-
-        res.status(201).json(ascent);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
-}
+]
 
-exports.getAllAscents = async (req, res) => {
+exports.getAllAscents = async (req, res, next) => {
     try {
         const userId = req.user._id;
         const ascents = await Ascent.find({ user: userId }).populate('route');
         res.status(200).json(ascents);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error)
     }
 }
 
-exports.getAscentById = async (req, res) => {
+exports.getAscentById = [async (req, res, next) => {
     try {
-        const ascent = await Ascent.findById(req.params.id).populate('route');
-        if (!ascent) {
-            return res.status(404).json({ message: 'No ascent found with this id' });
-        }
-
-        // Check if the ascent belongs to the logged-in user
-        if (ascent.user.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'You do not have permission to access this ascent' });
-        }
-
+        const ascent = await findAscent(req.params.id, req.user._id);
         res.status(200).json(ascent);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error)
     }
-}
+}]
 
-exports.updateAscent = async (req, res) => {
-    try {
-        // Validate the request body against the schema
-        const { error } = ascentSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+exports.updateAscent = [
+    validateSchema(ascentSchema),
+    async (req, res) => {
+        try {
+
+            const ascent = await findAscent(req.params.id, req.user._id);
+
+            // Check if the route already exists in the database
+            const route = findOrCreateRoute(req.body.route)
+
+            const newData = {
+                user: req.user._id,
+                route: route._id,
+                date: req.body.date,
+                tickType: req.body.tickType,
+                notes: req.body.notes
+            };
+            const updatedAscent = updateAscentData(ascent, newData);
+            await updatedAscent.save();
+
+            res.status(200).json(ascent);
+        } catch (error) {
+            next(error)
         }
-
-        const ascent = await Ascent.findById(req.params.id);
-        if (!ascent) {
-            return res.status(404).json({ message: 'No ascent found with this id' });
-        }
-
-        // Check if the ascent belongs to the logged-in user
-        if (ascent.user.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'You do not have permission to update this ascent' });
-        }
-
-        // Check if the route already exists in the database
-        let route = await Route.findOne({ name: req.body.route.name });
-        if (!route) {
-            route = new Route(req.body.route);
-            await route.save();
-        }
-
-        ascent.user = req.user._id;
-        ascent.route = route._id;
-        ascent.date = req.body.date;
-        ascent.tickType = req.body.tickType;
-        ascent.notes = req.body.notes;
-
-        await ascent.save();
-
-        res.status(200).json(ascent);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
-}
+]
 
 exports.deleteAscent = async (req, res) => {
     try {
-        const ascent = await Ascent.findById(req.params.id);
-        if (!ascent) {
-            return res.status(404).json({ message: 'No ascent found with this id' });
-        }
-
-        // Check if the ascent belongs to the logged-in user
-        if (ascent.user.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: 'You do not have permission to delete this ascent' });
-        }
+        const ascent = await findAscent(req.params.id, req.user._id);
 
         // Store the route id before deleting the ascent
         const routeId = ascent.route;
@@ -126,8 +93,8 @@ exports.deleteAscent = async (req, res) => {
             await Route.findByIdAndDelete(routeId);
         }
 
-        res.status(200).json({ message: 'Ascent (and possibly associated route) deleted successfully' });
+        res.status(200).json({ message: 'Ascent deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error)
     }
 }
