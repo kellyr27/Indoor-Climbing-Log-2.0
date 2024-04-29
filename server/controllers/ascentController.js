@@ -32,8 +32,7 @@ exports.createAscent = [
 
 exports.getAllAscents = async (req, res, next) => {
     try {
-        const userId = req.user._id;
-        const ascents = await Ascent.find({ user: userId }).populate('route');
+        const ascents = await Ascent.find({ user: req.user._id }).populate('route');
         res.status(200).json(ascents);
     } catch (error) {
         next(error)
