@@ -4,6 +4,13 @@ const User = require('../../models/userModel');
 const Route = require('../../models/routeModel');
 const Ascent = require('../../models/ascentModel');
 const mongoose = require('mongoose');
+const { 
+    createTestUser, 
+    createTestAscentWithoutRoute,
+    createTestAscentWithRoute,
+    createTestRoute,
+    createMockDatabase
+} = require('./utils/testHelpers');
 
 describe('Ascent Routes', () => {
     // Clear the database before each test
@@ -26,6 +33,7 @@ describe('Ascent Routes', () => {
 
         // Get a token for the user
         token = testUser.generateAuthToken();
+        
     });
 
     afterAll(async () => {
@@ -34,6 +42,9 @@ describe('Ascent Routes', () => {
     });
 
     test('Should create a new ascent with a new route', async () => {
+
+        const [testUser, token] = await createTestUser();
+
         // Create a new ascent
         const ascent = {
             route: {
@@ -59,22 +70,15 @@ describe('Ascent Routes', () => {
     });
 
     test.skip('Should create a new ascent with an existing route', async () => {
+
+        const [testUser, token] = await createTestUser();
+
         // Create a route and save it to the database
-        const route = new Route({
-            name: 'Test Route',
-            grade: 17,
-            colour: 'red',
-            user: testUser._id,
-        })
-        await route.save();
+        const route = createTestRoute(testUser);
 
         // Create a new ascent with this existing route
         const ascent = {
-            route: {
-                name: 'Test Route',
-                grade: 17,
-                colour: 'red',
-            },
+            route: route,
             date: '2021-01-01',
             tickType: 'flash',
             notes: 'Test notes',
@@ -111,6 +115,9 @@ describe('Ascent Routes', () => {
     })
 
     test.skip('Should get all ascents for that user', async () => {
+
+        
+
         // Create a few ascents for testing
         const ascent1 = new Ascent({
             user: testUser._id,
@@ -172,6 +179,10 @@ describe('Ascent Routes', () => {
 
     test.skip('Should get an ascent by id', async () => {
         //
+    })
+
+    test.skip('Should not get an ascent by id as the user does not have permission', async () => {
+        //  
     })
 
     test.skip('Should update an ascent', async () => {
