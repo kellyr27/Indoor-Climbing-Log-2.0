@@ -37,7 +37,7 @@ exports.updateRoute = [
                 user: req.user._id
             };
 
-            const updatedRoute = updateRoute(route, newData);
+            const updatedRoute = updateRouteData(route, newData);
             await updatedRoute.save();
             res.status(200).json(route);
         } catch (error) {

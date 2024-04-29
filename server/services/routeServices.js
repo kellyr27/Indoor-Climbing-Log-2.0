@@ -1,8 +1,6 @@
 const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
-import CustomError from '../utils/CustomError';
-const validateSchema = require('../middleware/validateSchema')
-
+const CustomError = require('../utils/CustomError');
 
 exports.findOrCreateRoute = async (routeData) => {
     let route = await Route.findOne({ name: routeData.name });
@@ -24,7 +22,7 @@ exports.findRoute = async (routeId, userId) => {
     return ascent;
 }
 
-exports.updateRoute = (route, newData) => {
+exports.updateRouteData = (route, newData) => {
     route.name = newData.name;
     route.colour = newData.colour;
     route.grade = newData.grade;

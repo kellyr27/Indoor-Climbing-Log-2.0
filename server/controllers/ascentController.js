@@ -2,7 +2,7 @@ const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
 const ascentSchema = require('../validators/ascentValidator')
 const validateSchema = require('../middleware/validateSchema')
-const { findAscent, updateAscent } = require('../services/ascentServices')
+const { findAscent, updateAscentData } = require('../services/ascentServices')
 const { findOrCreateRoute } = require('../services/routeServices')
 
 

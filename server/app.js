@@ -9,7 +9,6 @@ const errorHandler = require('./middleware/errorHandler');
 
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
-app.use(errorHandler);
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
@@ -19,12 +18,14 @@ const routeRoutes = require('./routes/routeRoutes');
 app.use('/api/users', userRoutes);
 app.use('/api/ascents', ascentRoutes);
 app.use('/api/routes', routeRoutes);
-
+app.use(errorHandler);
 
 // Used for testing the authenticate middleware
 app.get('/protected', authenticate, (req, res) => {
     res.status(200).json({ message: 'You are authenticated' });
 });
+
+
 
 connectDB();
 

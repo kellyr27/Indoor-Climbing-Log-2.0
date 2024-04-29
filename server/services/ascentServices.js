@@ -1,5 +1,5 @@
-import Ascent from '../models/ascentModel'
-import CustomError from '../utils/CustomError';
+const Ascent = require('../models/ascentModel');
+const CustomError = require('../utils/CustomError');
 
 exports.findAscent = async (ascentId, userId) => {
     const ascent = await Ascent.findById(ascentId);
@@ -12,7 +12,7 @@ exports.findAscent = async (ascentId, userId) => {
     return ascent;
 }
 
-exports.updateAscent = (ascent, newData) => {
+exports.updateAscentData = (ascent, newData) => {
     ascent.user = newData.user;
     ascent.route = newData.route;
     ascent.date = newData.date;
