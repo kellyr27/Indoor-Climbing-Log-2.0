@@ -2,10 +2,15 @@ const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
 const CustomError = require('../utils/CustomError');
 
-exports.findOrCreateRoute = async (routeData) => {
+// TODO Add user
+// TODO Error checking that route exists for that user only
+exports.findOrCreateRoute = async (routeData, userId) => {
+
     let route = await Route.findOne({ name: routeData.name });
+
+
     if (!route) {
-        route = new Route(routeData);
+        route = new Route({...routeData, user: userId });
         await route.save();
     }
     return route;
@@ -19,7 +24,7 @@ exports.findRoute = async (routeId, userId) => {
     if (route.user.toString() !== userId.toString()) {
         throw new CustomError('You do not have permission to access this route', 403);
     }
-    return ascent;
+    return route;
 }
 
 exports.updateRouteData = (route, newData) => {

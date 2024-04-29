@@ -10,8 +10,10 @@ exports.createAscent = [
     validateSchema(ascentSchema),
     async (req, res, next) => {
         try {
+
             // Check if the route already exists in the database
-            let route = findOrCreateRoute(req.body.route);
+            console.log('Passed validateSchema')
+            let route = await findOrCreateRoute(req.body.route, req.user._id);
 
             const ascent = new Ascent({
                 user: req.user._id,
@@ -30,23 +32,27 @@ exports.createAscent = [
     }
 ]
 
-exports.getAllAscents = [async (req, res, next) => {
-    try {
-        const ascents = await Ascent.find({ user: req.user._id }).populate('route');
-        res.status(200).json(ascents);
-    } catch (error) {
-        next(error)
+exports.getAllAscents = [
+    async (req, res, next) => {
+        try {
+            const ascents = await Ascent.find({ user: req.user._id }).populate('route');
+            res.status(200).json(ascents);
+        } catch (error) {
+            next(error)
+        }
     }
-}]
+]
 
-exports.getAscentById = [async (req, res, next) => {
-    try {
-        const ascent = await findAscent(req.params.id, req.user._id);
-        res.status(200).json(ascent);
-    } catch (error) {
-        next(error)
+exports.getAscentById = [
+    async (req, res, next) => {
+        try {
+            const ascent = await findAscent(req.params.id, req.user._id);
+            res.status(200).json(ascent);
+        } catch (error) {
+            next(error)
+        }
     }
-}]
+]
 
 exports.updateAscent = [
     validateSchema(ascentSchema),
@@ -56,7 +62,7 @@ exports.updateAscent = [
             const ascent = await findAscent(req.params.id, req.user._id);
 
             // Check if the route already exists in the database
-            const route = findOrCreateRoute(req.body.route)
+            const route = await findOrCreateRoute(req.body.route, req.user._id)
 
             const newData = {
                 user: req.user._id,

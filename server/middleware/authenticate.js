@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const User = require('../models/userModel');
 
+//TODO: Refactor to use CustomError
 const authenticate = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
