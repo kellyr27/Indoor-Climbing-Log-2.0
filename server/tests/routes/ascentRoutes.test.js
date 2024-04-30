@@ -223,23 +223,99 @@ describe('Ascent Routes', () => {
             .expect(400);
     })
 
-    test.skip('Should not update an ascent as the user does not have permission', async () => {
-        //
+    test('Should not update an ascent as the user does not have permission', async () => {
+        // Create two users with routes and ascents
+        const [user1, token1, routes1, ascents1] = await createTestUserWithAscents();
+        const [user2, token2, routes2, ascents2] = await createTestUserWithAscents();
+
+        // Select a random ascent from user1
+        const ascent = ascents1[Math.floor(Math.random() * ascents1.length)]
+
+        // Create a new route
+        const newRoute = await createTestRoute(user1);
+
+        // Update the ascent with the new route
+        const updatedAscent = {
+            route: newRoute,
+            date: '2021-01-01',
+            tickType: 'flash',
+            notes: 'Test notes',
+        }
+
+        // Send a PUT request to the server from user2
+        const response = await request(app)
+            .put(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token2}`)
+            .send(updatedAscent)
+            .expect(403);
+        
     })
 
-    test.skip('Should not update an ascent as the ascent does not exist', async () => {
-        //
+    test('Should not update an ascent as the ascent does not exist', async () => {
+        // Create a user with routes and ascents
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Create a new route
+        const newRoute = await createTestRoute(user);
+
+        // Update the ascent with the new route
+        const updatedAscent = {
+            route: newRoute,
+            date: '2021-01-01',
+            tickType: 'flash',
+            notes: 'Test notes',
+        }
+
+
+        // Send a PUT request to the server from the user
+        // NOTE mongoose.Types.ObjectId() generates an id that does not exist in the database
+        const response = await request(app)
+            .put(`/api/ascents/${new mongoose.Types.ObjectId()}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(updatedAscent)
+            .expect(404);
     })
 
-    test.skip('Should delete an ascent', async () => {
-        //
+    test('Should delete an ascent', async () => {
+        // Create a user with routes and ascentsq
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Select a random ascent
+        const ascent = ascents[Math.floor(Math.random() * ascents.length)];
+
+        // Send a DELETE request to the server from the user
+        const response = await request(app)
+            .delete(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200);
+
+
     })
 
-    test.skip('Should not delete an ascent as the user does not have permission', async () => {
-        //
+    test('Should not delete an ascent as the user does not have permission', async () => {
+        // Create two users with routes and ascents
+        const [user1, token1, routes1, ascents1] = await createTestUserWithAscents();
+        const [user2, token2, routes2, ascents2] = await createTestUserWithAscents();
+
+        // Select a random ascent from user1
+        const ascent = ascents1[Math.floor(Math.random() * ascents1.length)]
+
+        // Send a DELETE request to the server from user2
+        const response = await request(app)
+            .delete(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(403);
     })
 
-    test.skip('Should not delete an ascent as the ascent does not exist', async () => {
-        //
+    test('Should not delete an ascent as the ascent does not exist', async () => {
+        // Create a user with routes and ascents
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Send a DELETE request to the server from the user
+        // NOTE mongoose.Types.ObjectId() generates an id that does not exist in the database
+        const response = await request(app)
+            .delete(`/api/ascents/${new mongoose.Types.ObjectId()}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(404);
     })
 });

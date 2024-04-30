@@ -14,8 +14,6 @@ exports.createAscent = [
             // Check if the route already exists in the database
             let route = await findOrCreateRoute(req.body.route, req.user._id);
 
-            console.log('LOG1')
-
             const ascent = new Ascent({
                 user: req.user._id,
                 route: route._id,
@@ -24,16 +22,9 @@ exports.createAscent = [
                 notes: req.body.notes
             });
 
-            console.log('LOG2')
-
             await ascent.save();
 
-            console.log('LOG3')
-
             const populatedAscent = await Ascent.findById(ascent._id).populate('route');
-
-            console.log('LOG4', populatedAscent)
-
             res.status(201).json(populatedAscent);
         } catch (error) {
             next(error)
@@ -93,25 +84,27 @@ exports.updateAscent = [
     }
 ]
 
-exports.deleteAscent = [async (req, res, next) => {
-    try {
-        const ascent = await findAscent(req.params.id, req.user._id);
+exports.deleteAscent = [
+    async (req, res, next) => {
+        try {
+            const ascent = await findAscent(req.params.id, req.user._id);
 
-        // Store the route id before deleting the ascent
-        const routeId = ascent.route;
+            // Store the route id before deleting the ascent
+            const routeId = ascent.route;
 
-        // Delete the ascent
-        await ascent.remove();
+            // Delete the ascent
+            await ascent.deleteOne();
 
-        // Check if there are any other ascents with the same route
-        const otherAscents = await Ascent.find({ route: routeId });
-        if (otherAscents.length === 0) {
-            // If not, delete the route
-            await Route.findByIdAndDelete(routeId);
+            // Check if there are any other ascents with the same route
+            const otherAscents = await Ascent.find({ route: routeId });
+            if (otherAscents.length === 0) {
+                // If not, delete the route
+                await Route.findByIdAndDelete(routeId);
+            }
+
+            res.status(200).json({ message: 'Ascent deleted successfully' });
+        } catch (error) {
+            next(error)
         }
-
-        res.status(200).json({ message: 'Ascent deleted successfully' });
-    } catch (error) {
-        next(error)
     }
-}]
+]
