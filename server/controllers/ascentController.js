@@ -14,6 +14,8 @@ exports.createAscent = [
             // Check if the route already exists in the database
             let route = await findOrCreateRoute(req.body.route, req.user._id);
 
+            console.log('LOG1')
+
             const ascent = new Ascent({
                 user: req.user._id,
                 route: route._id,
@@ -22,9 +24,17 @@ exports.createAscent = [
                 notes: req.body.notes
             });
 
+            console.log('LOG2')
+
             await ascent.save();
 
-            res.status(201).json(ascent);
+            console.log('LOG3')
+
+            const populatedAscent = await Ascent.findById(ascent._id).populate('route');
+
+            console.log('LOG4', populatedAscent)
+
+            res.status(201).json(populatedAscent);
         } catch (error) {
             next(error)
         }
@@ -73,7 +83,10 @@ exports.updateAscent = [
             const updatedAscent = updateAscentData(ascent, newData);
             await updatedAscent.save();
 
-            res.status(200).json(ascent);
+            // Populate the route field before sending the response
+            const populatedAscent = await Ascent.findById(updatedAscent._id).populate('route');
+
+            res.status(200).json(populatedAscent);
         } catch (error) {
             next(error)
         }

@@ -6,6 +6,6 @@ const ascentSchema = Joi.object({
     date: Joi.date().required(),
     tickType: Joi.string().valid('redpoint', 'flash', 'hangdog', 'attempt').required(),
     notes: Joi.string().optional()
-});
+}).unknown(true)
 
 module.exports = ascentSchema;

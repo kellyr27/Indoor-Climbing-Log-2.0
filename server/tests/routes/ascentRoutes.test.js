@@ -9,7 +9,7 @@ const {
     createTestAscentWithoutRoute,
     createTestAscentWithRoute,
     createTestRoute,
-    createMockDatabase
+    createTestUserWithAscents
 } = require('./utils/testHelpers');
 
 describe('Ascent Routes', () => {
@@ -64,18 +64,15 @@ describe('Ascent Routes', () => {
             .send(ascent)
             .expect(201);
 
-        // Check that the response contains the correct ascent
-        console.log(response.body)
-
     });
 
-    test.skip('Should create a new ascent with an existing route', async () => {
+    test('Should create a new ascent with an existing route', async () => {
 
         const [testUser, token] = await createTestUser();
 
         // Create a route and save it to the database
-        const route = createTestRoute(testUser);
-
+        const route = await createTestRoute(testUser);
+        
         // Create a new ascent with this existing route
         const ascent = {
             route: route,
@@ -91,9 +88,12 @@ describe('Ascent Routes', () => {
             .send(ascent)
             .expect(201);
 
+        // Check that the response contains the correct ascent
+        expect(response.body.route._id).toBe(route._id.toString());
+
     })
 
-    test.skip('Should not create a new ascent as the ascent schema is not valid', async () => {
+    test('Should not create a new ascent as the ascent schema is not valid', async () => {
         // Create a new ascent with an invalid schema
         const invalidAscent = {
             route: {
@@ -114,55 +114,13 @@ describe('Ascent Routes', () => {
 
     })
 
-    test.skip('Should get all ascents for that user', async () => {
-
+    test('Should get all ascents for that user', async () => {
         
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
 
-        // Create a few ascents for testing
-        const ascent1 = new Ascent({
-            user: testUser._id,
-            route: {
-                name: 'Test Route 1',
-                grade: 17,
-                colour: 'red',
-            },
-            date: '2021-01-01',
-            tickType: 'flash',
-            notes: 'Test notes 1',
-        })
-        await ascent1.save();
-
-        const ascent2 = new Ascent({
-            user: testUser._id,
-            route: {
-                name: 'Test Route 2',
-                grade: 18,
-                colour: 'blue',
-            },
-            date: '2021-01-02',
-            tickType: 'hangdog',
-            notes: 'Test notes 2',
-        })
-        await ascent2.save();
-
-        // Create another user and log an ascent for that user
-        const otherUser = new User({
-            username: 'Other User',
-            password: '',
-        })
-        await otherUser.save();
-        const ascent3 = new Ascent({
-            user: otherUser._id,
-            route: {
-                name: 'Test Route 3',
-                grade: 19,
-                colour: 'green',
-            },
-            date: '2021-01-03',
-            tickType: 'redpoint',
-            notes: 'Test notes 3',
-        })
-        await ascent3.save();
+        // Create two other users with routes and ascents to ensure that the response only contains the ascents for the user
+        await createTestUserWithAscents();
+        await createTestUserWithAscents();
 
         // Send a GET request to the server from the user
         const response = await request(app)
@@ -171,26 +129,98 @@ describe('Ascent Routes', () => {
             .expect(200);
 
         // Check that the response contains the correct ascents
-        expect(response.body.length).toBe(2);
-        expect(response.body[0].route.name).toBe('Test Route 1');
-        expect(response.body[1].route.name).toBe('Test Route 2');
+        expect(response.body.length).toBe(ascents.length);
         
     })
 
-    test.skip('Should get an ascent by id', async () => {
-        //
+    test('Should get an ascent by id', async () => {
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Create two other users with routes and ascents to ensure that the response only contains the ascents for the user
+        await createTestUserWithAscents();
+        await createTestUserWithAscents();
+
+        // Select a random ascent
+        const ascent = ascents[Math.floor(Math.random() * ascents.length)];
+
+        // Send a GET request to the server from the user
+        const response = await request(app)
+            .get(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200);
+
+        // Check that the response contains the correct ascent
+        expect(response.body._id).toBe(ascent._id.toString());
     })
 
-    test.skip('Should not get an ascent by id as the user does not have permission', async () => {
-        //  
+    test('Should not get an ascent by id as the user does not have permission', async () => {
+        // Create two users with routes and ascents
+        const [user1, token1, routes1, ascents1] = await createTestUserWithAscents();
+        const [user2, token2, routes2, ascents2] = await createTestUserWithAscents();
+
+        // Select a random ascent from user1
+        const ascent = ascents1[Math.floor(Math.random() * ascents1.length)];
+
+        // Send a GET request to the server from user2
+        const response = await request(app)
+            .get(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token2}`)
+            .expect(403);
     })
 
-    test.skip('Should update an ascent', async () => {
-        //
+    test('Should update an ascent', async () => {
+        // Create a user with routes and ascents
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Select a random ascent
+        const ascent = ascents[Math.floor(Math.random() * ascents.length)];
+
+        // Create a new route
+        const newRoute = await createTestRoute(user);
+
+        // Update the ascent with the new route
+        const updatedAscent = {
+            route: newRoute,
+            date: '2021-01-01',
+            tickType: 'flash',
+            notes: 'Test notes',
+        }
+
+        // Send a PUT request to the server from the user
+        const response = await request(app)
+            .put(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(updatedAscent)
+            .expect(200);
+
+        // Check that the response contains the correct ascent
+        expect(response.body.route._id).toBe(newRoute._id.toString());
+
     })
 
-    test.skip('Should not update an ascent as the ascent schema is not valid', async () => {
-        //
+    test('Should not update an ascent as the ascent schema is not valid', async () => {
+        // Create a user with routes and ascents
+        const [user, token, routes, ascents] = await createTestUserWithAscents();
+
+        // Select a random ascent
+        const ascent = ascents[Math.floor(Math.random() * ascents.length)];
+
+        // Create a new route
+        const newRoute = await createTestRoute(user);
+
+        // Update the ascent with the new route with an invalid tickType
+        const updatedAscent = {
+            route: newRoute,
+            date: '2021-01-01',
+            tickType: 'onsight',
+        }
+
+        // Send a PUT request to the server from the user
+        const response = await request(app)
+            .put(`/api/ascents/${ascent._id}`)
+            .set('Authorization', `Bearer ${token}`)
+            .send(updatedAscent)
+            .expect(400);
     })
 
     test.skip('Should not update an ascent as the user does not have permission', async () => {

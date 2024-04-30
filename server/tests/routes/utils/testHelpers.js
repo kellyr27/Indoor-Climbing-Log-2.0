@@ -96,5 +96,5 @@ module.exports = {
     createTestRoute,
     createTestAscentWithRoute,
     createTestAscentWithoutRoute,
-    createMockDatabase
+    createTestUserWithAscents
 };

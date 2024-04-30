@@ -2,7 +2,7 @@ const Ascent = require('../models/ascentModel');
 const CustomError = require('../utils/CustomError');
 
 exports.findAscent = async (ascentId, userId) => {
-    const ascent = await Ascent.findById(ascentId);
+    const ascent = await Ascent.findById(ascentId).populate('route');
     if (!ascent) {
         throw new CustomError('No ascent found with this id', 404);
     }
