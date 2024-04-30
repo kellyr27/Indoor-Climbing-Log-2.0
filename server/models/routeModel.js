@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const routeSchema = new mongoose.Schema({
     name: { 
         type: String, 
-        unique: true, 
         required: true 
     },
     colour: { 
@@ -23,6 +22,8 @@ const routeSchema = new mongoose.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 });
+
+routeSchema.index({ name: 1, user: 1 }, { unique: true });
 
 routeSchema.virtual('ascents', {
     ref: 'Ascent',
