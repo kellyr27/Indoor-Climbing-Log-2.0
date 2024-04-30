@@ -43,7 +43,8 @@ exports.updateRoute = [
 
             const updatedRoute = updateRouteData(route, newData);
             await updatedRoute.save();
-            res.status(200).json(route);
+
+            res.status(200).json(updatedRoute);
         } catch (error) {
             next(error)
         }
@@ -55,7 +56,7 @@ exports.getAscentsByRouteId = [
         try {
             const route = findRoute(req.params.routeId, req.user._id);
             const ascents = await Ascent.find({ route: route._id, user: req.user._id});
-            res.status(200).json(ascents);
+            res.status(200).json({ route, ascents });
         } catch (error) {
             next(error)
         }
