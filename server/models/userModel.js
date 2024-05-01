@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const {connectDB1} = require('../config/database');
 
 const userSchema = new mongoose.Schema({
     username: { type: String, unique: true },
@@ -42,6 +43,6 @@ userSchema.methods.generateAuthToken = function () {
     return token;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = connectDB1.model('User', userSchema);
 
 module.exports = User;

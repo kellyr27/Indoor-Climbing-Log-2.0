@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log('MongoDB connected...');
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
-    }
-}
 
-module.exports = connectDB;
+const connectDB1 = mongoose.createConnection(process.env.MONGODB_URI_CLIMBINGLOG);
+connectDB1.on('error', console.error.bind(console, 'First DB connection error:'));
+connectDB1.once('open', () => {
+    console.log('Connected to first MongoDB database');
+});
+
+module.exports = { connectDB1};

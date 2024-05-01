@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const app = require('../../app');
 const User = require('../../models/userModel');
+const { connectDB1 } = require('../../config/database');
 
 describe('Authenticate Middleware', () => {
     let token;
@@ -16,7 +17,7 @@ describe('Authenticate Middleware', () => {
 
     afterAll(async () => {
         await User.deleteMany();
-        await mongoose.connection.close();
+        await connectDB1.close();
     });
 
     it('should pass authentication with valid token', async () => {

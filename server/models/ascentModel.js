@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {connectDB1} = require('../config/database');
 
 const ascentSchema = new mongoose.Schema({
     user: { 
@@ -26,6 +27,7 @@ const ascentSchema = new mongoose.Schema({
     },
 });
 
-const Ascent = mongoose.model('Ascent', ascentSchema);
+const Ascent = connectDB1.model('Ascent', ascentSchema);
+
 
 module.exports = Ascent;

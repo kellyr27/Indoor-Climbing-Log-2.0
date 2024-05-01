@@ -4,6 +4,9 @@ const User = require('../../models/userModel');
 const Route = require('../../models/routeModel');
 const Ascent = require('../../models/ascentModel');
 const mongoose = require('mongoose');
+const { connectDB1 } = require('../../config/database');
+
+
 const { 
     createTestUser, 
     createTestAscentWithoutRoute,
@@ -37,8 +40,13 @@ describe('Ascent Routes', () => {
     });
 
     afterAll(async () => {
-        await mongoose.connection.db.dropDatabase();
-        await mongoose.connection.close();
+        // Drop the database
+        if (connectDB1.readyState === 1) {
+            await connectDB1.db.dropDatabase();
+        }
+
+        // Close the connection
+        await connectDB1.close();
     });
 
     test('Should create a new ascent with a new route', async () => {

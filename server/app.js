@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const connectDB = require('./config/database');
 
 const authenticate = require('./middleware/authenticate');
 const errorHandler = require('./middleware/errorHandler');
@@ -25,9 +24,6 @@ app.get('/protected', authenticate, (req, res) => {
     res.status(200).json({ message: 'You are authenticated' });
 });
 
-
-
-connectDB();
 
 // Start server
 // NOTE: Should always be at the end of the file after all routes are defined
