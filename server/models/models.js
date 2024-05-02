@@ -1,3 +1,5 @@
+//TODO: Decide what to do here
+
 const mongoose = require('mongoose');
 
 module.exports = function createModels (db) {
