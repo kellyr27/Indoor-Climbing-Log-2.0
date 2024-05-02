@@ -1,12 +1,11 @@
 const { startTestDatabase, stopTestDatabase } = require('./utils/testSetup');
 const startServer = require('../server'); 
 
-let server;
 
 beforeAll(async () => {
     try {
         global.testDb = await startTestDatabase();
-        server = global.server = await startServer();
+        global.server = await startServer();
 
         // Load all my Models and save them as global variables for testing
         global.User = require('../models/userModel');
@@ -23,7 +22,7 @@ beforeAll(async () => {
 afterAll(async () => {
     try {
         await stopTestDatabase();
-        await server.close();
+        await global.server.close();
     } catch (error) {
         console.error(error);
     }

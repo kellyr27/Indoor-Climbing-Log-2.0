@@ -17,7 +17,7 @@ const setUpClimbingLogApp = (app) => {
     app.use(`${basePath}/api/routes`, routeRoutes);
 
     // Used for testing the authenticate middleware
-    app.get(`${basePath}/api/protected`, authenticate, (req, res) => {
+    app.get(`${basePath}/protected`, authenticate, (req, res) => {
         res.status(200).json({ message: 'You are authenticated' });
     });
 
