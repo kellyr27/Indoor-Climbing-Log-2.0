@@ -26,7 +26,7 @@ describe('Ascent Routes', () => {
 
         // Send a POST request to the server from the user
         const response = await request(server)
-            .post('/api/ascents')
+            .post('/climbinglog/api/ascents')
             .set('Authorization', `Bearer ${token}`)
             .send(ascent)
             .expect(201);
@@ -50,7 +50,7 @@ describe('Ascent Routes', () => {
 
         // Send a POST request to the server from the user
         const response = await request(server)
-            .post('/api/ascents')
+            .post('/climbinglog/api/ascents')
             .set('Authorization', `Bearer ${token}`)
             .send(ascent)
             .expect(201);
@@ -76,7 +76,7 @@ describe('Ascent Routes', () => {
 
         // Send a POST request to the server from the user
         const response = await request(server)
-            .post('/api/ascents')
+            .post('/climbinglog/api/ascents')
             .set('Authorization', `Bearer ${token}`)
             .send(invalidAscent)
             .expect(400);
@@ -93,7 +93,7 @@ describe('Ascent Routes', () => {
 
         // Send a GET request to the server from the user
         const response = await request(server)
-            .get('/api/ascents')
+            .get('/climbinglog/api/ascents')
             .set('Authorization', `Bearer ${token}`)
             .expect(200);
 
@@ -114,7 +114,7 @@ describe('Ascent Routes', () => {
 
         // Send a GET request to the server from the user
         const response = await request(server)
-            .get(`/api/ascents/${ascent._id}`)
+            .get(`/climbinglog/api/ascents/${ascent._id}`)
             .set('Authorization', `Bearer ${token}`)
             .expect(200);
 
@@ -132,7 +132,7 @@ describe('Ascent Routes', () => {
 
         // Send a GET request to the server from user2
         const response = await request(server)
-            .get(`/api/ascents/${ascent._id}`)
+            .get(`/climbinglog/api/ascents/${ascent._id}`)
             .set('Authorization', `Bearer ${token2}`)
             .expect(403);
     })
@@ -157,7 +157,7 @@ describe('Ascent Routes', () => {
 
         // Send a PUT request to the server from the user
         const response = await request(server)
-            .put(`/api/ascents/${ascent._id}`)
+            .put(`/climbinglog/api/ascents/${ascent._id}`)
             .set('Authorization', `Bearer ${token}`)
             .send(updatedAscent)
             .expect(200);
