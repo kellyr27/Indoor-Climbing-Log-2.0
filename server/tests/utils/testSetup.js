@@ -2,7 +2,7 @@
 
 const { MongoMemoryServer } = require('mongodb-memory-server-core');
 const mongoose = require('mongoose');
-const {setTestDatabaseConnection, getDatabaseConnection} = require('../../config/database');
+const {setTestDatabaseConnection} = require('../../config/database');
 
 let mongoServer;
 let testDatabaseConnection;
@@ -10,10 +10,11 @@ let testDatabaseConnection;
 async function startTestDatabase() {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
-
+    
     testDatabaseConnection = mongoose.createConnection(mongoUri);
     setTestDatabaseConnection(testDatabaseConnection);
-    console.log('executed')
+    
+    return testDatabaseConnection;
 }
 
 async function stopTestDatabase() {
