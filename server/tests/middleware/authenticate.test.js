@@ -5,7 +5,7 @@ describe('Authenticate Middleware', () => {
 
     beforeEach(async () => {
         // Clear the database before each test
-        await global.testDb.dropDatabase()
+        await testDb.dropDatabase()
     });
 
     it('should pass authentication with valid token', async () => {

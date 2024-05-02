@@ -1,28 +1,16 @@
 const request = require('supertest');
-const app = require('../../app'); 
-const User = require('../../models/userModel');
 const mongoose = require('mongoose');
-const { startTestDatabase, stopTestDatabase } = require('../utils/testSetup');
 
 
 describe('User Routes', () => {
     // Clear the database before each test
     beforeEach(async () => {
-        await User.deleteMany();
-    });
-
-    beforeAll(async () => {
-        
-        await startTestDatabase();
-    });
-
-    afterAll(async () => {
-        await stopTestDatabase();
+        await testDb.dropDatabase()
     });
 
     test('Should register a new user', async () => {
-        const response = await request(app)
-            .post('/api/users/register')
+        const response = await request(server)
+            .post('/climbinglog/api/users/register')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
@@ -38,15 +26,15 @@ describe('User Routes', () => {
     });
 
     test('Should not register a new user with an existing username', async () => {
-        await request(app)
-            .post('/api/users/register')
+        await request(server)
+            .post('/climbinglog/api/users/register')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
             });
 
-        const response = await request(app)
-            .post('/api/users/register')
+        const response = await request(server)
+            .post('/climbinglog/api/users/register')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
@@ -58,15 +46,15 @@ describe('User Routes', () => {
     });
 
     test('Should login existing user', async () => {
-        await request(app)
-            .post('/api/users/register')
+        await request(server)
+            .post('/climbinglog/api/users/register')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
             });
 
-        const response = await request(app)
-            .post('/api/users/login')
+        const response = await request(server)
+            .post('/climbinglog/api/users/login')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
@@ -78,8 +66,8 @@ describe('User Routes', () => {
     });
 
     test('Should not login non-existing user', async () => {
-        const response = await request(app)
-            .post('/api/users/login')
+        const response = await request(server)
+            .post('/climbinglog/api/users/login')
             .send({
                 username: 'nonexistinguser',
                 password: 'testpassword123'
@@ -91,15 +79,15 @@ describe('User Routes', () => {
     });
 
     test('Should not login user with incorrect password', async () => {
-        await request(app)
-            .post('/api/users/register')
+        await request(server)
+            .post('/climbinglog/api/users/register')
             .send({
                 username: 'testuser',
                 password: 'testpassword123'
             });
 
-        const response = await request(app)
-            .post('/api/users/login')
+        const response = await request(server)
+            .post('/climbinglog/api/users/login')
             .send({
                 username: 'testuser',
                 password: 'wrongpassword'
