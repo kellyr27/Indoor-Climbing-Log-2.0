@@ -41,7 +41,7 @@ const excelDateToJSDate = (serial) => {
 };
 
 // Load the Excel file
-const uploadAll = async () => {
+const getAscentsObjects = async () => {
     const workbook = XLSX.readFile(path.resolve(__dirname, 'Climbing Log - Copy.xlsx'));
 
     // Get the first sheet
@@ -83,3 +83,5 @@ const uploadAll = async () => {
 
     return ascentsObjectsList
 }
+
+module.exports = getAscentsObjects;
