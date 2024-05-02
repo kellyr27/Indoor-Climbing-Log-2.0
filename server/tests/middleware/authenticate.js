@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 const app = require('../../app');
 const User = require('../../models/userModel');
 const { connectDB1 } = require('../../config/database');
+const { startTestDatabase, stopTestDatabase } = require('../utils/testSetup');
 
 describe('Authenticate Middleware', () => {
     let token;
 
     beforeAll(async () => {
+        await startTestDatabase();
         const user = new User({ username: 'testuser', password: 'testpassword' });
         await user.save();
 
@@ -17,7 +19,7 @@ describe('Authenticate Middleware', () => {
 
     afterAll(async () => {
         await User.deleteMany();
-        await connectDB1.close();
+        await stopTestDatabase()
     });
 
     it('should pass authentication with valid token', async () => {

@@ -3,35 +3,29 @@ const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
-const authenticate = require('./middleware/authenticate');
-const errorHandler = require('./middleware/errorHandler');
+const setUpClimbingLogApp = () => {
+    const authenticate = require('./middleware/authenticate');
+    const errorHandler = require('./middleware/errorHandler');
 
-app.use(bodyParser.json());
-app.use(morgan('tiny'));
+    app.use(bodyParser.json());
+    app.use(morgan('tiny'));
 
-// Routes
-const userRoutes = require('./routes/userRoutes');
-const ascentRoutes = require('./routes/ascentRoutes');
-const routeRoutes = require('./routes/routeRoutes');
+    // Routes
+    const userRoutes = require('./routes/userRoutes');
+    const ascentRoutes = require('./routes/ascentRoutes');
+    const routeRoutes = require('./routes/routeRoutes');
 
-app.use('/api/users', userRoutes);
-app.use('/api/ascents', ascentRoutes);
-app.use('/api/routes', routeRoutes);
-app.use(errorHandler);
+    app.use('/api/users', userRoutes);
+    app.use('/api/ascents', ascentRoutes);
+    app.use('/api/routes', routeRoutes);
+    app.use(errorHandler);
 
-// Used for testing the authenticate middleware
-app.get('/protected', authenticate, (req, res) => {
-    res.status(200).json({ message: 'You are authenticated' });
-});
-
-
-// Start server
-// NOTE: Should always be at the end of the file after all routes are defined
-if (process.env.NODE_ENV !== 'test') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
+    // Used for testing the authenticate middleware
+    app.get('/protected', authenticate, (req, res) => {
+        res.status(200).json({ message: 'You are authenticated' });
     });
+
+    return app
 }
 
-module.exports = app;
+module.exports = setUpClimbingLogApp;

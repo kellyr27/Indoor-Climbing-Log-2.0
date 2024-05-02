@@ -1,6 +1,6 @@
-const User = require('../../../models/userModel');
-const Route = require('../../../models/routeModel');
-const Ascent = require('../../../models/ascentModel');
+const User = require('../../models/userModel');
+const Route = require('../../models/routeModel');
+const Ascent = require('../../models/ascentModel');
 
 
 const createTestUser = async () => {

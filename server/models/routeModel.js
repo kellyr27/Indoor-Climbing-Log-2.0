@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {connectDB1} = require('../config/database');
+const {getDatabaseConnection} = require('../config/database');
 
 const routeSchema = new mongoose.Schema({
     name: { 
@@ -33,6 +33,6 @@ routeSchema.virtual('ascents', {
     justOne: false
 });
 
-const Route = connectDB1.model('Route', routeSchema);
+const Route = getDatabaseConnection().model('Route', routeSchema);
 
 module.exports = Route;
