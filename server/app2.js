@@ -5,7 +5,6 @@ const basePath = '/climbinglog';
 const setUpClimbingLogApp = (app) => {
 
     const authenticate = require('./middleware/authenticate');
-    // const errorHandler = require('./middleware/errorHandler');
 
     // Routes
     const userRoutes = require('./routes/userRoutes');

@@ -13,4 +13,5 @@ router.route('/:id')
 router.route('/:id/ascents')
     .get(authenticate, ...routeController.getAscentsByRouteId);
 
+
 module.exports = router;

@@ -21,7 +21,8 @@ const routeSchema = new mongoose.Schema({
     },
 }, {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    timestamps: true
 });
 
 routeSchema.index({ name: 1, user: 1 }, { unique: true });

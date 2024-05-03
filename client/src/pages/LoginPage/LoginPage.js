@@ -3,12 +3,15 @@ import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
+import { useAuthContext } from '../../context/AuthContext'; 
+
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { isAuthenticated, setIsAuthenticated } = useAuthContext();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('kelly');
+    const [password, setPassword] = useState('password');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,6 +27,7 @@ const LoginPage = () => {
             // Get the token and store it in the local storage
             const { token } = response.data;
             localStorage.setItem('token', token);
+            setIsAuthenticated(true);
 
             // Redirect to the ascents page using navigate
             navigate('/ascents');

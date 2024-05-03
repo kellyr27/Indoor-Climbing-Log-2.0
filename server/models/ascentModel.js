@@ -25,7 +25,7 @@ const ascentSchema = new mongoose.Schema({
         type: String, 
         required: false 
     },
-});
+}, { timestamps: true });
 
 const Ascent = getDatabaseConnection().model('Ascent', ascentSchema);
 

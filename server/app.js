@@ -6,6 +6,7 @@ const setUpClimbingLogApp = require('./app2');
 const setupApp = () => {
 
     const allowedOrigins = [
+        // For the climbingLog App
         'https://indoor-climbing-log.onrender.com',
         'http://localhost:3000',
         'https://climbinglog.com.au',
@@ -35,6 +36,10 @@ const setupApp = () => {
       
         next();
     });
+
+	// TODO: Move error handler middleware to OmegaServer level middleware
+	const errorHandler = require('./middleware/errorHandler');
+	app.use(errorHandler);
 
     app.use(express.json());
     app.use(morgan('tiny'));

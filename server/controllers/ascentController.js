@@ -2,7 +2,7 @@ const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
 const ascentSchema = require('../validators/ascentValidator')
 const validateSchema = require('../middleware/validateSchema')
-const { findAscent, updateAscentData } = require('../services/ascentServices')
+const { findAscent, updateAscentData, uploadAscents } = require('../services/ascentServices')
 const { findOrCreateRoute } = require('../services/routeServices')
 
 
@@ -106,5 +106,42 @@ exports.deleteAscent = [
         } catch (error) {
             next(error)
         }
+    }
+]
+
+/**
+ * When creating a new ascent, this will prefill the date field with the date of the last ascent 
+ * recorded if recorded within the last 24 hours or the current date if not.
+ */
+//TODO: Test if function works as expected
+exports.prefillAscentDate = [
+    async (req, res, next) => {
+    
+        try {
+            // Find the creation date of the last recorded ascent
+            const lastCreatedAscent = await Ascent.findOne().sort({createdAt: -1});
+
+            // If the ascent was created within the last 24 hours, return the date of the ascent
+            const millisecondsInDay = 86400000;
+            if (lastCreatedAscent && (Date.now() - new Date(lastCreatedAscent.createdAt).getTime() < millisecondsInDay)) {
+                return res.status(200).json({ date: lastCreatedAscent.date });
+            } else {
+                return res.status(200).json({ date: new Date().toISOString() });
+            }
+
+        } catch (error) {
+            next(error)
+        }
+    }
+]
+
+exports.uploadAscents = [
+    async (req, res) => {
+        // Remove all Ascents and Routes from the logged in user
+        await Ascent.deleteMany({ user: req.user._id });
+        await Route.deleteMany({ user: req.user._id });
+        await uploadAscents(req.user._id);
+
+        res.status(200).json({ message: 'Uploaded ascents' });
     }
 ]
