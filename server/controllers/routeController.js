@@ -9,6 +9,13 @@ exports.getAllRoutes = [
     async (req, res, next) => {
         try {
             const routes = await Route.find({ user: req.user._id }).populate('ascents');
+
+            routes.forEach(route => {
+                route.ascents.sort((a, b) => {
+                    return new Date(b.date) - new Date(a.date);
+                });
+            });
+
             res.status(200).json(routes);
         } catch (error) {
             next(error)

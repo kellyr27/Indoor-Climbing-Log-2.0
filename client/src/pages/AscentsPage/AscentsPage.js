@@ -19,25 +19,21 @@ const AscentsPage = () => {
             try {
                 const token = localStorage.getItem('token');
 
-            const response = await axios.get(`${baseUrl}/ascents`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+                const response = await axios.get(`${baseUrl}/ascents`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
-            const dataWithIds = response.data.map(item => ({
-                ...item,
-                id: item._id,
-                routeName: item.route.name,
-                routeGrade: item.route.grade,
-                routeColour: item.route.colour,
-            }));
+                const dataWithIds = response.data.map(item => ({
+                    ...item,
+                    id: item._id,
+                    routeName: item.route.name,
+                    routeGrade: item.route.grade,
+                    routeColour: item.route.colour,
+                }));
 
-
-
-            setAscentsData(dataWithIds);
-
-            console.log(dataWithIds)
+                setAscentsData(dataWithIds);
 
             } catch (error) {
                 console.error(error);
