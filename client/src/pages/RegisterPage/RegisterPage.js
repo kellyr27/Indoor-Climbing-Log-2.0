@@ -44,7 +44,7 @@ const RegisterPage = () => {
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    alignItems: { xs: 'center', sm: 'center' },
                     minHeight: '92vh',
                 }}
             >

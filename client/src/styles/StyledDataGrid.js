@@ -2,7 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { styled } from '@mui/system';
 
 const StyledDataGrid = styled(DataGrid)({
-    backgroundColor: '#FDFFC2',
+    backgroundColor: 'white',
     '& .MuiDataGrid-cell': {
         whiteSpace: 'normal',
         wordWrap: 'break-word',
@@ -10,6 +10,9 @@ const StyledDataGrid = styled(DataGrid)({
     '& .MuiDataGrid-columnHeader': {
         backgroundColor: '#94FFD8',
       },
+    '& .MuiDataGrid-columnHeaderTitle': {
+        fontWeight: 'bold',
+    },
 });
 
 export default StyledDataGrid;

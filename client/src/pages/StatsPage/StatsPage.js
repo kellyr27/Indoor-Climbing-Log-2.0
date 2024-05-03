@@ -9,6 +9,7 @@ import { Tooltip } from 'react-tooltip'
 import './heatmap.css';
 import { Box, Grid, Paper } from '@mui/material';
 import { Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
 
 
 function formatDataBarChart (data) {
@@ -167,7 +168,7 @@ const StatsPage = () => {
                     }}
                 >
                     <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 800 } }}>
-                        <Typography variant="h3" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
+                        <Typography variant="h3" align="center" sx={{ mt: 2, mb: 3, fontWeight: 'bold' }}>
                             Your Statistics
                         </Typography>
                         <BarChart 
@@ -181,6 +182,7 @@ const StatsPage = () => {
                             width={600}
                             height={350}
                         />
+                        <Divider />
                         <LineChart
                             series={[
                                 { data: weeklyStats.avgFlashGrades, label: 'Avg Flash Grade', color: '#92d050', connectNulls: true },
@@ -192,7 +194,8 @@ const StatsPage = () => {
                             width={600}
                             height={350}
                         />
-                        <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3 }}>
+                        <Divider />
+                        <Typography variant="h4" align="center" sx={{ mt: 4, mb: 3 }}>
                             Activity Calendar
                         </Typography>
                         <div style={{ width: '600px', height: '300px' }}>
@@ -207,7 +210,7 @@ const StatsPage = () => {
                                         return null;
                                     } else {
                                         return { 
-                                            'data-tooltip-content': `Performance rating: ${value.totalPoints}\nNumber of climbs: ${value.numClimbs}`, 
+                                            'data-tooltip-content': `Performance rating: ${value.totalPoints}, Number of climbs: ${value.numClimbs}`, 
                                             "data-tooltip-id": "my-tooltip"
                                         }
                                     }

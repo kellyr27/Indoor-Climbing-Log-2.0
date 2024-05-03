@@ -7,6 +7,7 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
+import { Grid, Box, Paper } from '@mui/material';
 
 const AscentsPage = () => {
     const navigate = useNavigate();
@@ -151,16 +152,30 @@ const AscentsPage = () => {
 
 
     return (
-        <StyledDataGrid
-            rows={ascentsData}
-            columns={columns}
-            pageSize={100}
-            disableCellFocus
-            rowHeight={70}
-            onRowDoubleClick={(params) => {
-                navigate(`/ascents/${params.row.id}`);
-            }}
-        />
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    minHeight: '92vh',
+                    maxWidth: '950px'
+                }}
+            >
+                <StyledDataGrid
+                    rows={ascentsData}
+                    columns={columns}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    onRowDoubleClick={(params) => {
+                        navigate(`/ascents/${params.row.id}`);
+                    }}
+                    
+                />
+            </Box>
+        </Grid>
+
     );
 }
 

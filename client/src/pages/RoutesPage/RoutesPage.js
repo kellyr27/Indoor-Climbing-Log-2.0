@@ -9,6 +9,7 @@ import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
+import { Grid, Box } from '@mui/material';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -146,16 +147,28 @@ const RoutesPage = () => {
 
 
     return (
-        <StyledDataGrid
-            rows={routesData}
-            columns={columns}
-            pageSize={100}
-            disableCellFocus
-            rowHeight={70}
-            onRowDoubleClick={(params) => {
-                navigate(`/routes/${params.row.id}`);
-            }}
-        />
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    minHeight: '92vh',
+                    maxWidth: '900px'
+                }}
+            >
+                <StyledDataGrid
+                    rows={routesData}
+                    columns={columns}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    onRowDoubleClick={(params) => {
+                        navigate(`/routes/${params.row.id}`);
+                    }}
+                />
+            </Box>
+        </Grid>
     );
 }
 

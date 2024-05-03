@@ -7,6 +7,7 @@ import {dateToDisplay} from '../../utils/helpers';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import baseUrl from '../../utils/baseUrl';
+import { Divider } from '@mui/material';
 
 const AscentPage = () => {
     const [ascentData, setAscentData] = useState({});
@@ -94,11 +95,13 @@ const AscentPage = () => {
                                 </Typography>
                             </Box>
                         </Link>
-                        <Typography variant="body1" gutterBottom sx={{marginBottom: '30px', marginTop: '30px'}}>
-                            {ascentData.Notes}
-                        </Typography>
-
-                        <Box sx={{ mt: 6, display: 'flex', justifyContent: 'space-evenly' }}>
+                        <Box sx={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
+                            <Typography variant="body1" gutterBottom align="center" sx={{marginBottom: '30px', marginTop: '30px'}}>
+                                {ascentData.notes}
+                            </Typography>
+                        </Box>
+                        <Divider />
+                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-evenly' }}>
                             <Button variant="contained" color="primary" onClick={handleEditClick}>
                                 Edit
                             </Button>

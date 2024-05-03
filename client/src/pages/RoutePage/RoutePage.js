@@ -8,6 +8,7 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import baseUrl from '../../utils/baseUrl';
+import Divider from '@mui/material/Divider'
 
 const getTickTypeSvg = (tickType) => {
     switch (tickType) {
@@ -63,7 +64,7 @@ const RoutePage = () => {
 
     return (
         
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
             <Box
                 sx={{
                     display: 'flex',
@@ -90,12 +91,8 @@ const RoutePage = () => {
                         }
                     />
                     <CardContent>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Button variant="contained" color="primary" onClick={handleEditClick} sx={{marginBottom: '30px'}}>
-                                Edit Route
-                            </Button>
-                        </Box>
-                        <Typography variant="h6" align="center">List of Ascents</Typography>
+                        <Divider />
+                        <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
                         <List>
                             {routeData.ascents && routeData.ascents.map((ascent) => {
                                 const date = format(parseISO(ascent.date), 'd MMM yyyy');
@@ -112,6 +109,12 @@ const RoutePage = () => {
                                 )
                             })}
                         </List>
+                        <Divider />
+                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                            <Button variant="contained" color="primary" onClick={handleEditClick} sx={{marginBottom: '30px'}}>
+                                Edit Route
+                            </Button>
+                        </Box>
                     </CardContent>
                 </Card>
             </Box>
