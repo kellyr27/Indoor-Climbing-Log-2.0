@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import baseUrl from "../../utils/baseUrl";
+import { useSnackbar } from "notistack";
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
 const EditRoutePage = () => {
+    const {enqueueSnackbar} = useSnackbar();
 
     const [routeName, setRouteName] = useState('');
     const [routeGrade, setRouteGrade] = useState('');
@@ -48,9 +50,11 @@ const EditRoutePage = () => {
         })
             .then((response) => {
                 navigate('/routes');
+                enqueueSnackbar('Route updated successfully', { variant: 'success'});
             })
             .catch((error) => {
                 console.error('Error:', error);
+                enqueueSnackbar('Failed to update route', { variant: 'error' });
             });
         
     };
@@ -68,7 +72,7 @@ const EditRoutePage = () => {
     }
 
     return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
             <Box
                 sx={{
                     display: 'flex',
@@ -78,7 +82,7 @@ const EditRoutePage = () => {
                 }}
             >
                 <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 500 } }}>
-                    <Typography variant="h2" align="center" sx={{ mt: 1, mb: 3 }}>
+                    <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                         Edit Route
                     </Typography>
                     <form onSubmit={handleSubmit}>

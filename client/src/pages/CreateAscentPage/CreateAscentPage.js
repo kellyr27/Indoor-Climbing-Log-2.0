@@ -4,10 +4,13 @@ import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tick
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
+import { useSnackbar } from 'notistack';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
 const CreateAscentPage = () => {
+    const { enqueueSnackbar } = useSnackbar();
+
     const [date, setDate] = useState(new Date().toISOString().slice(0,10));
     const [notes, setNotes] = useState('');
     const [inputRouteName, setInputRouteName] = useState('');
@@ -42,7 +45,7 @@ const CreateAscentPage = () => {
         e.preventDefault();
 
         if (!tickType) {
-            alert('Please select a tick type.');
+            enqueueSnackbar('Please select a tick type', { variant: 'warning' });
             return;
         }
         
@@ -65,9 +68,11 @@ const CreateAscentPage = () => {
         })
             .then((response) => {
                 navigate('/ascents');
+                enqueueSnackbar('Ascent created successfully', { variant: 'success'})
             })
             .catch((error) => {
                 console.error('Error:', error);
+                enqueueSnackbar('Failed to create ascent', { variant: 'error' });
             });
         
     };

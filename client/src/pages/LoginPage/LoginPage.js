@@ -5,9 +5,12 @@ import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Box, Grid, Paper, Typography } from '@mui/material';
-
+import {useSnackbar} from 'notistack';
 
 const LoginPage = () => {
+
+    const {enqueueSnackbar} = useSnackbar();
+
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
 
@@ -32,8 +35,10 @@ const LoginPage = () => {
 
             // Redirect to the ascents page using navigate
             navigate('/ascents');
+            enqueueSnackbar('Login successful', { variant: 'success' })
 
         } catch (error) {
+            enqueueSnackbar('Login failed', { variant: 'error' })
             console.error(error);
         }
     };

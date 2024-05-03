@@ -3,15 +3,20 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes'
 import NavBar from './components/NavBar/NavBar';
 import { AuthProvider } from './context/AuthContext';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
 	return (
-		<AuthProvider>
-			<Router>
-				<NavBar />
-				<AppRoutes />
-			</Router>
-		</AuthProvider>
+		<SnackbarProvider
+			autoHideDuration={5000}
+		>
+			<AuthProvider>
+				<Router>
+					<NavBar />
+					<AppRoutes />
+				</Router>
+			</AuthProvider>
+		</SnackbarProvider>
 	);
 }
 

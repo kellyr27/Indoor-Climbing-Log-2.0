@@ -4,7 +4,7 @@ import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tick
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
-
+import { useSnackbar } from 'notistack';
 /**
  * TODO: Remove the word INPUT
  */
@@ -20,6 +20,7 @@ function getTodayDate() {
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
 const EditAscentPage = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const { id } = useParams();
     const [date, setDate] = useState(getTodayDate());
     const [notes, setNotes] = useState('');
@@ -63,7 +64,7 @@ const EditAscentPage = () => {
         e.preventDefault();
 
         if (!tickType) {
-            alert('Please select a tick type.');
+            enqueueSnackbar('Please select a tick type', { variant: 'warning' });
             return;
         }
         
@@ -88,10 +89,12 @@ const EditAscentPage = () => {
             .then((response) => {
                 // Handle the response
                 navigate('/ascents');
+                enqueueSnackbar('Ascent updated successfully', { variant: 'success' });
             })
             .catch((error) => {
                 // Handle the error
                 console.error('Error:', error);
+                enqueueSnackbar('Failed to update ascent', { variant: 'error' });
             });
 
     };

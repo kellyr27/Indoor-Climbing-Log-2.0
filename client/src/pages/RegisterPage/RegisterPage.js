@@ -5,9 +5,10 @@ import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Box, Grid, Paper, Typography } from '@mui/material';
-
+import {useSnackbar} from 'notistack';
 
 const RegisterPage = () => {
+    const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
 
@@ -32,9 +33,11 @@ const RegisterPage = () => {
 
             // Redirect to the ascents page using navigate
             navigate('/ascents');
+            enqueueSnackbar('User created successfully', { variant: 'success' })
 
         } catch (error) {
             console.error(error);
+            enqueueSnackbar('User creation failed', { variant: 'error' })
         }
     };
 

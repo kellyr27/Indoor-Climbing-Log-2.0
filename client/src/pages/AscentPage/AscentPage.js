@@ -8,8 +8,10 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import baseUrl from '../../utils/baseUrl';
 import { Divider } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 const AscentPage = () => {
+    const {enqueueSnackbar} = useSnackbar();
     const [ascentData, setAscentData] = useState({});
     const { id } = useParams()
     const [open, setOpen] = React.useState(false);
@@ -55,9 +57,11 @@ const AscentPage = () => {
         })
             .then(response => {
                 navigate('/ascents');
+                enqueueSnackbar('Ascent deleted successfully', { variant: 'success' });
             })
             .catch(error => {
                 console.error(error);
+                enqueueSnackbar('Failed to delete ascent', { variant: 'error' });
             });
         
     }
