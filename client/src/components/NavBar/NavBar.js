@@ -10,7 +10,9 @@ const NavBar = () => {
     const location = useLocation();
     const { isAuthenticated, setIsAuthenticated } = useAuthContext(); // Get the authentication status from the context
 
-    const basePath = `/${location.pathname.split('/')[1]}`;
+    console.log('isAuthenticated:', isAuthenticated)
+    const basePath = `/${location.pathname.split('/')[1]}`
+
 
     const handleTabClick = (route) => {
         navigate(route);
@@ -18,7 +20,7 @@ const NavBar = () => {
 
     return (
         <AppBar position="sticky" sx={{
-            backgroundColor: "#bbb",
+            backgroundColor: "#A3D8FF",
             color: "white",
             boxShadow: "none",
             borderBottom: "1px solid #888",
@@ -47,7 +49,7 @@ const NavBar = () => {
 
                     )}
                     <Box>
-                        <Tabs value={basePath}>
+                        {isAuthenticated !== null && (<Tabs value={basePath}>
                             {isAuthenticated ? [
                                 <Tab key="ascents" label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />,
                                 <Tab key="routes" label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />,
@@ -57,7 +59,7 @@ const NavBar = () => {
                                 <Tab key="login" label="Login" value="/login" onClick={() => handleTabClick('/login')} />,
                                 <Tab key="register" label="Register" value="/register" onClick={() => handleTabClick('/register')} />
                             ]}
-                        </Tabs>
+                        </Tabs>)}
                     </Box>
                     {isAuthenticated && (
                         <Box>

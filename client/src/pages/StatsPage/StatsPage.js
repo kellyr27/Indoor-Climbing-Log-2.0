@@ -74,7 +74,7 @@ function formatPerformanceRatings (data) {
             totalPoints: values.totalPoints
         });
     }
-    console.log(performanceRatings)
+
     return performanceRatings;
 }
 
@@ -146,7 +146,6 @@ const StatsPage = () => {
                     }
                 });
                 const data = response.data;
-                console.log(data)
                 setPerformanceRatings(formatPerformanceRatings(data));
                 
             } catch (error) {
@@ -158,7 +157,7 @@ const StatsPage = () => {
     }, []);
 
     return (
-            <Grid container justifyContent="center">
+            <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}} >
                 <Box
                     sx={{
                         display: 'flex',
@@ -168,7 +167,7 @@ const StatsPage = () => {
                     }}
                 >
                     <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 800 } }}>
-                        <Typography variant="h2" align="center" sx={{ mt: 1, mb: 3 }}>
+                        <Typography variant="h3" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                             Your Statistics
                         </Typography>
                         <BarChart 

@@ -11,7 +11,7 @@ const setupApp = () => {
         'https://indoor-climbing-log.onrender.com',
         'http://localhost:3000',
         'https://climbinglog.com.au',
-        'https://www.climbinglog.com.au',
+        'https://www.climbinglog.com.au',,
       ];
     
     // Set middleware of CORS 

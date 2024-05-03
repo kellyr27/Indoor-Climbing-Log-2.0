@@ -66,7 +66,7 @@ const AscentPage = () => {
     };
 
     return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
             <Box
                 sx={{
                     display: 'flex',
@@ -78,7 +78,7 @@ const AscentPage = () => {
                 <Box sx={{ my: 4, padding: 2,  maxWidth: { xs: '100%', sm: 500 }, minWidth: {xs: '100%', sm: 500} }}>
 
                     <Paper elevation={3} sx={{ p: 2 }}>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h6" gutterBottom align="center" sx={{ fontWeight: 'bold', mb: 3 }}>
                             {dateToDisplay(ascentData.date)}
                         </Typography>
                         <Link to={`/routes/${ascentData.route?._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -98,7 +98,7 @@ const AscentPage = () => {
                             {ascentData.Notes}
                         </Typography>
 
-                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-evenly' }}>
+                        <Box sx={{ mt: 6, display: 'flex', justifyContent: 'space-evenly' }}>
                             <Button variant="contained" color="primary" onClick={handleEditClick}>
                                 Edit
                             </Button>

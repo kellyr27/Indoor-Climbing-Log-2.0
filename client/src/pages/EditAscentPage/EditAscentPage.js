@@ -105,7 +105,6 @@ const EditAscentPage = () => {
             }
         })
             .then(response => {
-                console.log(response.data);
                 setRoutes(response.data);
             })
             .catch(error => {
@@ -159,7 +158,7 @@ const EditAscentPage = () => {
     }, [inputRouteName, routes, initialRouteId, isInitialRouteFirstAscent, showFlash]);
 
     return (
-        <Grid container justifyContent="center">
+        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
             <Box
                 sx={{
                     display: 'flex',
@@ -169,7 +168,7 @@ const EditAscentPage = () => {
                 }}
             >
                 <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 500 } }}>
-                    <Typography variant="h2" align="center" sx={{ mt: 1, mb: 3 }}>
+                    <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                         Edit Ascent
                     </Typography>
                     <form onSubmit={handleSubmit}>

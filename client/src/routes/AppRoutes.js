@@ -14,15 +14,6 @@ import { useEffect } from 'react';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useAuthContext();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/ascents');
-        } else {
-            navigate('/login');
-        }
-    }, [isAuthenticated, navigate]);
 
     return (
         <Routes>
@@ -36,7 +27,7 @@ const AppRoutes = () => {
             <Route path="/ascents/:id" element={<AscentPage />} />
             <Route path="/ascents" element={<AscentsPage />} />
             <Route path="/stats" element={<StatsPage />} />
-            <Route path="/" element={<Navigate to={isAuthenticated ? "/ascents" : "/login"} replace />} />
+            <Route path="/" element={isAuthenticated ? <AscentsPage /> : <LoginPage />} replace />} />
         </Routes>
     );
 }

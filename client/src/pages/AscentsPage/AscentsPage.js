@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import { dateToDisplay } from '../../utils/helpers';
-import { DataGrid } from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import StyledDataGrid from '../../styles/StyledDataGrid';
 
 const AscentsPage = () => {
     const navigate = useNavigate();
 
     const [ascentsData, setAscentsData] = useState([]);
+
 
     useEffect(() => {
         // Fetch the ascents data from the server
@@ -52,7 +53,6 @@ const AscentsPage = () => {
 
     useEffect(() => {
         if (ascentsData.length > 0) {
-            console.log(ascentsData)
 
             setColumns([
                 {
@@ -151,7 +151,7 @@ const AscentsPage = () => {
 
 
     return (
-        <DataGrid
+        <StyledDataGrid
             rows={ascentsData}
             columns={columns}
             pageSize={100}

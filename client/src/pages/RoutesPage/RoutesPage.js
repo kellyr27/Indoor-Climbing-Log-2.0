@@ -8,6 +8,7 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import {Tooltip} from '@mui/material';
+import StyledDataGrid from '../../styles/StyledDataGrid';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -145,7 +146,7 @@ const RoutesPage = () => {
 
 
     return (
-        <DataGrid
+        <StyledDataGrid
             rows={routesData}
             columns={columns}
             pageSize={100}
