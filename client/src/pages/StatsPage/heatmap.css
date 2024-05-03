@@ -1,0 +1,105 @@
+/*
+ * react-calendar-heatmap styles
+ *
+ * All of the styles in this file are optional and configurable!
+ * The github and gitlab color scales are provided for reference.
+ */
+
+.react-calendar-heatmap text {
+    font-size: 10px;
+    fill: #aaa;
+}
+
+.react-calendar-heatmap .react-calendar-heatmap-small-text {
+    font-size: 5px;
+}
+
+.react-calendar-heatmap rect:hover {
+    stroke: #555;
+    stroke-width: 1px;
+}
+
+/*
+* Default color scale
+*/
+
+.react-calendar-heatmap .color-empty {
+    fill: #eeeeee;
+}
+
+.react-calendar-heatmap .color-filled {
+    fill: #8cc665;
+}
+
+/*
+* Github color scale
+*/
+
+.react-calendar-heatmap .color-github-0 {
+    fill: #d6d6d6;
+}
+.react-calendar-heatmap .color-github-1 {
+    fill: #ebebf6;
+}
+.react-calendar-heatmap .color-github-2 {
+    fill: #d9f1e2;
+}
+.react-calendar-heatmap .color-github-3 {
+    fill: #c8e9d2;
+}
+.react-calendar-heatmap .color-github-4 {
+    fill: #b7e1c2;
+}
+.react-calendar-heatmap .color-github-5 {
+    fill: #a6d9b2;
+}
+.react-calendar-heatmap .color-github-6 {
+    fill: #95d1a2;
+}
+.react-calendar-heatmap .color-github-7 {
+    fill: #84c992;
+}
+.react-calendar-heatmap .color-github-8 {
+    fill: #73c182;
+}
+.react-calendar-heatmap .color-github-9 {
+    fill: #62b972;
+}
+.react-calendar-heatmap .color-github-10 {
+    fill: #51b162;
+}
+
+/*
+* Gitlab color scale
+*/
+
+.react-calendar-heatmap .color-gitlab-0 {
+    fill: #ededed;
+}
+.react-calendar-heatmap .color-gitlab-1 {
+    fill: #acd5f2;
+}
+.react-calendar-heatmap .color-gitlab-2 {
+    fill: #7fa8d1;
+}
+.react-calendar-heatmap .color-gitlab-3 {
+    fill: #49729b;
+}
+.react-calendar-heatmap .color-gitlab-4 {
+    fill: #254e77;
+}
+.react-calendar-heatmap .color-gitlab-5 {
+    fill: #1c3e64;
+}
+.react-calendar-heatmap .color-gitlab-6 {
+    fill: #142e51;
+}
+.react-calendar-heatmap .color-gitlab-7 {
+    fill: #0c1e3e;
+}
+.react-calendar-heatmap .color-gitlab-8 {
+    fill: #04142b;
+}
+.react-calendar-heatmap .color-gitlab-9 {
+    fill: #000a18;
+}

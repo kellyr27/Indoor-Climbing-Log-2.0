@@ -3,6 +3,11 @@ import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import { BarChart} from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
+import CalendarHeatmap from 'react-calendar-heatmap'
+import 'react-calendar-heatmap/dist/styles.css'
+import { Tooltip } from 'react-tooltip'
+import './heatmap.css';
+
 
 function formatDataBarChart (data) {
     // All the keys are grades
@@ -57,6 +62,21 @@ function formatWeeklyStats (data) {
     }
 }
 
+function formatPerformanceRatings (data) {
+    const performanceRatings = []
+
+    for (const [date, values] of Object.entries(data)) {
+        performanceRatings.push({
+            date,
+            numClimbs: values.numClimbs,
+            totalPoints: values.totalPoints
+        });
+    }
+    console.log(performanceRatings)
+    return performanceRatings;
+}
+
+
 
 const StatsPage = () => {
 
@@ -72,6 +92,7 @@ const StatsPage = () => {
         avgRedpointGrades: [],
         avgOtherGrades: []
     });
+    const [performanceRatings, setPerformanceRatings] = useState(null);
 
     useEffect(() => {
         const fetchGradePyramid = async () => {
@@ -113,6 +134,27 @@ const StatsPage = () => {
         fetchWeeklyStates();
     }, []);
 
+    useEffect(() => {
+        const fetchPerformanceRatings = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${baseUrl}/stats/performance-rating`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                const data = response.data;
+                console.log(data)
+                setPerformanceRatings(formatPerformanceRatings(data));
+                
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        
+        fetchPerformanceRatings();
+    }, []);
+
     return (
         <div>
             <h1>Stats Page</h1>
@@ -138,6 +180,31 @@ const StatsPage = () => {
                 width={600}
                 height={350}
             />
+            <div style={{ width: '600px', height: '300px' }}>
+                <Tooltip id="my-tooltip"/>
+                {performanceRatings && <CalendarHeatmap
+                    startDate={new Date('2024-01-01')}
+                    endDate={new Date('2024-12-01')}
+                    values={performanceRatings}
+                    showMonthLabels
+                    tooltipDataAttrs={(value) => {
+                        if (!value.totalPoints) {
+                            return null;
+                        } else {
+                            return { 
+                                'data-tooltip-content': `Performance rating: ${value.totalPoints}\nNumber of climbs: ${value.numClimbs}`, 
+                                "data-tooltip-id": "my-tooltip"
+                            }
+                        }
+                    }}
+                    classForValue={value => {
+                        if (!value) {
+                          return 'color-empty';
+                        }
+                        return `color-github-${value.numClimbs}`;
+                    }}
+                />}
+            </div>
         </div>
     );
 }
