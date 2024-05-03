@@ -7,6 +7,8 @@ import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
 import { Tooltip } from 'react-tooltip'
 import './heatmap.css';
+import { Box, Grid, Paper } from '@mui/material';
+import { Typography } from '@mui/material';
 
 
 function formatDataBarChart (data) {
@@ -156,56 +158,73 @@ const StatsPage = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Stats Page</h1>
-            <BarChart 
-                series={[
-                    {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
-                    {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
-                    {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
-                ]}
-                yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
-                layout="horizontal"
-                width={600}
-                height={350}
-            />
-            <LineChart
-                series={[
-                    { data: weeklyStats.avgFlashGrades, label: 'Avg Flash Grade', color: '#92d050', connectNulls: true },
-                    { data: weeklyStats.avgRedpointGrades, label: 'Avg Redpoint Grade', color: '#ff0000', connectNulls: true },
-                    { data: weeklyStats.avgOtherGrades, label: 'Avg Other Grade', color: '#d9d9d9', connectNulls: true }
-                ]}
-                xAxis={[{ data: weeklyStats.weeksRange, label: 'Weeks' }]}
-                yAxis={[{ min: 15, max: 28 }]}
-                width={600}
-                height={350}
-            />
-            <div style={{ width: '600px', height: '300px' }}>
-                <Tooltip id="my-tooltip"/>
-                {performanceRatings && <CalendarHeatmap
-                    startDate={new Date('2024-01-01')}
-                    endDate={new Date('2024-12-01')}
-                    values={performanceRatings}
-                    showMonthLabels
-                    tooltipDataAttrs={(value) => {
-                        if (!value.totalPoints) {
-                            return null;
-                        } else {
-                            return { 
-                                'data-tooltip-content': `Performance rating: ${value.totalPoints}\nNumber of climbs: ${value.numClimbs}`, 
-                                "data-tooltip-id": "my-tooltip"
-                            }
-                        }
+            <Grid container justifyContent="center">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: { xs: 'flex-start', sm: 'center' },
+                        minHeight: '92vh',
                     }}
-                    classForValue={value => {
-                        if (!value) {
-                          return 'color-empty';
-                        }
-                        return `color-github-${value.numClimbs}`;
-                    }}
-                />}
-            </div>
-        </div>
+                >
+                    <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 800 } }}>
+                        <Typography variant="h2" align="center" sx={{ mt: 1, mb: 3 }}>
+                            Your Statistics
+                        </Typography>
+                        <BarChart 
+                            series={[
+                                {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
+                                {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
+                                {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
+                            ]}
+                            yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
+                            layout="horizontal"
+                            width={600}
+                            height={350}
+                        />
+                        <LineChart
+                            series={[
+                                { data: weeklyStats.avgFlashGrades, label: 'Avg Flash Grade', color: '#92d050', connectNulls: true },
+                                { data: weeklyStats.avgRedpointGrades, label: 'Avg Redpoint Grade', color: '#ff0000', connectNulls: true },
+                                { data: weeklyStats.avgOtherGrades, label: 'Avg Other Grade', color: '#d9d9d9', connectNulls: true }
+                            ]}
+                            xAxis={[{ data: weeklyStats.weeksRange, label: 'Weeks' }]}
+                            yAxis={[{ min: 15, max: 28 }]}
+                            width={600}
+                            height={350}
+                        />
+                        <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3 }}>
+                            Activity Calendar
+                        </Typography>
+                        <div style={{ width: '600px', height: '300px' }}>
+                            <Tooltip id="my-tooltip"/>
+                            {performanceRatings && <CalendarHeatmap
+                                startDate={new Date('2024-01-01')}
+                                endDate={new Date('2024-12-01')}
+                                values={performanceRatings}
+                                showMonthLabels
+                                tooltipDataAttrs={(value) => {
+                                    if (!value.totalPoints) {
+                                        return null;
+                                    } else {
+                                        return { 
+                                            'data-tooltip-content': `Performance rating: ${value.totalPoints}\nNumber of climbs: ${value.numClimbs}`, 
+                                            "data-tooltip-id": "my-tooltip"
+                                        }
+                                    }
+                                }}
+                                classForValue={value => {
+                                    if (!value) {
+                                    return 'color-empty';
+                                    }
+                                    return `color-github-${value.numClimbs}`;
+                                }}
+                            />}
+                        </div>
+
+                </Paper>
+            </Box>
+        </Grid>
     );
 }
 

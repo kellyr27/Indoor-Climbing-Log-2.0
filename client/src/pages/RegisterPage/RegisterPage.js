@@ -7,12 +7,12 @@ import { useAuthContext } from '../../context/AuthContext';
 import { Box, Grid, Paper, Typography } from '@mui/material';
 
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
 
-    const [username, setUsername] = useState('kelly');
-    const [password, setPassword] = useState('password');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,7 +23,7 @@ const LoginPage = () => {
         };
 
         try {
-            const response = await axios.post(`${baseUrl}/users/login`, payload);
+            const response = await axios.post(`${baseUrl}/users/register`, payload);
             
             // Get the token and store it in the local storage
             const { token } = response.data;
@@ -50,7 +50,7 @@ const LoginPage = () => {
             >
                 <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 500 } }}>
                     <Typography variant="h2" align="center" sx={{ mt: 1, mb: 3 }}>
-                        Login
+                        Register
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
@@ -77,7 +77,7 @@ const LoginPage = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    Login
+                                    Create new user
                                 </Button>
                             </Grid>
                         </Grid>
@@ -88,4 +88,4 @@ const LoginPage = () => {
     );
 }
 
-export default LoginPage;
+export default RegisterPage;
