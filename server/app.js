@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const setUpClimbingLogApp = require('./app2');
 
+// TODO: Stop long error messages from printing to console
 const setupApp = () => {
 
     const allowedOrigins = [

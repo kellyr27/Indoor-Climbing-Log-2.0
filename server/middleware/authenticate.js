@@ -5,6 +5,10 @@ const CustomError = require('../utils/CustomError');
 
 const authenticate = async (req, res, next) => {
     try {
+        if (!req.headers.authorization) {
+            throw new CustomError('Authentication failed', 401);
+        }
+
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 

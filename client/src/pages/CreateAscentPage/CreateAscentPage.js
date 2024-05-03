@@ -15,7 +15,6 @@ const CreateAscentPage = () => {
     const [inputRouteColour, setInputRouteColour] = useState('');
     const [tickType, setTickType] = useState('');
     const [gradeDisabled, setGradeDisabled] = useState(false);
-    const token = localStorage.getItem('token');
 
     const navigate = useNavigate();
 
@@ -50,13 +49,16 @@ const CreateAscentPage = () => {
         const newAscent = {
             date: new Date(date).toISOString(),
             notes,
-            routeName: inputRouteName,
-            routeGrade: inputRouteGrade,
-            routeColour: inputRouteColour,
-            tickType: tickType[0].toUpperCase() + tickType.slice(1)
+            route: {
+                name: inputRouteName,
+                grade: inputRouteGrade,
+                colour: inputRouteColour
+            },
+            tickType
         }
 
-        axios.post(`${baseUrl}/api/ascents`, newAscent, {
+        const token = localStorage.getItem('token');
+        axios.post(`${baseUrl}/ascents`, newAscent, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -83,9 +85,6 @@ const CreateAscentPage = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
-                console.log('routes data:', response.data)
-
                 setRoutesData(response.data);
 
             } catch (error) {
@@ -100,14 +99,6 @@ const CreateAscentPage = () => {
 
     // Fetch the prefill date from the server
     useEffect(() => {
-        // axios.get(`${baseUrl}/ascents/prefill-ascent-date`)
-        //     .then(response => {
-        //         const isoDate = response.data.date;
-        //         setDate(isoDate.split('T')[0]);
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //     });
         const fetchPrefillAscentDateData = async () => {
             const token = localStorage.getItem('token');
             const response = await axios.get(`${baseUrl}/ascents/prefill-ascent-date`, {
@@ -116,7 +107,6 @@ const CreateAscentPage = () => {
                 }
             });
             const isoDate = response.data.date;
-            console.log('prefill date:', isoDate)
             setDate(isoDate.split('T')[0]);
         }
         fetchPrefillAscentDateData()

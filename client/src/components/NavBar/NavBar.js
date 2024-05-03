@@ -48,18 +48,15 @@ const NavBar = () => {
                     )}
                     <Box>
                         <Tabs value={basePath}>
-                            {isAuthenticated ? (
-                                <>
-                                    <Tab label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />
-                                    <Tab label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />
-                                    <Tab label="Stats" value="/stats" onClick={() => handleTabClick('/stats')} />
-                                </>
-                            ) : (
-                                <>
-                                    <Tab label="Login" value="/login" onClick={() => handleTabClick('/login')} />
-                                    <Tab label="Register" value="/register" onClick={() => handleTabClick('/register')} />
-                                </>
-                            )}
+                            {isAuthenticated ? [
+                                <Tab key="ascents" label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />,
+                                <Tab key="routes" label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />,
+                                <Tab key="stats" label="Stats" value="/stats" onClick={() => handleTabClick('/stats')} />
+
+                             ] : [
+                                <Tab key="login" label="Login" value="/login" onClick={() => handleTabClick('/login')} />,
+                                <Tab key="register" label="Register" value="/register" onClick={() => handleTabClick('/register')} />
+                            ]}
                         </Tabs>
                     </Box>
                     {isAuthenticated && (

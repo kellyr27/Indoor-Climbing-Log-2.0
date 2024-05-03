@@ -16,7 +16,7 @@ exports.findOrCreateRoute = async (routeData, userId) => {
 }
 
 exports.findRoute = async (routeId, userId) => {
-    const route = await Route.findById(routeId);
+    const route = await Route.findById(routeId).populate('ascents');
     if (!route) {
         throw new CustomError('No route found with this id', 404);
     }

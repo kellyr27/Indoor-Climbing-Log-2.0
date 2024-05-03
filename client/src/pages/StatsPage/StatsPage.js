@@ -66,9 +66,9 @@ const StatsPage = () => {
             <h1>Stats Page</h1>
             <BarChart 
                 series={[
-                    {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: 'green'},
-                    {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: 'red'},
-                    {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: 'grey'}
+                    {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
+                    {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
+                    {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
                 ]}
                 yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades' }]}
                 layout="horizontal"

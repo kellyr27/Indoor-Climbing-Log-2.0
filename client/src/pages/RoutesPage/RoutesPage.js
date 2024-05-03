@@ -16,7 +16,7 @@ const RoutesPage = () => {
 
     useEffect(() => {
         // Fetch the ascents data from the server
-        const fetchroutesData = async () => {
+        const fetchRoutesData = async () => {
             try {
                 const token = localStorage.getItem('token');
 
@@ -26,8 +26,6 @@ const RoutesPage = () => {
                     }
                 });
 
-                console.log('routes', response.data)
-
                 const dataWithIds = response.data.map(item => ({
                     ...item,
                     id: item._id,
@@ -35,14 +33,18 @@ const RoutesPage = () => {
                     firstAscentDate: item.ascents.length > 0 ? item.ascents[item.ascents.length - 1].date : null,
                 }));
 
-                setRoutesData(dataWithIds);
+                const sortedData = dataWithIds.sort((a, b) => {
+                    return new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
+                });
+
+                setRoutesData(sortedData);
 
             } catch (error) {
                 console.error(error);
             }
         };
 
-        fetchroutesData();
+        fetchRoutesData();
     }, [])
 
     const [columns, setColumns] = useState([])

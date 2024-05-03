@@ -33,7 +33,12 @@ const AscentsPage = () => {
                     routeColour: item.route.colour,
                 }));
 
-                setAscentsData(dataWithIds);
+                // Sort the data by date
+                const sortedData = dataWithIds.sort((a, b) => {
+                    return new Date(b.date) - new Date(a.date);
+                })
+
+                setAscentsData(sortedData);
 
             } catch (error) {
                 console.error(error);

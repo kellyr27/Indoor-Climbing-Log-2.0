@@ -1,7 +1,7 @@
 const Ascent = require('../models/ascentModel');
 const Route = require('../models/routeModel');
 const routeSchema = require('../validators/routeValidator');
-const {findRoute} = require('../services/routeServices');
+const {findRoute, updateRouteData} = require('../services/routeServices');
 const validateSchema = require('../middleware/validateSchema')
 
 

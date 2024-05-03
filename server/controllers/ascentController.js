@@ -47,7 +47,10 @@ exports.getAscentById = [
     async (req, res, next) => {
         try {
             const ascent = await findAscent(req.params.id, req.user._id);
-            res.status(200).json(ascent);
+            const ascentObject = ascent.toObject();
+            ascentObject.isOnlyAscent = await Ascent.countDocuments({ route: ascent.route._id }) === 1;
+
+            res.status(200).json(ascentObject);
         } catch (error) {
             next(error)
         }

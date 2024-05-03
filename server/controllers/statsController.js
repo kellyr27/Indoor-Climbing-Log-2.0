@@ -7,7 +7,6 @@ exports.getGradePyramid = [
         try {
             // Get all routes for the user and their ascents
             const routes = await Route.find({ user: req.user._id }).populate('ascents')
-
             // Define the sort order for each tickType
             const sortOrder = {
                 'flash': 1,
@@ -15,7 +14,6 @@ exports.getGradePyramid = [
                 'hangdog': 3,
                 'attempt': 4
             };
-
             // For each route, sort the ascents by tickType
             routes.forEach(route => {
                 route.ascents.sort((a, b) => sortOrder[a.tickType] - sortOrder[b.tickType]);
@@ -23,6 +21,11 @@ exports.getGradePyramid = [
 
             const gradePyramid = {}
             routes.forEach(route => {
+                // Check that their exists an ascent for the route
+                if (route.ascents.length === 0) {
+                    return;
+                }
+
                 if (!gradePyramid[route.grade]) {
                     gradePyramid[route.grade] = {
                         'flash': 0,
@@ -33,6 +36,7 @@ exports.getGradePyramid = [
                 }
                 gradePyramid[route.grade][route.ascents[0].tickType] += 1;
             })
+            console.log('4')
             res.status(200).json(gradePyramid);
         } catch (error) {
             next(error)
