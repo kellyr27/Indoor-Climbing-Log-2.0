@@ -132,3 +132,53 @@ exports.getPerformanceRating = [
     }
 ]
 
+exports.getWeeklyStats = [
+    async (req, res, next) => {
+        try {
+            // Get all ascents for the user
+            const ascents = await Ascent.find({ user: req.user._id }).populate('route');
+
+            // For each ascent, assign a week number
+            const ascentsWithWeeks = ascents.map(ascent => {
+                const date = new Date(ascent.date);
+                const week = Math.ceil((date - new Date(2024, 0, 1)) / 604800000);
+                
+                return {
+                    ...ascent.toObject(),
+                    week
+                }
+            });
+
+            // Group the ascents by week
+            const ascentsByWeek = ascentsWithWeeks.reduce((obj, ascent) => {
+                if (!obj[ascent.week]) {
+                    obj[ascent.week] = [];
+                }
+                obj[ascent.week].push(ascent);
+                return obj;
+            }, {});
+
+            // For each week, calculate the average grade for flash, redpoint and other ascents
+            const weeklyStats = Object.entries(ascentsByWeek).reduce((obj, [key, value]) => {
+                const flashGrades = value.filter(ascent => ascent.tickType === 'flash').map(ascent => ascent.route.grade);
+                const redpointGrades = value.filter(ascent => ascent.tickType === 'redpoint').map(ascent => ascent.route.grade);
+                const otherGrades = value.filter(ascent => ascent.tickType === 'hangdog' || ascent.tickType === 'attempt').map(ascent => ascent.route.grade);
+
+                const avgFlashGrade = flashGrades.length > 0 ? (flashGrades.reduce((acc, curr) => acc + curr, 0) / flashGrades.length).toFixed(2) : null;
+                const avgRedpointGrade = redpointGrades.length > 0 ? (redpointGrades.reduce((acc, curr) => acc + curr, 0) / redpointGrades.length).toFixed(2) : null;
+                const avgOtherGrade = otherGrades.length > 0 ? (otherGrades.reduce((acc, curr) => acc + curr, 0) / otherGrades.length).toFixed(2) : null;
+
+                obj[key] = {
+                    avgFlashGrade,
+                    avgRedpointGrade,
+                    avgOtherGrade
+                }
+                return obj;
+            }, {});
+
+            res.status(200).json(weeklyStats);
+        } catch (error) {
+            next(error)
+        }
+    }
+]

@@ -10,6 +10,8 @@ router.route('/grade-pyramid')
 router.route('/performance-rating')
     .get(authenticate, ...statsController.getPerformanceRating);
 
+router.route('/weekly-stats')
+    .get(authenticate, ...statsController.getWeeklyStats);
 
 module.exports = router;
 
