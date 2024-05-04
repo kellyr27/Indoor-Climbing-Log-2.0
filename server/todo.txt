@@ -1,1 +1,0 @@
-- Change climbinglog routes to climbing-log
