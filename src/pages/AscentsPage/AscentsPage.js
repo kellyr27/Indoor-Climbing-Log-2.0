@@ -7,7 +7,7 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import { Grid, Box, Paper } from '@mui/material';
+import { Grid, Box, Container } from '@mui/material';
 
 const AscentsPage = () => {
     const navigate = useNavigate();
@@ -59,7 +59,8 @@ const AscentsPage = () => {
                 {
                     field: 'date', 
                     headerName: 'Date', 
-                    width: 150,
+                    // width: 150,
+                    flex: 3,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -73,7 +74,8 @@ const AscentsPage = () => {
                 {
                     field: 'tickType', 
                     headerName: 'Tick Type', 
-                    width: 100,
+                    // width: 100,
+                    flex: 2,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -90,7 +92,8 @@ const AscentsPage = () => {
                 {
                     field: 'routeName',
                     headerName: 'Route Name',
-                    width: 200,
+                    // width: 200,
+                    flex: 4,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -112,7 +115,8 @@ const AscentsPage = () => {
                 {
                     field: 'routeGrade',
                     headerName: 'Grade',
-                    width: 100,
+                    // width: 100,
+                    flex: 2,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -131,7 +135,7 @@ const AscentsPage = () => {
                 {
                     field: 'notes', 
                     headerName: 'Notes', 
-                    flex: 1,
+                    flex: 4,
                     minWidth: 200,
                     maxWidth: 400,
                     sortable: false,
@@ -152,29 +156,31 @@ const AscentsPage = () => {
 
 
     return (
-        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: { xs: 'flex-start', sm: 'center' },
-                    minHeight: '92vh',
-                    maxWidth: '950px'
-                }}
-            >
-                <StyledDataGrid
-                    rows={ascentsData}
-                    columns={columns}
-                    pageSize={100}
-                    disableCellFocus
-                    rowHeight={70}
-                    onRowDoubleClick={(params) => {
-                        navigate(`/ascents/${params.row.id}`);
-                    }}
-                    
-                />
-            </Box>
-        </Grid>
+            <div style={{backgroundColor: '#FDFFC2'}} >
+                <Container sx={{backgroundColor: '#FDFFC2'}} >
+                    <Box
+                        sx={{
+                            // alignItems: "stretch",
+                            minHeight: '92vh',
+                            height: '92vh', 
+                            width: '100%',
+                            // maxWidth: '950px'
+                        }}
+                    >
+                        <StyledDataGrid
+                            style={{ width: '100%' }}
+                            rows={ascentsData}
+                            columns={columns}
+                            pageSize={100}
+                            disableCellFocus
+                            rowHeight={70}
+                            onRowDoubleClick={(params) => {
+                                navigate(`/ascents/${params.row.id}`);
+                            }}
+                        />
+                    </Box>
+                </Container>
+            </div>
 
     );
 }

@@ -28,6 +28,7 @@ const RegisterPage = () => {
             
             // Get the token and store it in the local storage
             const { token } = response.data;
+            console.log('token', token, response.data)
             localStorage.setItem('token', token);
             setIsAuthenticated(true);
 

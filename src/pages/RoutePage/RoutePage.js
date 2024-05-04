@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
 import { format, parseISO } from 'date-fns';
-import { Card, CardContent, CardHeader, List, ListItem, Typography, Button, Grid, Box, Paper } from '@mui/material';
+import { Card, CardContent, CardHeader, List, ListItem, Typography, Button, Grid, Box } from '@mui/material';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import baseUrl from '../../utils/baseUrl';
 import Divider from '@mui/material/Divider'
 
-const getTickTypeSvg = (tickType) => {
-    switch (tickType) {
-        case 'Flash':
-            return <FlashSVG />;
-        case 'Redpoint':
-            return <RedpointSVG />;
-        case 'Hangdog':
-            return <HangdogSVG />;
-        case 'Attempt':
-            return <AttemptSVG />;
-        default:
-            return null;
-    }
-}
 
 const RoutePage = () => {
     const [routeData, setRouteData] = useState({});

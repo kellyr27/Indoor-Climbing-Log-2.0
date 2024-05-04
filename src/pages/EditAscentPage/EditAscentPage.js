@@ -48,9 +48,9 @@ const EditAscentPage = () => {
         setInputRouteName(value);
     };
 
-    const handleInputRouteGradeChange = (e) => {
-        setInputRouteGrade(e.target.value);
-    };
+    // const handleInputRouteGradeChange = (e) => {
+    //     setInputRouteGrade(e.target.value);
+    // };
 
     const handleInputRouteColourChange = (e) => {
         setInputRouteColour(e.target.value);

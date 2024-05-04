@@ -12,7 +12,7 @@ const LoginPage = () => {
     const {enqueueSnackbar} = useSnackbar();
 
     const navigate = useNavigate();
-    const { isAuthenticated, setIsAuthenticated } = useAuthContext();
+    const { setIsAuthenticated } = useAuthContext();
 
     const [username, setUsername] = useState('kelly');
     const [password, setPassword] = useState('password');

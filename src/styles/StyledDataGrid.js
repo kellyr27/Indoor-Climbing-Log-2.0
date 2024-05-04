@@ -9,9 +9,13 @@ const StyledDataGrid = styled(DataGrid)({
     },
     '& .MuiDataGrid-columnHeader': {
         backgroundColor: '#94FFD8',
+        
       },
     '& .MuiDataGrid-columnHeaderTitle': {
         fontWeight: 'bold',
+    },
+    '& .MuiDataGrid-scrollbarFiller--header': {
+        backgroundColor: '#94FFD8',
     },
 });
 

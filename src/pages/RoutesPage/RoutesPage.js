@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import { dateToDisplay } from '../../utils/helpers';
-import { DataGrid } from '@mui/x-data-grid';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, Container } from '@mui/material';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -59,7 +58,8 @@ const RoutesPage = () => {
                 {
                     field: 'name',
                     headerName: 'Name',
-                    width: 200,
+                    // width: 200,
+                    flex: 4,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -76,7 +76,8 @@ const RoutesPage = () => {
                 {
                     field: 'grade',
                     headerName: 'Grade',
-                    width: 150,
+                    // width: 150,
+                    flex: 3,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -90,7 +91,8 @@ const RoutesPage = () => {
                 {
                     field: 'ascents',
                     headerName: 'Ascents',
-                    width: 250,
+                    // width: 250,
+                    flex: 5,
                     sortable: false,
                     filterable: false,
                     editable: false,
@@ -98,7 +100,7 @@ const RoutesPage = () => {
                         const ascents = params.row.ascents;
                         // TODO: Fix word wrap
                         return (
-                            <div style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+                            <div>
                                 {ascents.map((ascent, index) => {
                                     return (
                                         <Tooltip key={index} title={dateToDisplay(ascent.date)}>
@@ -116,7 +118,8 @@ const RoutesPage = () => {
                 {
                     field: 'lastAscentDate',
                     headerName: 'Last Ascent Date',
-                    width: 150,
+                    // width: 150,
+                    flex: 3,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -130,7 +133,8 @@ const RoutesPage = () => {
                 {
                     headerName: 'First Ascent Date',
                     field: 'firstAscentDate',
-                    width: 150,
+                    // width: 150,
+                    flex: 3,
                     sortable: true,
                     filterable: true,
                     editable: false,
@@ -147,28 +151,31 @@ const RoutesPage = () => {
 
 
     return (
-        <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: { xs: 'flex-start', sm: 'center' },
-                    minHeight: '92vh',
-                    maxWidth: '900px'
-                }}
-            >
-                <StyledDataGrid
-                    rows={routesData}
-                    columns={columns}
-                    pageSize={100}
-                    disableCellFocus
-                    rowHeight={70}
-                    onRowDoubleClick={(params) => {
-                        navigate(`/routes/${params.row.id}`);
+        <div style={{backgroundColor: '#FDFFC2'}} >
+            <Container sx={{backgroundColor: '#FDFFC2'}} >
+                <Box
+                    sx={{
+                        // alignItems: "stretch",
+                        minHeight: '92vh',
+                        height: '92vh', 
+                        width: '100%',
+                        // maxWidth: '950px'
                     }}
-                />
-            </Box>
-        </Grid>
+                >
+                    <StyledDataGrid
+                        style={{ width: '100%' }}
+                        rows={routesData}
+                        columns={columns}
+                        pageSize={100}
+                        disableCellFocus
+                        rowHeight={70}
+                        onRowDoubleClick={(params) => {
+                            navigate(`/routes/${params.row.id}`);
+                        }}
+                    />
+                </Box>
+            </Container>
+        </div>
     );
 }
 

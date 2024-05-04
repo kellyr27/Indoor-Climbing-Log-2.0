@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AscentPage from '../pages/AscentPage/AscentPage';
 import AscentsPage from '../pages/AscentsPage/AscentsPage';
 import CreateAscentPage from '../pages/CreateAscentPage/CreateAscentPage';
@@ -10,7 +10,6 @@ import RoutePage from '../pages/RoutePage/RoutePage';
 import RoutesPage from '../pages/RoutesPage/RoutesPage';
 import StatsPage from '../pages/StatsPage/StatsPage';
 import { useAuthContext } from '../context/AuthContext';
-import { useEffect } from 'react';
 
 const AppRoutes = () => {
     const { isAuthenticated } = useAuthContext();
