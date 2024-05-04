@@ -4,6 +4,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import LogoutIcon from '@mui/icons-material/Logout';
+import Fab from '@mui/material/Fab';
+
+const fabStyle = {
+    position: 'absolute',
+    bottom: 75,
+    right: 50,
+};
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -19,63 +26,57 @@ const NavBar = () => {
     };
 
     return (
-        <AppBar position="sticky" sx={{
-            backgroundColor: "#A3D8FF",
-            color: "white",
-            boxShadow: "none",
-            borderBottom: "1px solid #888",
-        }}>
-            <Toolbar>
-                <Box sx={{
-                    display: "flex",
-                    width: "100%",
-                    alignItems: "center",
-                    justifyContent: {
-                        xs: "space-between",
-                        sm: "space-between",
-                    }
-                }}>
-                    {isAuthenticated && (
+        <>
+            <AppBar position="sticky" sx={{
+                backgroundColor: "#A3D8FF",
+                color: "white",
+                boxShadow: "none",
+                borderBottom: "1px solid #888",
+            }}>
+                <Toolbar>
+                    <Box sx={{
+                        display: "flex",
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: {
+                            xs: "space-between",
+                            sm: "space-between",
+                        }
+                    }}>
                         <Box>
-                            <Tooltip title="Add an ascent">
-                                <Button onClick={() => navigate('/ascents/new')} sx={{
-                                    borderRadius: "15%",
-                                    backgroundColor: 'rgb(0, 0, 0, 0.15)',
+                            {isAuthenticated !== null && (<Tabs value={basePath}>
+                                {isAuthenticated ? [
+                                    <Tab key="ascents" label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />,
+                                    <Tab key="routes" label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />,
+                                    <Tab key="stats" label="Stats" value="/stats" onClick={() => handleTabClick('/stats')} />
+
+                                ] : [
+                                    <Tab key="login" label="Login" value="/login" onClick={() => handleTabClick('/login')} />,
+                                    <Tab key="register" label="Register" value="/register" onClick={() => handleTabClick('/register')} />
+                                ]}
+                            </Tabs>)}
+                        </Box>
+                        {isAuthenticated && (
+                            <Box>
+                                <Button onClick={() => {
+                                    localStorage.removeItem('token');
+                                    setIsAuthenticated(false);
+                                    navigate('/login');
                                 }}>
-                                    <AddIcon />
+                                    <LogoutIcon/>
                                 </Button>
-                            </Tooltip>
-                        </Box>
+                            </Box>
 
-                    )}
-                    <Box>
-                        {isAuthenticated !== null && (<Tabs value={basePath}>
-                            {isAuthenticated ? [
-                                <Tab key="ascents" label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />,
-                                <Tab key="routes" label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />,
-                                <Tab key="stats" label="Stats" value="/stats" onClick={() => handleTabClick('/stats')} />
-
-                             ] : [
-                                <Tab key="login" label="Login" value="/login" onClick={() => handleTabClick('/login')} />,
-                                <Tab key="register" label="Register" value="/register" onClick={() => handleTabClick('/register')} />
-                            ]}
-                        </Tabs>)}
+                        )}
                     </Box>
-                    {isAuthenticated && (
-                        <Box>
-                            <Button onClick={() => {
-                                localStorage.removeItem('token');
-                                setIsAuthenticated(false);
-                                navigate('/login');
-                            }}>
-                                <LogoutIcon/>
-                            </Button>
-                        </Box>
-
-                    )}
-                </Box>
-            </Toolbar>
-        </AppBar>
+                </Toolbar>
+            </AppBar>
+            {isAuthenticated && <Tooltip title="Add an ascent">
+                <Fab color="primary" aria-label="add" sx={fabStyle } size="large" onClick={() => navigate('/ascents/new')}>
+                    <AddIcon />
+                </Fab>
+            </Tooltip>}
+        </>
     );
 };
 
