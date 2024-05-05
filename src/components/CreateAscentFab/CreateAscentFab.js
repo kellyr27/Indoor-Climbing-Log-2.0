@@ -1,12 +1,12 @@
 import {useAuthContext} from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Fab, Tooltip } from '@mui/material';
-import {AddIcon} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 
 const fabStyle = {
-    position: 'absolute',
-    bottom: 75,
-    right: 50,
+    position: 'fixed',
+    bottom: 50,
+    left: 50,
 };
 
 const CreateAscentFab = () => {
