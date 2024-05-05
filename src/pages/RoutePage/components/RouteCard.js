@@ -47,7 +47,7 @@ const RouteCard = () => {
     }, [id]);
 
     return (
-        <Card sx={{minHeight: '300px', bgcolor: '#fefafa'}}>
+        <Card sx={{minHeight: '300px', bgcolor: '#fefafa', borderRadius: 6}}>
             <CardHeader
                 sx={{pt: 4}}
                 title={
@@ -85,7 +85,7 @@ const RouteCard = () => {
                 </List>
                 <Divider />
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={handleEditClick}>
+                    <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
                         Edit Route
                     </Button>
                 </Box>

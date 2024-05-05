@@ -6,8 +6,10 @@ import { useAuthContext } from '../../context/AuthContext';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Fab from '@mui/material/Fab';
 import {useSnackbar} from 'notistack';
+import { useTheme } from '@mui/material/styles';
 
 const NavBar = () => {
+    const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
@@ -36,6 +38,14 @@ const NavBar = () => {
             color: "white",
             boxShadow: "none",
             borderBottom: "2px solid #888",
+            borderLeft: "1px solid #888",
+            borderRight: "1px solid #888",
+            [theme.breakpoints.down('lg')]: {
+                borderLeft: "none",
+                borderRight: "none"
+            },
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
         }}>
             <Toolbar>
                 <Box sx={{

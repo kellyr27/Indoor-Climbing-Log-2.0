@@ -10,6 +10,7 @@ import baseUrl from '../../utils/baseUrl';
 import { Divider } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import Template1 from '../../templates/Template1';
+import AscentCard from './components/AscentCard';
 
 const AscentPage = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -73,63 +74,7 @@ const AscentPage = () => {
 
     return (
         <Template1>
-            <Box sx={{minHeight: '300px', bgcolor: '#fefafa'}}>
-
-                <Paper elevation={3} sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom align="center" sx={{ fontWeight: 'bold', mb: 3 }}>
-                        {dateToDisplay(ascentData.date)}
-                    </Typography>
-                    <Link to={`/routes/${ascentData.route?._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                            <Typography variant="h4">
-                                <TickTypeIcon tickType={ascentData.tickType} style={{ width: '1em', height: '1em' }}/>
-                            </Typography>
-                            <Typography variant="h4">
-                                    {ascentData.route?.name}
-                            </Typography>
-                            <Typography variant="h4">
-                                <RouteGrade grade={ascentData.route?.grade} />
-                            </Typography>
-                        </Box>
-                    </Link>
-                    <Box sx={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
-                        <Typography variant="body1" gutterBottom align="center" sx={{marginBottom: '30px', marginTop: '30px'}}>
-                            {ascentData.notes}
-                        </Typography>
-                    </Box>
-                    <Divider />
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-evenly' }}>
-                        <Button variant="contained" color="primary" onClick={handleEditClick}>
-                            Edit
-                        </Button>
-                        <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-                            Delete
-                        </Button>
-                    </Box>
-                </Paper>
-
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                >
-                    <DialogTitle>
-                        Delete ascentData
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Are you sure you want to delete this ascentData?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleDelete} color="secondary">
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </Box>
+            <AscentCard />
         </Template1>
     );
 }

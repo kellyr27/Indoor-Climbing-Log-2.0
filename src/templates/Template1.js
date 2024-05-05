@@ -1,12 +1,9 @@
 import { Box, Container, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import NavBar from '../components/NavBar/NavBar';
-import { useTheme } from '@mui/material/styles';
 
 
 const Template1 = ({children}) => {
-
-    const theme = useTheme();
 
     return (
         <>
@@ -16,12 +13,7 @@ const Template1 = ({children}) => {
                 }} 
                 sx={{
                     bgcolor: '#FDFFC2',
-                    borderLeft: "1px solid #888",
-                    borderRight: "1px solid #888",
-                    [theme.breakpoints.down('lg')]: {
-                        borderLeft: "none",
-                        borderRight: "none"
-                    }
+                    
                 }} 
             >
                 <NavBar />  
