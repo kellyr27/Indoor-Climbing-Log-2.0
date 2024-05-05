@@ -62,11 +62,13 @@ const NavBar = () => {
                         )}
                     </Box>
                     {isAuthenticated && (
-                        <Box>
-                            <Button onClick={handleLogout}>
-                                <LogoutIcon/>
-                            </Button>
-                        </Box>
+                        <Tooltip title="Logout">
+                            <Box>
+                                <Button onClick={handleLogout}>
+                                    <LogoutIcon/>
+                                </Button>
+                            </Box>
+                        </Tooltip>
                     )}
                 </Box>
             </Toolbar>
