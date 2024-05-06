@@ -109,7 +109,7 @@ const AscentCard = () => {
                 <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
                     Edit
                 </Button>
-                <Button variant="contained" color="warning" onClick={handleClickOpen} sx={{borderRadius: 3}}>
+                <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}} onClick={handleClickOpen} sx={{borderRadius: 3}}>
                     Delete
                 </Button>
             </CardActions>
@@ -130,7 +130,7 @@ const AscentCard = () => {
                     <Button onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button onClick={handleDelete} color="warning">
+                    <Button onClick={handleDelete}>
                         Delete
                     </Button>
                 </DialogActions>

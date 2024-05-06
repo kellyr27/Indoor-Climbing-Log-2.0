@@ -6,9 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-/**
- * TODO: Remove the word INPUT
- */
+
 
 function getTodayDate() {
     const today = new Date();

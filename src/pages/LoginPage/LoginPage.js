@@ -17,7 +17,7 @@ const LoginPage = () => {
     const { setIsAuthenticated } = useAuthContext();
 
     const [username, setUsername] = useState('kelly');
-    const [password, setPassword] = useState('password');
+    const [password, setPassword] = useState('password1?');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -47,8 +47,8 @@ const LoginPage = () => {
 
     return (
         <Template3>
-            <Alert variant="filled" severity="info" sx={{mb: 3, borderRadius: 2}}>
-                    Use the username "kelly" and password "password" to login
+            <Alert variant="filled" severity="info" sx={{ borderRadius: 2, m: 2}}>
+                    Use the username "kelly" and password "password1?" to login
             </Alert>
             <Paper sx={{ p: 2, borderRadius: 4, m: 2 }}>
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>

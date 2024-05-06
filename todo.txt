@@ -1,0 +1,2 @@
+- Automate activity calendar start and end dates
+- Utilize useLocalStorage hook

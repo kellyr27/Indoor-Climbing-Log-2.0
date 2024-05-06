@@ -37,8 +37,6 @@ const AscentsPage = () => {
                     routeColour: item.route.colour,
                 }));
 
-                console.log('dataWithIds', dataWithIds)
-
                 // Sort the data by date then by createdAt
                 const sortedData = dataWithIds.sort((a, b) => {
                     const dateDifference = new Date(b.date) - new Date(a.date);

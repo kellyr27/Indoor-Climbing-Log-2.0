@@ -28,7 +28,6 @@ export const PublicRoute = ({ children }) => {
 };
 
 const AppRoutes = () => {
-    const { isAuthenticated } = useAuthContext();
 
 
     return (
