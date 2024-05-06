@@ -76,7 +76,7 @@ const AscentCard = () => {
             <CardHeader
                 sx={{pt: 4}}
                 title={
-                    <Typography variant="h6" gutterBottom align="center" sx={{ mb: 3 }}>
+                    <Typography variant="h6" gutterBottom align="center" sx={{ mb: 1 }}>
                         Ascended on the <span style={{ fontWeight: 'bold' }}>{dateToDisplay(ascentData.date)}</span>
                     </Typography>
                 }

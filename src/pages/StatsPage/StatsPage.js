@@ -10,6 +10,7 @@ import './heatmap.css';
 import { Box, Grid, Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import Template1 from '../../templates/Template1';
 
 
 function formatDataBarChart (data) {
@@ -158,7 +159,7 @@ const StatsPage = () => {
     }, []);
 
     return (
-            <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}} >
+            <Template1>
                 <Box
                     sx={{
                         display: 'flex',
@@ -226,7 +227,7 @@ const StatsPage = () => {
 
                 </Paper>
             </Box>
-        </Grid>
+        </Template1>
     );
 }
 

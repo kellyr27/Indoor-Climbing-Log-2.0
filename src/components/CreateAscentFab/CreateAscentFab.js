@@ -7,6 +7,7 @@ const fabStyle = {
     position: 'fixed',
     bottom: 50,
     left: 50,
+    opacity: 0.75
 };
 
 const CreateAscentFab = () => {
