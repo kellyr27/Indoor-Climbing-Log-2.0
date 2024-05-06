@@ -12,9 +12,7 @@ function App() {
 		>
 			<HoldsBackgroundProvider>
 				<AuthProvider>
-					<Router>
 						<AppRoutes />
-					</Router>
 				</AuthProvider>
 			</HoldsBackgroundProvider>
 		</SnackbarProvider>
