@@ -20,7 +20,6 @@ export const ProtectedRoute = ({ children }) => {
 };
 
 export const PublicRoute = ({ children }) => {
-    console.log('here')
     const { isAuthenticated } = useAuthContext();
     if (isAuthenticated !== null && isAuthenticated) {
       return <Navigate to="/ascents" />; // or wherever you want to redirect authenticated users
@@ -31,7 +30,6 @@ export const PublicRoute = ({ children }) => {
 const AppRoutes = () => {
     const { isAuthenticated } = useAuthContext();
 
-    console.log('isAuthenticated:', isAuthenticated)
 
     return (
         <Routes>

@@ -29,7 +29,6 @@ const RegisterPage = () => {
             
             // Get the token and store it in the local storage
             const { token } = response.data;
-            console.log('token', token, response.data)
             localStorage.setItem('token', token);
             setIsAuthenticated(true);
 
@@ -45,7 +44,7 @@ const RegisterPage = () => {
 
     return (
         <Template3>
-            <Paper sx={{ padding: 2, borderRadius: 4 }}>
+            <Paper sx={{ p: 2, m: 2, borderRadius: 4 }}>
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Register
                 </Typography>

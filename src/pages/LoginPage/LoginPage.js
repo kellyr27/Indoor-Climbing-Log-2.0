@@ -50,7 +50,7 @@ const LoginPage = () => {
             <Alert variant="filled" severity="info" sx={{mb: 3, borderRadius: 2}}>
                     Use the username "kelly" and password "password" to login
             </Alert>
-            <Paper sx={{ padding: 2, borderRadius: 4 }}>
+            <Paper sx={{ p: 2, borderRadius: 4, m: 2 }}>
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Login
                 </Typography>

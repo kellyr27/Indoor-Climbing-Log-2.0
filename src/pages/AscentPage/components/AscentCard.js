@@ -71,7 +71,7 @@ const AscentCard = () => {
     };
 
     return (
-        <Card sx={{minHeight: '300px', bgcolor: 'rgba(254, 250, 250, 0.85)', borderRadius: 6}}>
+        <Card sx={{minHeight: '300px', m: 2, bgcolor: 'rgba(254, 250, 250, 0.85)', borderRadius: 6}}>
             <CardHeader
                 sx={{pt: 4}}
                 title={

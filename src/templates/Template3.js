@@ -39,7 +39,7 @@ const Template3 = ({children}) => {
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                <Box sx={{width: '100%', mt: 5, mb: 5, zIndex: 0}}>
+                                <Box sx={{width: '100%', mt: 5, mb: 5, zIndex: 0, overflow: 'auto', maxHeight: '80vh'}}>
                                     {children}
                                 </Box>
                             </Grid>

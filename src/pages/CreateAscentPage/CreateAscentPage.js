@@ -136,7 +136,7 @@ const CreateAscentPage = () => {
     return (
         <>
             <Template3>
-                <Paper sx={{ padding: 2,  borderRadius: 4, bgcolor: 'rgba(254, 250, 250, 0.95)' }}>
+                <Paper sx={{ padding: 2,  borderRadius: 4, m: 2, bgcolor: 'rgba(254, 250, 250, 0.95)' }}>
                     <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                         Create New Ascent
                     </Typography>
