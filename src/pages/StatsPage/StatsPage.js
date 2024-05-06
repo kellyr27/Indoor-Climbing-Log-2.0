@@ -166,7 +166,7 @@ const StatsPage = () => {
     return (
         <>
             <Template1>
-                <Paper ref={ref} sx={{minHeight: '92vh', bgcolor: '#fefafa', borderRadius: 6}}>
+                <Paper ref={ref} sx={{minHeight: '92vh', borderRadius: 6, bgcolor: 'rgba(254, 250, 250, 0.85)'}}>
                     <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
                         Your Statistics
                     </Typography>

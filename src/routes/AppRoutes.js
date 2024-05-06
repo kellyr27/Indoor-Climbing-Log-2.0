@@ -11,6 +11,23 @@ import RoutesPage from '../pages/RoutesPage/RoutesPage';
 import StatsPage from '../pages/StatsPage/StatsPage';
 import { useAuthContext } from '../context/AuthContext';
 
+export const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuthContext();
+  if (isAuthenticated !== null && !isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
+
+export const PublicRoute = ({ children }) => {
+    console.log('here')
+    const { isAuthenticated } = useAuthContext();
+    if (isAuthenticated !== null && isAuthenticated) {
+      return <Navigate to="/ascents" />; // or wherever you want to redirect authenticated users
+    }
+    return children;
+};
+
 const AppRoutes = () => {
     const { isAuthenticated } = useAuthContext();
 
@@ -18,27 +35,20 @@ const AppRoutes = () => {
 
     return (
         <Routes>
-            {isAuthenticated ? (
-                <>
-                    <Route path="/routes/:id/edit" element={<EditRoutePage />} />
-                    <Route path="/routes/:id" element={<RoutePage />} />
-                    <Route path="/routes" element={<RoutesPage />} />
-                    <Route path="/ascents/new" element={<CreateAscentPage />} />
-                    <Route path="/ascents/:id/edit" element={<EditAscentPage />} />
-                    <Route path="/ascents/:id" element={<AscentPage />} />
-                    <Route path="/ascents" element={<AscentsPage />} />
-                    <Route path="/stats" element={<StatsPage />} />
-                    <Route path="*" element={<Navigate to="/ascents" replace />} />
-                </>
-            ) : (
-                <>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="*" element={<Navigate to="/login" replace />} />
-                </>
-            )}
+            <Route path="/routes/:id/edit" element={<ProtectedRoute><EditRoutePage /></ProtectedRoute>} />
+            <Route path="/routes/:id" element={<ProtectedRoute><RoutePage /></ProtectedRoute>} />
+            <Route path="/routes" element={<ProtectedRoute><RoutesPage /></ProtectedRoute>} />
+            <Route path="/ascents/new" element={<ProtectedRoute><CreateAscentPage /></ProtectedRoute>} />
+            <Route path="/ascents/:id/edit" element={<ProtectedRoute><EditAscentPage /></ProtectedRoute>} />
+            <Route path="/ascents/:id" element={<ProtectedRoute><AscentPage /></ProtectedRoute>} />
+            <Route path="/ascents" element={<ProtectedRoute><AscentsPage /></ProtectedRoute>} />
+            <Route path="/stats" element={<ProtectedRoute><StatsPage /></ProtectedRoute>} />
+            <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+            <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-    );
+    )
+
 }
 
 export default AppRoutes;
