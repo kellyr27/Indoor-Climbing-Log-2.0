@@ -143,8 +143,8 @@ const AscentsPage = () => {
                     editable: false,
                     type: 'string',
                     renderCell: (params) => (
-                        <Box sx={{ whiteSpace: 'normal'}}>
-                          {params.row.notes}
+                        <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+                            {params.row.notes}
                         </Box>
                     ),
                     headerAlign: 'center',

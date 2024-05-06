@@ -10,6 +10,7 @@ import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Grid, Box, Container } from '@mui/material';
 import Template2 from '../../templates/Template2';
+import {Typography} from '@mui/material';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -99,19 +100,18 @@ const RoutesPage = () => {
                     editable: false,
                     renderCell: (params) => {
                         const ascents = params.row.ascents;
-                        // TODO: Fix word wrap
                         return (
-                            <div>
+                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+                                <Typography variant="body1">
                                 {ascents.map((ascent, index) => {
                                     return (
                                         <Tooltip key={index} title={dateToDisplay(ascent.date)}>
-                                            <span>
-                                                <TickTypeIcon tickType={ascent.tickType} />
-                                            </span>
+                                            <TickTypeIcon tickType={ascent.tickType} />
                                         </Tooltip>
                                     )
                                 })}
-                            </div>
+                                </Typography>
+                            </Box>
                         )
                     },
                     headerAlign: 'center',
