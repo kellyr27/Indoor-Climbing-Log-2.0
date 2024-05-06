@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Typography, Grid, Paper, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Typography, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import {dateToDisplay} from '../../../utils/helpers';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../../components/RouteGrade/RouteGrade';

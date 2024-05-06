@@ -7,7 +7,7 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import { Grid, Box, Container } from '@mui/material';
+import {  Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 
@@ -173,7 +173,7 @@ const AscentsPage = () => {
                     pageSize={100}
                     disableCellFocus
                     rowHeight={70}
-                    sx={{height: '90vh', bgcolor: '#fefafa'}}
+                    sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
                     onRowDoubleClick={(params) => {
                         navigate(`/ascents/${params.row.id}`);
                     }}

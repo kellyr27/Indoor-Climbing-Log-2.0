@@ -44,6 +44,8 @@ const NavBar = () => {
             },
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
+            opacity: 0.98, 
+            zIndex: 1
         }}>
             <Toolbar>
                 <Box sx={{

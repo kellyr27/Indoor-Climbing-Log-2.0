@@ -4,7 +4,7 @@ import axios from 'axios';
 import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
-import { Box, Grid, Paper, Typography, Alert } from '@mui/material';
+import { Grid, Paper, Typography, Alert } from '@mui/material';
 import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
 

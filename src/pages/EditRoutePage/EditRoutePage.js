@@ -74,7 +74,7 @@ const EditRoutePage = () => {
 
     return (
         <Template3>
-            <Paper sx={{ padding: 2, borderRadius: 4 }}>
+            <Paper sx={{ padding: 2, borderRadius: 4, bgcolor: 'rgba(254, 250, 250, 0.95)' }}>
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Edit Route
                 </Typography>

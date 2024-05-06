@@ -8,7 +8,7 @@ import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import { Grid, Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
@@ -164,7 +164,7 @@ const RoutesPage = () => {
                     pageSize={100}
                     disableCellFocus
                     rowHeight={70}
-                    sx={{height: '90vh', bgcolor: '#fefafa'}}
+                    sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
                     onRowDoubleClick={(params) => {
                         navigate(`/routes/${params.row.id}`);
                     }}

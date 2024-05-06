@@ -7,7 +7,7 @@ import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
 import { Tooltip } from 'react-tooltip'
 import './heatmap.css';
-import { Box, Grid, Paper } from '@mui/material';
+import { Box,  Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Template1 from '../../templates/Template1';
@@ -87,7 +87,7 @@ function formatPerformanceRatings (data) {
 
 const StatsPage = () => {
 
-    const { width, height, ref } = useResizeDetector();
+    const { width, ref } = useResizeDetector();
 
     const [gradePyramid, setGradePyramid] = useState({
         flashGrades: [],
@@ -166,7 +166,7 @@ const StatsPage = () => {
     return (
         <>
             <Template1>
-                <Paper ref={ref} sx={{minHeight: '92vh', borderRadius: 6, bgcolor: 'rgba(254, 250, 250, 0.85)'}}>
+                <Paper ref={ref} sx={{minHeight: '92vh', borderRadius: 6, m: 3, bgcolor: 'rgba(254, 250, 250, 0.95)'}}>
                     <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
                         Your Statistics
                     </Typography>
