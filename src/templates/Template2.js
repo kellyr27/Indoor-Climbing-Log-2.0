@@ -3,7 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import NavBar from '../components/NavBar/NavBar';
 
 
-const Template1 = ({children}) => {
+const Template2 = ({children}) => {
 
     return (
         <>
@@ -17,19 +17,17 @@ const Template1 = ({children}) => {
                 }} 
             >
                 <NavBar />  
-                <Container maxWidth="sm" style={{paddingLeft: 0, paddingRight: 0}} sx={{bgcolor: '#FDFFC2', minHeight: '92vh'}}>
+                <Container maxWidth="lg" style={{paddingLeft: 0, paddingRight: 0}} sx={{bgcolor: '#FDFFC2', height: '90vh'}}>
                     <Grid
                         container
                         direction="row"
                         sx ={{
                             height: '100%',
-                            minHeight: '92vh',
-                            width: '100%'
                         }}
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Box sx={{width: '100%', mt: 5, mb: 5}}>
+                        <Box sx={{width: '100%'}}>
                             {children}
                         </Box>
                     </Grid>
@@ -39,4 +37,4 @@ const Template1 = ({children}) => {
     );
 }
 
-export default Template1;
+export default Template2;

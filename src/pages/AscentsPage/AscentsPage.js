@@ -8,6 +8,7 @@ import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Grid, Box, Container } from '@mui/material';
+import Template2 from '../../templates/Template2';
 
 const AscentsPage = () => {
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ const AscentsPage = () => {
                 {
                     field: 'date', 
                     headerName: 'Date', 
-                    // width: 150,
+                    minWidth: 150,
                     flex: 3,
                     sortable: true,
                     filterable: true,
@@ -74,7 +75,7 @@ const AscentsPage = () => {
                 {
                     field: 'tickType', 
                     headerName: 'Tick Type', 
-                    // width: 100,
+                    minWidth: 50,
                     flex: 2,
                     sortable: true,
                     filterable: true,
@@ -92,7 +93,7 @@ const AscentsPage = () => {
                 {
                     field: 'routeName',
                     headerName: 'Route Name',
-                    // width: 200,
+                    minWidth: 200,
                     flex: 4,
                     sortable: true,
                     filterable: true,
@@ -115,7 +116,7 @@ const AscentsPage = () => {
                 {
                     field: 'routeGrade',
                     headerName: 'Grade',
-                    // width: 100,
+                    minWidth: 50,
                     flex: 2,
                     sortable: true,
                     filterable: true,
@@ -135,17 +136,16 @@ const AscentsPage = () => {
                 {
                     field: 'notes', 
                     headerName: 'Notes', 
-                    flex: 4,
+                    flex: 8,
                     minWidth: 200,
-                    maxWidth: 400,
                     sortable: false,
                     filterable: true,
                     editable: false,
                     type: 'string',
                     renderCell: (params) => (
-                        <div style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+                        <Box sx={{ whiteSpace: 'normal'}}>
                           {params.row.notes}
-                        </div>
+                        </Box>
                     ),
                     headerAlign: 'center',
                     align: 'left',
@@ -156,32 +156,20 @@ const AscentsPage = () => {
 
 
     return (
-            <div style={{backgroundColor: '#FDFFC2'}} >
-                <Container sx={{backgroundColor: '#FDFFC2'}} >
-                    <Box
-                        sx={{
-                            // alignItems: "stretch",
-                            minHeight: '92vh',
-                            height: '92vh', 
-                            width: '100%',
-                            // maxWidth: '950px'
-                        }}
-                    >
-                        <StyledDataGrid
-                            style={{ width: '100%' }}
-                            rows={ascentsData}
-                            columns={columns}
-                            pageSize={100}
-                            disableCellFocus
-                            rowHeight={70}
-                            onRowDoubleClick={(params) => {
-                                navigate(`/ascents/${params.row.id}`);
-                            }}
-                        />
-                    </Box>
-                </Container>
-            </div>
-
+        <Template2>
+            <StyledDataGrid
+                style={{ width: '100%' }}
+                rows={ascentsData}
+                columns={columns}
+                pageSize={100}
+                disableCellFocus
+                rowHeight={70}
+                sx={{height: '90vh', bgcolor: '#fefafa'}}
+                onRowDoubleClick={(params) => {
+                    navigate(`/ascents/${params.row.id}`);
+                }}
+            />
+        </Template2>
     );
 }
 

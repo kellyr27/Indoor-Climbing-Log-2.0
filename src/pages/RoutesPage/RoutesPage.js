@@ -9,6 +9,7 @@ import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Grid, Box, Container } from '@mui/material';
+import Template2 from '../../templates/Template2';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -58,7 +59,7 @@ const RoutesPage = () => {
                 {
                     field: 'name',
                     headerName: 'Name',
-                    // width: 200,
+                    minWidth: 200,
                     flex: 4,
                     sortable: true,
                     filterable: true,
@@ -76,7 +77,7 @@ const RoutesPage = () => {
                 {
                     field: 'grade',
                     headerName: 'Grade',
-                    // width: 150,
+                    minWidth: 50,
                     flex: 3,
                     sortable: true,
                     filterable: true,
@@ -91,7 +92,7 @@ const RoutesPage = () => {
                 {
                     field: 'ascents',
                     headerName: 'Ascents',
-                    // width: 250,
+                    minWidth: 150,
                     flex: 5,
                     sortable: false,
                     filterable: false,
@@ -118,7 +119,7 @@ const RoutesPage = () => {
                 {
                     field: 'lastAscentDate',
                     headerName: 'Last Ascent Date',
-                    // width: 150,
+                    minWidth: 150,
                     flex: 3,
                     sortable: true,
                     filterable: true,
@@ -133,7 +134,7 @@ const RoutesPage = () => {
                 {
                     headerName: 'First Ascent Date',
                     field: 'firstAscentDate',
-                    // width: 150,
+                    minWidth: 150,
                     flex: 3,
                     sortable: true,
                     filterable: true,
@@ -151,31 +152,20 @@ const RoutesPage = () => {
 
 
     return (
-        <div style={{backgroundColor: '#FDFFC2'}} >
-            <Container sx={{backgroundColor: '#FDFFC2'}} >
-                <Box
-                    sx={{
-                        // alignItems: "stretch",
-                        minHeight: '92vh',
-                        height: '92vh', 
-                        width: '100%',
-                        // maxWidth: '950px'
-                    }}
-                >
-                    <StyledDataGrid
-                        style={{ width: '100%' }}
-                        rows={routesData}
-                        columns={columns}
-                        pageSize={100}
-                        disableCellFocus
-                        rowHeight={70}
-                        onRowDoubleClick={(params) => {
-                            navigate(`/routes/${params.row.id}`);
-                        }}
-                    />
-                </Box>
-            </Container>
-        </div>
+        <Template2>
+            <StyledDataGrid
+                style={{ width: '100%' }}
+                rows={routesData}
+                columns={columns}
+                pageSize={100}
+                disableCellFocus
+                rowHeight={70}
+                sx={{height: '90vh', bgcolor: '#fefafa'}}
+                onRowDoubleClick={(params) => {
+                    navigate(`/routes/${params.row.id}`);
+                }}
+            />
+        </Template2>
     );
 }
 

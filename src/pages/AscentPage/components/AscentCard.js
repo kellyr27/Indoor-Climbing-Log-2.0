@@ -106,11 +106,11 @@ const AscentCard = () => {
                 </Box>
             </CardContent>
             <Divider />
-            <CardActions sx={{ justifyContent: 'space-evenly', mt: 2 }}>
-                <Button variant="contained" color="primary" onClick={handleEditClick}>
+            <CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
+                <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
                     Edit
                 </Button>
-                <Button variant="contained" color="warning" onClick={handleClickOpen}>
+                <Button variant="contained" color="warning" onClick={handleClickOpen} sx={{borderRadius: 3}}>
                     Delete
                 </Button>
             </CardActions>
