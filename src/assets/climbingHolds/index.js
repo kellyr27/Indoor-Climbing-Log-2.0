@@ -1,0 +1,16 @@
+export { ReactComponent as Hold1 } from './hold1.svg';
+export { ReactComponent as Hold2 } from './hold2.svg';
+export { ReactComponent as Hold3 } from './hold3.svg';
+export { ReactComponent as Hold4 } from './hold4.svg';
+export { ReactComponent as Hold5 } from './hold5.svg';
+export { ReactComponent as Hold6 } from './hold6.svg';
+export { ReactComponent as Hold7 } from './hold7.svg';
+export { ReactComponent as Hold8 } from './hold8.svg';
+export { ReactComponent as Hold9 } from './hold9.svg';
+export { ReactComponent as Hold10 } from './hold10.svg';
+export { ReactComponent as Hold11 } from './hold11.svg';
+export { ReactComponent as Hold12 } from './hold12.svg';
+export { ReactComponent as Hold13 } from './hold13.svg';
+export { ReactComponent as Hold14 } from './hold14.svg';
+export { ReactComponent as Hold15 } from './hold15.svg';
+export { ReactComponent as Hold16 } from './hold16.svg';

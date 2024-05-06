@@ -47,7 +47,7 @@ const LoginPage = () => {
 
     return (
         <Template3>
-            <Alert variant="filled" severity="info" sx={{mb: 3}}>
+            <Alert variant="filled" severity="info" sx={{mb: 3, borderRadius: 2}}>
                     Use the username "kelly" and password "password" to login
             </Alert>
             <Paper sx={{ padding: 2, borderRadius: 4 }}>

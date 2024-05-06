@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AscentPage from '../pages/AscentPage/AscentPage';
 import AscentsPage from '../pages/AscentsPage/AscentsPage';
 import CreateAscentPage from '../pages/CreateAscentPage/CreateAscentPage';
@@ -16,17 +16,25 @@ const AppRoutes = () => {
 
     return (
         <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/routes/:id/edit" element={<EditRoutePage />} />
-            <Route path="/routes/:id" element={<RoutePage />} />
-            <Route path="/routes" element={<RoutesPage />} />
-            <Route path="/ascents/new" element={<CreateAscentPage />} />
-            <Route path="/ascents/:id/edit" element={<EditAscentPage />} />
-            <Route path="/ascents/:id" element={<AscentPage />} />
-            <Route path="/ascents" element={<AscentsPage />} />
-            <Route path="/stats" element={<StatsPage />} />
-            <Route path="/" element={isAuthenticated ? <AscentsPage /> : <LoginPage />} replace />} />
+            {isAuthenticated ? (
+                <>
+                    <Route path="/routes/:id/edit" element={<EditRoutePage />} />
+                    <Route path="/routes/:id" element={<RoutePage />} />
+                    <Route path="/routes" element={<RoutesPage />} />
+                    <Route path="/ascents/new" element={<CreateAscentPage />} />
+                    <Route path="/ascents/:id/edit" element={<EditAscentPage />} />
+                    <Route path="/ascents/:id" element={<AscentPage />} />
+                    <Route path="/ascents" element={<AscentsPage />} />
+                    <Route path="/stats" element={<StatsPage />} />
+                    <Route path="*" element={<Navigate to="/ascents" replace />} />
+                </>
+            ) : (
+                <>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </>
+            )}
         </Routes>
     );
 }

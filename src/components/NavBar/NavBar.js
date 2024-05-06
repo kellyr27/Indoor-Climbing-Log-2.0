@@ -1,10 +1,8 @@
 import React, { useCallback } from 'react'
 import { AppBar, Toolbar, Tabs, Tab, Button, Tooltip, Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import LogoutIcon from '@mui/icons-material/Logout';
-import Fab from '@mui/material/Fab';
 import {useSnackbar} from 'notistack';
 import { useTheme } from '@mui/material/styles';
 
