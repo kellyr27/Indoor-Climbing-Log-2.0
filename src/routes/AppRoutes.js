@@ -14,6 +14,8 @@ import { useAuthContext } from '../context/AuthContext';
 const AppRoutes = () => {
     const { isAuthenticated } = useAuthContext();
 
+    console.log('isAuthenticated:', isAuthenticated)
+
     return (
         <Routes>
             {isAuthenticated ? (
