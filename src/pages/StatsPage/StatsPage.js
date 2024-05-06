@@ -10,6 +10,9 @@ import './heatmap.css';
 import { Box, Grid, Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import Template1 from '../../templates/Template1';
+import { useResizeDetector } from 'react-resize-detector';
+
 
 
 function formatDataBarChart (data) {
@@ -82,6 +85,8 @@ function formatPerformanceRatings (data) {
 
 
 const StatsPage = () => {
+
+    const { width, height, ref } = useResizeDetector();
 
     const [gradePyramid, setGradePyramid] = useState({
         flashGrades: [],
@@ -158,47 +163,40 @@ const StatsPage = () => {
     }, []);
 
     return (
-            <Grid container justifyContent="center" sx={{backgroundColor: '#FDFFC2'}} >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: { xs: 'flex-start', sm: 'center' },
-                        minHeight: '92vh',
-                    }}
-                >
-                    <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 800 } }}>
-                        <Typography variant="h3" align="center" sx={{ mt: 2, mb: 3, fontWeight: 'bold' }}>
-                            Your Statistics
-                        </Typography>
-                        <BarChart 
-                            series={[
-                                {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
-                                {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
-                                {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
-                            ]}
-                            yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
-                            layout="horizontal"
-                            width={600}
-                            height={350}
-                        />
-                        <Divider />
-                        <LineChart
-                            series={[
-                                { data: weeklyStats.avgFlashGrades, label: 'Avg Flash Grade', color: '#92d050', connectNulls: true },
-                                { data: weeklyStats.avgRedpointGrades, label: 'Avg Redpoint Grade', color: '#ff0000', connectNulls: true },
-                                { data: weeklyStats.avgOtherGrades, label: 'Avg Other Grade', color: '#d9d9d9', connectNulls: true }
-                            ]}
-                            xAxis={[{ data: weeklyStats.weeksRange, label: 'Weeks' }]}
-                            yAxis={[{ min: 15, max: 28 }]}
-                            width={600}
-                            height={350}
-                        />
-                        <Divider />
-                        <Typography variant="h4" align="center" sx={{ mt: 4, mb: 3 }}>
-                            Activity Calendar
-                        </Typography>
-                        <div style={{ width: '600px', height: '300px' }}>
+            <Template1>
+                <Paper ref={ref} sx={{minHeight: '92vh', bgcolor: '#fefafa', borderRadius: 6}}>
+                    <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
+                        Your Statistics
+                    </Typography>
+                    <BarChart 
+                        series={[
+                            {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
+                            {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
+                            {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
+                        ]}
+                        yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
+                        layout="horizontal"
+                        width={width}
+                        height={350}
+                    />
+                    <Divider sx={{mt: 2, mb: 2}} />
+                    <LineChart
+                        series={[
+                            { data: weeklyStats.avgFlashGrades, label: 'Avg Flash Grade', color: '#92d050', connectNulls: true },
+                            { data: weeklyStats.avgRedpointGrades, label: 'Avg Redpoint Grade', color: '#ff0000', connectNulls: true },
+                            { data: weeklyStats.avgOtherGrades, label: 'Avg Other Grade', color: '#d9d9d9', connectNulls: true }
+                        ]}
+                        xAxis={[{ data: weeklyStats.weeksRange, label: 'Weeks' }]}
+                        yAxis={[{ min: 15, max: 28 }]}
+                        width={width}
+                        height={350}
+                    />
+                    <Divider sx={{mt: 2, mb: 2}}/>
+                    <Typography variant="h5" align="center" sx={{  mb: 1 }}>
+                        Activity Calendar
+                    </Typography>
+                    <Box sx={{ width: width, height: '100%' }}>
+                        <Box sx={{p: 2, pb: 4, mb: 3}}>
                             <Tooltip id="my-tooltip"/>
                             {performanceRatings && <CalendarHeatmap
                                 startDate={new Date('2024-01-01')}
@@ -222,11 +220,10 @@ const StatsPage = () => {
                                     return `color-github-${value.numClimbs}`;
                                 }}
                             />}
-                        </div>
-
-                </Paper>
-            </Box>
-        </Grid>
+                        </Box>
+                    </Box>         
+            </Paper>
+        </Template1>
     );
 }
 

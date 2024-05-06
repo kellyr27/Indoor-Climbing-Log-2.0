@@ -1,82 +1,88 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { AppBar, Toolbar, Tabs, Tab, Button, Tooltip, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import LogoutIcon from '@mui/icons-material/Logout';
 import Fab from '@mui/material/Fab';
-
-const fabStyle = {
-    position: 'absolute',
-    bottom: 75,
-    right: 50,
-};
+import {useSnackbar} from 'notistack';
+import { useTheme } from '@mui/material/styles';
 
 const NavBar = () => {
+    const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
-    const { isAuthenticated, setIsAuthenticated } = useAuthContext(); // Get the authentication status from the context
+    const { isAuthenticated, setIsAuthenticated } = useAuthContext();
+    const {enqueueSnackbar} = useSnackbar();
 
-    console.log('isAuthenticated:', isAuthenticated)
     const basePath = `/${location.pathname.split('/')[1]}`
 
-
-    const handleTabClick = (route) => {
+    const handleTabClick = useCallback((route) => {
         navigate(route);
-    };
+    }, [navigate]);
+
+    const handleLogout = useCallback(() => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+        navigate('/login');
+        enqueueSnackbar('Logged out successfully', { variant: 'success' });
+    }, [setIsAuthenticated, navigate, enqueueSnackbar]);
+
+    const createTab = (key, label, value) => (
+        <Tab key={key} label={label} value={value} onClick={() => handleTabClick(value)} />
+    );
 
     return (
-        <>
-            <AppBar position="sticky" sx={{
-                backgroundColor: "#A3D8FF",
-                color: "white",
-                boxShadow: "none",
-                borderBottom: "1px solid #888",
-            }}>
-                <Toolbar>
-                    <Box sx={{
-                        display: "flex",
-                        width: "100%",
-                        alignItems: "center",
-                        justifyContent: {
-                            xs: "space-between",
-                            sm: "space-between",
-                        }
-                    }}>
-                        <Box>
-                            {isAuthenticated !== null && (<Tabs value={basePath}>
+        <AppBar position="sticky" sx={{
+            backgroundColor: "#A3D8FF",
+            color: "white",
+            boxShadow: "none",
+            borderBottom: "2px solid #888",
+            borderLeft: "1px solid #888",
+            borderRight: "1px solid #888",
+            [theme.breakpoints.down('lg')]: {
+                borderLeft: "none",
+                borderRight: "none"
+            },
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+        }}>
+            <Toolbar>
+                <Box sx={{
+                    display: "flex",
+                    width: "100%",
+                    alignItems: "center",
+                    justifyContent: {
+                        xs: "space-between",
+                        sm: "space-between",
+                    }
+                }}>
+                    <Box>
+                        {isAuthenticated !== null && (
+                            <Tabs value={basePath}>
                                 {isAuthenticated ? [
-                                    <Tab key="ascents" label="Ascents" value="/ascents" onClick={() => handleTabClick('/ascents')} />,
-                                    <Tab key="routes" label="Routes" value="/routes" onClick={() => handleTabClick('/routes')} />,
-                                    <Tab key="stats" label="Stats" value="/stats" onClick={() => handleTabClick('/stats')} />
-
+                                    createTab("ascents", "Ascents", "/ascents"),
+                                    createTab("routes", "Routes", "/routes"),
+                                    createTab("stats", "Stats", "/stats")
                                 ] : [
-                                    <Tab key="login" label="Login" value="/login" onClick={() => handleTabClick('/login')} />,
-                                    <Tab key="register" label="Register" value="/register" onClick={() => handleTabClick('/register')} />
+                                    createTab("login", "Login", "/login"),
+                                    createTab("register", "Register", "/register")
                                 ]}
-                            </Tabs>)}
-                        </Box>
-                        {isAuthenticated && (
+                            </Tabs>
+                        )}
+                    </Box>
+                    {isAuthenticated && (
+                        <Tooltip title="Logout">
                             <Box>
-                                <Button onClick={() => {
-                                    localStorage.removeItem('token');
-                                    setIsAuthenticated(false);
-                                    navigate('/login');
-                                }}>
+                                <Button onClick={handleLogout}>
                                     <LogoutIcon/>
                                 </Button>
                             </Box>
-
-                        )}
-                    </Box>
-                </Toolbar>
-            </AppBar>
-            {isAuthenticated && <Tooltip title="Add an ascent">
-                <Fab color="primary" aria-label="add" sx={fabStyle } size="large" onClick={() => navigate('/ascents/new')}>
-                    <AddIcon />
-                </Fab>
-            </Tooltip>}
-        </>
+                        </Tooltip>
+                    )}
+                </Box>
+            </Toolbar>
+        </AppBar>
     );
 };
 

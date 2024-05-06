@@ -12,7 +12,6 @@ function App() {
 		>
 			<AuthProvider>
 				<Router>
-					<NavBar />
 					<AppRoutes />
 				</Router>
 			</AuthProvider>

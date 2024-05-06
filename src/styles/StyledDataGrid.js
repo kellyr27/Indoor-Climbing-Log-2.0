@@ -1,5 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import { styled } from '@mui/system';
+import { withStyles } from '@mui/material';
 
 const StyledDataGrid = styled(DataGrid)({
     backgroundColor: 'white',
@@ -16,7 +17,8 @@ const StyledDataGrid = styled(DataGrid)({
     },
     '& .MuiDataGrid-scrollbarFiller--header': {
         backgroundColor: '#94FFD8',
-    },
+    }
 });
+
 
 export default StyledDataGrid;
