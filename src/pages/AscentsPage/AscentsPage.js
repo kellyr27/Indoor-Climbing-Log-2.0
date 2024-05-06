@@ -9,6 +9,7 @@ import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Grid, Box, Container } from '@mui/material';
 import Template2 from '../../templates/Template2';
+import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 
 const AscentsPage = () => {
     const navigate = useNavigate();
@@ -156,20 +157,23 @@ const AscentsPage = () => {
 
 
     return (
-        <Template2>
-            <StyledDataGrid
-                style={{ width: '100%' }}
-                rows={ascentsData}
-                columns={columns}
-                pageSize={100}
-                disableCellFocus
-                rowHeight={70}
-                sx={{height: '90vh', bgcolor: '#fefafa'}}
-                onRowDoubleClick={(params) => {
-                    navigate(`/ascents/${params.row.id}`);
-                }}
-            />
-        </Template2>
+        <>
+            <Template2>
+                <StyledDataGrid
+                    style={{ width: '100%' }}
+                    rows={ascentsData}
+                    columns={columns}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    sx={{height: '90vh', bgcolor: '#fefafa'}}
+                    onRowDoubleClick={(params) => {
+                        navigate(`/ascents/${params.row.id}`);
+                    }}
+                />
+            </Template2>
+            <CreateAscentFab />
+        </>
     );
 }
 

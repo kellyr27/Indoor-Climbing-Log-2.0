@@ -11,6 +11,7 @@ import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Grid, Box, Container } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
+import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -103,13 +104,15 @@ const RoutesPage = () => {
                         return (
                             <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
                                 <Typography variant="body1">
-                                {ascents.map((ascent, index) => {
-                                    return (
-                                        <Tooltip key={index} title={dateToDisplay(ascent.date)}>
-                                            <TickTypeIcon tickType={ascent.tickType} />
-                                        </Tooltip>
-                                    )
-                                })}
+                                    {ascents.map((ascent, index) => {
+                                        return (
+                                            <Tooltip key={index} title={dateToDisplay(ascent.date)}>
+                                                <span>
+                                                    <TickTypeIcon tickType={ascent.tickType} />
+                                                </span>
+                                            </Tooltip>
+                                        )
+                                    })}
                                 </Typography>
                             </Box>
                         )
@@ -152,20 +155,23 @@ const RoutesPage = () => {
 
 
     return (
-        <Template2>
-            <StyledDataGrid
-                style={{ width: '100%' }}
-                rows={routesData}
-                columns={columns}
-                pageSize={100}
-                disableCellFocus
-                rowHeight={70}
-                sx={{height: '90vh', bgcolor: '#fefafa'}}
-                onRowDoubleClick={(params) => {
-                    navigate(`/routes/${params.row.id}`);
-                }}
-            />
-        </Template2>
+        <>
+            <Template2>
+                <StyledDataGrid
+                    style={{ width: '100%' }}
+                    rows={routesData}
+                    columns={columns}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    sx={{height: '90vh', bgcolor: '#fefafa'}}
+                    onRowDoubleClick={(params) => {
+                        navigate(`/routes/${params.row.id}`);
+                    }}
+                />
+            </Template2>
+            <CreateAscentFab />
+        </>
     );
 }
 

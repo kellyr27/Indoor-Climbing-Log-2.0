@@ -4,8 +4,10 @@ import axios from 'axios';
 import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Grid, Paper, Typography, Alert } from '@mui/material';
 import {useSnackbar} from 'notistack';
+import Template3 from '../../templates/Template3';
+
 
 const LoginPage = () => {
 
@@ -44,52 +46,46 @@ const LoginPage = () => {
     };
 
     return (
-        <Grid container justifyContent="center"  sx={{backgroundColor: '#FDFFC2'}}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: { xs: 'center', sm: 'center' },
-                    minHeight: '92vh',
-                }}
-            >
-                <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 500 } }}>
-                    <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
-                        Login
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Username"
-                                    variant="outlined"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Password"
-                                    type="password"
-                                    variant="outlined"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    Login
-                                </Button>
-                            </Grid>
+        <Template3>
+            <Alert variant="filled" severity="info" sx={{mb: 3}}>
+                    Use the username "kelly" and password "password" to login
+            </Alert>
+            <Paper sx={{ padding: 2, borderRadius: 4 }}>
+                <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
+                    Login
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Username"
+                                variant="outlined"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                fullWidth
+                            />
                         </Grid>
-                    </form>
-                </Paper>
-            </Box>
-        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}}>
+                                Login
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
+        </Template3>
     );
 }
 

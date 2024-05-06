@@ -11,6 +11,7 @@ import { Divider } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import Template1 from '../../templates/Template1';
 import AscentCard from './components/AscentCard';
+import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 
 const AscentPage = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -73,9 +74,12 @@ const AscentPage = () => {
     };
 
     return (
-        <Template1>
-            <AscentCard />
-        </Template1>
+        <>
+            <Template1>
+                <AscentCard />
+            </Template1>
+            <CreateAscentFab />
+        </>
     );
 }
 

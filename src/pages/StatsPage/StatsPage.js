@@ -12,6 +12,7 @@ import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Template1 from '../../templates/Template1';
 import { useResizeDetector } from 'react-resize-detector';
+import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 
 
 
@@ -163,6 +164,7 @@ const StatsPage = () => {
     }, []);
 
     return (
+        <>
             <Template1>
                 <Paper ref={ref} sx={{minHeight: '92vh', bgcolor: '#fefafa', borderRadius: 6}}>
                     <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
@@ -222,8 +224,10 @@ const StatsPage = () => {
                             />}
                         </Box>
                     </Box>         
-            </Paper>
-        </Template1>
+                </Paper>
+            </Template1>
+            <CreateAscentFab />
+        </>
     );
 }
 

@@ -6,6 +6,7 @@ import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Box, Grid, Paper, Typography } from '@mui/material';
 import {useSnackbar} from 'notistack';
+import Template3 from '../../templates/Template3';
 
 const RegisterPage = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -43,52 +44,43 @@ const RegisterPage = () => {
     };
 
     return (
-        <Grid container justifyContent="center"  sx={{backgroundColor: '#FDFFC2'}}>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: { xs: 'center', sm: 'center' },
-                    minHeight: '92vh',
-                }}
-            >
-                <Paper sx={{ padding: 2,  maxWidth: { xs: '100%', sm: 500 } }}>
-                    <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
-                        Register
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Username"
-                                    variant="outlined"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    required
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="Password"
-                                    type="password"
-                                    variant="outlined"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary" fullWidth>
-                                    Create new user
-                                </Button>
-                            </Grid>
+        <Template3>
+            <Paper sx={{ padding: 2, borderRadius: 4 }}>
+                <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
+                    Register
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Username"
+                                variant="outlined"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                fullWidth
+                            />
                         </Grid>
-                    </form>
-                </Paper>
-            </Box>
-        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}}>
+                                Create new user
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
+        </Template3>
     );
 }
 
