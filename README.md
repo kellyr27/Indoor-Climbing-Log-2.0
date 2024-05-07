@@ -1,4 +1,4 @@
-# Climbing Log
+# <img src="https://github.com/kellyr27/Indoor-Climbing-Log-2.0/assets/83458976/8661b386-4465-4216-a96d-c2f9c5bccc55" width="35"> Climbing Log
 
 A web app to log all your climbing ascents and tracking your progress. Designed for tracking indoor lead climbing using the Ewbanks grade system (Australian climbing grades).
 
