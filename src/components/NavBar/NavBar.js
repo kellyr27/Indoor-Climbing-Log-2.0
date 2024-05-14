@@ -3,8 +3,12 @@ import { AppBar, Toolbar, Tabs, Tab, Button, Tooltip, Box } from '@mui/material'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {useSnackbar} from 'notistack';
 import { useTheme } from '@mui/material/styles';
+import { Menu, MenuItem } from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 const NavBar = () => {
     const theme = useTheme();
@@ -29,6 +33,22 @@ const NavBar = () => {
     const createTab = (key, label, value) => (
         <Tab key={key} label={label} value={value} onClick={() => handleTabClick(value)} />
     );
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleMenuClick = (route) => {
+        navigate(route);
+        handleMenuClose();
+    };
 
     return (
         <AppBar position="sticky" sx={{
@@ -72,11 +92,34 @@ const NavBar = () => {
                         )}
                     </Box>
                     {isAuthenticated && (
-                        <Tooltip title="Logout">
+                        <Tooltip title="Account">
                             <Box>
-                                <Button onClick={handleLogout}>
-                                    <LogoutIcon/>
+                                <Button onClick={handleMenu}>
+                                    <AccountCircleIcon/>
                                 </Button>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleMenuClose}
+                                >
+                                    <MenuItem onClick={() => handleMenuClick('/user/settings')}>
+                                        <ListItem>
+                                            <ListItemIcon>
+                                                <SettingsIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Settings" />
+                                        </ListItem>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleLogout}>
+                                        <ListItem>
+                                            <ListItemIcon>
+                                                <LogoutIcon />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Logout" />
+                                        </ListItem>
+                                    </MenuItem>
+                                </Menu>
+                                
                             </Box>
                         </Tooltip>
                     )}
