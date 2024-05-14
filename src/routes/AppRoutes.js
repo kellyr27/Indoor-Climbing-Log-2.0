@@ -10,6 +10,7 @@ import RoutePage from '../pages/RoutePage/RoutePage';
 import RoutesPage from '../pages/RoutesPage/RoutesPage';
 import StatsPage from '../pages/StatsPage/StatsPage';
 import { useAuthContext } from '../context/AuthContext';
+import SettingsPage from '../pages/SettingsPage/SettingsPage';
 
 export const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthContext();
@@ -42,6 +43,7 @@ const AppRoutes = () => {
             <Route path="/stats" element={<ProtectedRoute><StatsPage /></ProtectedRoute>} />
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
             <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+            <Route path="/user/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     )
