@@ -69,7 +69,7 @@ const LoginPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}} disabled={!username || !password}>
                                 Login
                             </Button>
                         </Grid>

@@ -28,3 +28,17 @@ export const deleteAscent = async (id) => {
         throw error;
     }
 }
+
+export const getAscents = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${baseUrl}/ascents`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

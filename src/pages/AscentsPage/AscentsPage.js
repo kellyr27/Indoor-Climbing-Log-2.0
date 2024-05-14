@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import baseUrl from '../../utils/baseUrl';
 import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
@@ -10,50 +8,46 @@ import StyledDataGrid from '../../styles/StyledDataGrid';
 import {  Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
+import { getAscents } from '../../apis/ascents';
+
+const fetchAndPrepareAscents = async () => {
+    const ascents = await getAscents()
+
+    // Add id, routeName, routeGrade, and routeColour to each ascent (flattening the route object)
+    const ascentsFlattened = ascents.map(item => ({
+        ...item,
+        id: item._id,
+        routeName: item.route.name,
+        routeGrade: item.route.grade,
+        routeColour: item.route.colour,
+    }));
+
+    // Sort the ascents by date then by createdAt, descending
+    const sortedAscents = ascentsFlattened.sort((a, b) => {
+        const dateDifference = new Date(b.date) - new Date(a.date);
+        if (dateDifference !== 0) {
+            return dateDifference;
+        } else {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+    })
+
+    return sortedAscents;
+}
 
 const AscentsPage = () => {
     const navigate = useNavigate();
-
     const [ascentsData, setAscentsData] = useState([]);
 
-
     useEffect(() => {
-        // Fetch the ascents data from the server
         const fetchAscentsData = async () => {
             try {
-                const token = localStorage.getItem('token');
-
-                const response = await axios.get(`${baseUrl}/ascents`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                const dataWithIds = response.data.map(item => ({
-                    ...item,
-                    id: item._id,
-                    routeName: item.route.name,
-                    routeGrade: item.route.grade,
-                    routeColour: item.route.colour,
-                }));
-
-                // Sort the data by date then by createdAt
-                const sortedData = dataWithIds.sort((a, b) => {
-                    const dateDifference = new Date(b.date) - new Date(a.date);
-                    if (dateDifference !== 0) {
-                        return dateDifference;
-                    } else {
-                        return new Date(b.createdAt) - new Date(a.createdAt);
-                    }
-                });
-
-                setAscentsData(sortedData);
-
+                const ascents = await fetchAndPrepareAscents();
+                setAscentsData(ascents);
             } catch (error) {
                 console.error(error);
             }
         };
-
         fetchAscentsData();
     }, [])
 

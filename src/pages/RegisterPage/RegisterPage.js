@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextField, InputAdornment, IconButton } from '@mui/material';
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
@@ -8,10 +8,12 @@ import Template3 from '../../templates/Template3';
 import { registerUser } from '../../apis/users/index';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+const validateUsername = (username) => {
+    return username.length < 6 ? "Username must be at least 6 characters long" : null;
+}
+
+
 const validatePassword = (password) => {
-    if (password === '') {
-        return null
-    }
 
     if (password.length < 6) {
         return "Password must be at least 6 characters long";
@@ -26,9 +28,6 @@ const validatePassword = (password) => {
 };
 
 const validateConfirmPassword = (password, confirmPassword) => {
-    if (confirmPassword === '') {
-        return null
-    }
 
     if (password !== confirmPassword) {
         return "Passwords do not match";
@@ -46,6 +45,15 @@ const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [isFormValid, setIsFormValid] = useState(false);
+    useEffect(() => {
+        const passwordError = validatePassword(password);
+        const confirmPasswordError = validateConfirmPassword(password, confirmPassword);
+        const usernameError = username.length < 6;
+    
+        setIsFormValid(!(passwordError || confirmPasswordError || usernameError));
+    }, [username, password, confirmPassword]);
 
     const handleClickShowPassword = () => {
         setShowPassword((show) => !show)
@@ -94,8 +102,8 @@ const RegisterPage = () => {
                                 variant="outlined"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                error={username.length > 0 && username.length < 6}
-                                helperText={username.length > 0 && username.length < 6 ? "Username must be at least 6 characters long" : ""}
+                                error={username.length > 0 && validateUsername(username)}
+                                helperText={username.length > 0 && validateUsername(username)}
                                 required
                                 fullWidth
                             />
@@ -107,8 +115,8 @@ const RegisterPage = () => {
                                 variant="outlined"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                error={validatePassword(password)}
-                                helperText={validatePassword(password)}
+                                error={password.length > 0 && validatePassword(password)}
+                                helperText={password.length > 0 && validatePassword(password)}
                                 required
                                 fullWidth
                             />
@@ -122,8 +130,8 @@ const RegisterPage = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                                 fullWidth
-                                error={validateConfirmPassword(password, confirmPassword)}
-                                helperText={validateConfirmPassword(password, confirmPassword)}
+                                error={confirmPassword.length > 0 && validateConfirmPassword(password, confirmPassword)}
+                                helperText={confirmPassword.length > 0 && validateConfirmPassword(password, confirmPassword)}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -141,7 +149,7 @@ const RegisterPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}}>
+                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}} disabled={!isFormValid}>
                                 Create new user
                             </Button>
                         </Grid>
