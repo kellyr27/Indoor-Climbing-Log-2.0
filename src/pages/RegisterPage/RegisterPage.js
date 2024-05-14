@@ -1,44 +1,54 @@
 import React, { useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import axios from 'axios';
-import baseUrl from '../../utils/baseUrl'
+import { Button, TextField, InputAdornment, IconButton } from '@mui/material';
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Grid, Paper, Typography } from '@mui/material';
 import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
+import { registerUser } from '../../apis/users/index';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const RegisterPage = () => {
     const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
     const { setIsAuthenticated } = useAuthContext();
 
+
+    const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleClickShowPassword = () => {
+        setShowPassword((show) => !show)
+    }
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const payload = {
-            username,
-            password
-        };
+        if (password !== confirmPassword) {
+            enqueueSnackbar('Passwords do not match', { variant: 'error' });
+            setPassword('')
+            setConfirmPassword('')
+            setShowPassword(false)
+            return;
+        }
 
         try {
-            const response = await axios.post(`${baseUrl}/users/register`, payload);
-            
-            // Get the token and store it in the local storage
-            const { token } = response.data;
+            const {token} = await registerUser(username, password)
             localStorage.setItem('token', token);
             setIsAuthenticated(true);
 
-            // Redirect to the ascents page using navigate
             navigate('/ascents');
             enqueueSnackbar('User created successfully', { variant: 'success' })
 
         } catch (error) {
-            console.error(error);
-            enqueueSnackbar('User creation failed', { variant: 'error' })
+            const errorMessage = error.response.data.message
+            enqueueSnackbar(errorMessage, { variant: 'error' })
         }
     };
 
@@ -63,12 +73,37 @@ const RegisterPage = () => {
                         <Grid item xs={12}>
                             <TextField
                                 label="Password"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 variant="outlined"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="Confirm Password"
+                                type={showPassword ? 'text' : 'password'}
+                                variant="outlined"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                                fullWidth
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
                             />
                         </Grid>
                         <Grid item xs={12}>
