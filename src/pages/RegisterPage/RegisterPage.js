@@ -8,6 +8,34 @@ import Template3 from '../../templates/Template3';
 import { registerUser } from '../../apis/users/index';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+const validatePassword = (password) => {
+    if (password === '') {
+        return null
+    }
+
+    if (password.length < 6) {
+        return "Password must be at least 6 characters long";
+    }
+    if (!/\d/.test(password)) {
+        return "Password must contain a number";
+    }
+    if (!/[a-zA-Z]/.test(password)) {
+        return "Password must contain a character";
+    }
+    return null;
+};
+
+const validateConfirmPassword = (password, confirmPassword) => {
+    if (confirmPassword === '') {
+        return null
+    }
+
+    if (password !== confirmPassword) {
+        return "Passwords do not match";
+    }
+    return null;
+}
+
 const RegisterPage = () => {
     const {enqueueSnackbar} = useSnackbar();
     const navigate = useNavigate();
@@ -66,6 +94,8 @@ const RegisterPage = () => {
                                 variant="outlined"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
+                                error={username.length > 0 && username.length < 6}
+                                helperText={username.length > 0 && username.length < 6 ? "Username must be at least 6 characters long" : ""}
                                 required
                                 fullWidth
                             />
@@ -77,6 +107,8 @@ const RegisterPage = () => {
                                 variant="outlined"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                error={validatePassword(password)}
+                                helperText={validatePassword(password)}
                                 required
                                 fullWidth
                             />
@@ -90,6 +122,8 @@ const RegisterPage = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                                 fullWidth
+                                error={validateConfirmPassword(password, confirmPassword)}
+                                helperText={validateConfirmPassword(password, confirmPassword)}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
