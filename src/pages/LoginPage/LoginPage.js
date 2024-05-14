@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import axios from 'axios';
-import baseUrl from '../../utils/baseUrl'
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Grid, Paper, Typography, Alert } from '@mui/material';
 import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
-
+import { loginUser } from '../../apis/users/index';
 
 const LoginPage = () => {
 
     const {enqueueSnackbar} = useSnackbar();
-
     const navigate = useNavigate();
     const { setIsAuthenticated } = useAuthContext();
 
@@ -22,16 +19,10 @@ const LoginPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const payload = {
-            username,
-            password
-        };
-
         try {
-            const response = await axios.post(`${baseUrl}/users/login`, payload);
+            const {token} = await loginUser(username, password)
             
             // Get the token and store it in the local storage
-            const { token } = response.data;
             localStorage.setItem('token', token);
             setIsAuthenticated(true);
 
