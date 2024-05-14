@@ -101,6 +101,14 @@ const NavBar = () => {
                                     anchorEl={anchorEl}
                                     open={open}
                                     onClose={handleMenuClose}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right',
+                                    }}
                                 >
                                     <MenuItem onClick={() => handleMenuClick('/user/settings')}>
                                         <ListItem>

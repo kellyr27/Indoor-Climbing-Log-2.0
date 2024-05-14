@@ -1,69 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Typography, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import {dateToDisplay} from '../../../utils/helpers';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../../components/RouteGrade/RouteGrade';
-import baseUrl from '../../../utils/baseUrl';
 import { Divider } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { Card, CardHeader, CardContent, CardActions, List, ListItem } from '@mui/material';
+import DeleteButtonWithDialog from '../../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
+import { getAscent, deleteAscent } from '../../../apis/ascents';
 
 const AscentCard = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [ascentData, setAscentData] = useState({});
     const { id } = useParams()
-    const [open, setOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
 
             try {
-                const token = localStorage.getItem('token');
-
-                const response = await axios.get(`${baseUrl}/ascents/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
-                setAscentData(response.data);
-
+                const data = await getAscent(id);
+                setAscentData(data);
             } catch (error) {
-                console.error(error);
+                const errorMessage = error.response?.data?.error || 'Failed to fetch ascent data';
+                enqueueSnackbar(errorMessage, { variant: 'error' });
+                navigate('/ascents');
             }
         };
     
         fetchData();
-    }, [id]);
+    }, [id, navigate, enqueueSnackbar]);
 
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleDelete = () => {
-        const token = localStorage.getItem('token');
-        axios.delete(`${baseUrl}/ascents/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                navigate('/ascents');
-                enqueueSnackbar('Ascent deleted successfully', { variant: 'success' });
-            })
-            .catch(error => {
-                console.error(error);
-                enqueueSnackbar('Failed to delete ascent', { variant: 'error' });
-            });
-        
+    const handleDelete = async () => {
+        try {
+            await deleteAscent(id);
+            enqueueSnackbar('Ascent deleted successfully', { variant: 'success' });
+            navigate('/ascents');
+        } catch (error) {
+            enqueueSnackbar('Failed to delete ascent', { variant: 'error' });
+        }
     }
 
     const handleEditClick = () => {
@@ -109,32 +85,12 @@ const AscentCard = () => {
                 <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
                     Edit
                 </Button>
-                <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}} onClick={handleClickOpen} sx={{borderRadius: 3}}>
-                    Delete
-                </Button>
+                <DeleteButtonWithDialog
+                    handleDelete={handleDelete}
+                    buttonText="Delete"
+                    dialogText="Are you sure you want to delete this ascent?"
+                />
             </CardActions>
-
-            <Dialog
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogTitle>
-                    Are you sure?
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this ascent?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDelete}>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </Card>
     );
 }
