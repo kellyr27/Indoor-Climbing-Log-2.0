@@ -129,7 +129,6 @@ const CreateAscentPage = () => {
     // Prefill the route grade and colour if the route name is selected
     useEffect(() => {
         const route = routesData.find(route => route.name === inputRouteName);
-		console.log('route', route)
         if (route) {
             setInputRouteGrade(route.grade);
             setInputRouteColour(route.colour);
