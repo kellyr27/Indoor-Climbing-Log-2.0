@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Tooltip, Grid, Paper, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Typography, Grid, Paper, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
-import {OverhungSVG, SlabSVG, VerticalSVG, RoofSVG} from '../../assets/steepnessTypeIcons/index';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
@@ -19,7 +18,6 @@ const CreateAscentPage = () => {
     const [inputRouteGrade, setInputRouteGrade] = useState('');
     const [inputRouteColour, setInputRouteColour] = useState('');
     const [tickType, setTickType] = useState('');
-	const [inputSteepnessTypes, setInputSteepnessTypes] = useState([]);
     const [gradeDisabled, setGradeDisabled] = useState(false);
 
     const navigate = useNavigate();
@@ -44,10 +42,6 @@ const CreateAscentPage = () => {
         setTickType(newTickType);
     };
 
-	const handleSteepnessTagsChange = (e, newSteepnessType) => {
-		setInputSteepnessTypes(newSteepnessType);
-	}
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -62,8 +56,7 @@ const CreateAscentPage = () => {
             route: {
                 name: inputRouteName,
                 grade: inputRouteGrade,
-                colour: inputRouteColour,
-				steepness: inputSteepnessTypes
+                colour: inputRouteColour
             },
             tickType
         }
@@ -129,10 +122,10 @@ const CreateAscentPage = () => {
     // Prefill the route grade and colour if the route name is selected
     useEffect(() => {
         const route = routesData.find(route => route.name === inputRouteName);
+		console.log('route', route)
         if (route) {
             setInputRouteGrade(route.grade);
             setInputRouteColour(route.colour);
-			setInputSteepnessTypes(route.steepness ? route.steepness : []);
             setGradeDisabled(true);
         } else {
             setInputRouteGrade('');
@@ -208,60 +201,6 @@ const CreateAscentPage = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-							<Grid item xs={12}>
-								<ToggleButtonGroup
-									value={inputSteepnessTypes}
-									onChange={handleSteepnessTagsChange}
-									aria-label="steepness tags"
-									fullWidth
-									disabled={gradeDisabled}
-								>
-									{gradeDisabled ? (
-										<ToggleButton value="slab" aria-label="slab">
-											<SlabSVG width={20} height={20} />
-										</ToggleButton>
-									) : (
-										<Tooltip title="Slab">
-											<ToggleButton value="slab" aria-label="slab">
-												<SlabSVG width={20} height={20} />
-											</ToggleButton>
-										</Tooltip>
-									)}
-									{gradeDisabled ? (
-										<ToggleButton value="vertical" aria-label="vertical">
-											<VerticalSVG width={20} height={20} />
-										</ToggleButton>
-									) : (
-										<Tooltip title="Vertical">
-											<ToggleButton value="vertical" aria-label="vertical">
-												<VerticalSVG width={20} height={20} />
-											</ToggleButton>
-										</Tooltip>
-									)}
-									{gradeDisabled ? (
-										<ToggleButton value="overhung" aria-label="overhung">
-											<OverhungSVG width={20} height={20}/>
-										</ToggleButton>
-									) : (
-										<Tooltip title="Overhung">
-											<ToggleButton value="overhung" aria-label="overhung">
-												<OverhungSVG width={20} height={20}/>
-											</ToggleButton>
-										</Tooltip>
-									)}
-									{gradeDisabled ? (
-										<ToggleButton value="roof" aria-label="roof">
-											<RoofSVG width={20} height={20}/>
-										</ToggleButton>
-									) : (
-										<Tooltip title="Roof">
-											<ToggleButton value="roof" aria-label="roof">
-												<RoofSVG width={20} height={20}/>
-											</ToggleButton>
-										</Tooltip>
-									)}
-</ToggleButtonGroup>
-                            </Grid>
                             <Grid item xs={12}>
                                 <ToggleButtonGroup
                                     value={tickType}
@@ -272,28 +211,20 @@ const CreateAscentPage = () => {
                                     fullWidth
                                 >
                                     {gradeDisabled ? (
-										<Tooltip title="Redpoint">
-											<ToggleButton value="redpoint" aria-label="redpoint">
-												<RedpointSVG />
-											</ToggleButton>
-										</Tooltip>
-									) : (
-										<Tooltip title="Flash">
-											<ToggleButton value="flash" aria-label="flash">
-												<FlashSVG />
-											</ToggleButton>
-										</Tooltip>
-									)}
-									<Tooltip title="Hangdog">
-										<ToggleButton value="hangdog" aria-label="hangdog">
-											<HangdogSVG />
-										</ToggleButton>
-									</Tooltip>
-									<Tooltip title="Attempt">
-										<ToggleButton value="attempt" aria-label="attempt">
-											<AttemptSVG />
-										</ToggleButton>
-									</Tooltip>
+                                        <ToggleButton value="redpoint" aria-label="redpoint">
+                                            <RedpointSVG />
+                                        </ToggleButton>
+                                    ) : (
+                                        <ToggleButton value="flash" aria-label="flash">
+                                            <FlashSVG />
+                                        </ToggleButton>
+                                    )}
+                                    <ToggleButton value="hangdog" aria-label="hangdog">
+                                        <HangdogSVG />
+                                    </ToggleButton>
+                                    <ToggleButton value="attempt" aria-label="attempt">
+                                        <AttemptSVG />
+                                    </ToggleButton>
                                 </ToggleButtonGroup>
                             </Grid>
                             <Grid item xs={12}>

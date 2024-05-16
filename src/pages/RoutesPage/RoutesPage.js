@@ -12,13 +12,6 @@ import { Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
-import SteepnessTagIcons from '../../components/SteepnessTagIcons';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-
-import { FormControl, InputLabel } from '@mui/material';
-
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -37,12 +30,9 @@ const RoutesPage = () => {
                     }
                 });
 
-				// TODO: Steepness needs to be ordered in the frontend
-
                 const dataWithIds = response.data.map(item => ({
                     ...item,
                     id: item._id,
-					steepness: item.steepness ? item.steepness : [],
                     lastAscentDate: item.ascents.length > 0 ? item.ascents[0].date : null,
                     firstAscentDate: item.ascents.length > 0 ? item.ascents[item.ascents.length - 1].date : null,
                 }));
@@ -100,39 +90,7 @@ const RoutesPage = () => {
                     renderCell: (params) => (
                         <RouteGrade grade={params.value} />
                     ),
-                },
-				{
-					field: 'steepness',
-					headerName: 'Steepness',
-					minWidth: 50,
-					flex: 3,
-					sortable: false,
-					filterable: true,
-					editable: false,
-					type: 'string',
-					headerAlign: 'center',
-					align: 'left',
-					//TODO: Implement filterable array
-					renderCell: (params) => {
-						const steepnessTags = params.value || []
-
-						return (
-                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-                                <Typography variant="body1">
-                                    {steepnessTags.map((steepness, index) => {
-                                        return (
-                                            <Tooltip key={index} title={steepness}>
-                                                <span style={{ marginRight: '8px' }}>
-                                                    <SteepnessTagIcons steepness={steepness} />
-                                                </span>
-                                            </Tooltip>
-                                        )
-                                    })}
-                                </Typography>
-                            </Box>
-                        )
-					},
-				},
+                }, 
                 {
                     field: 'ascents',
                     headerName: 'Ascents',
