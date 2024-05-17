@@ -38,8 +38,13 @@ const RoutesPage = () => {
                 }));
 
                 const sortedData = dataWithIds.sort((a, b) => {
-                    return new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
-                });
+					const dateComparison = new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
+					if (dateComparison !== 0) {
+					  	return dateComparison;
+					} else {
+					  	return new Date(b.createdAt) - new Date(a.createdAt);
+					}
+				});
 
 				console.log(sortedData)
 

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
+import { getAreas } from '../../apis/areas';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -17,6 +18,7 @@ const CreateAscentPage = () => {
     const [inputRouteName, setInputRouteName] = useState('');
     const [inputRouteGrade, setInputRouteGrade] = useState('');
     const [inputRouteColour, setInputRouteColour] = useState('');
+	const [inputRouteAreaName, setInputRouteAreaName] = useState('');
     const [tickType, setTickType] = useState('');
     const [gradeDisabled, setGradeDisabled] = useState(false);
 
@@ -34,6 +36,10 @@ const CreateAscentPage = () => {
         setInputRouteName(value);
     };
 
+	const handleInputRouteAreaChange = (e, value) => {
+        setInputRouteAreaName(value);
+    };
+
     const handleInputRouteColourChange = (e) => {
         setInputRouteColour(e.target.value);
     }
@@ -49,15 +55,22 @@ const CreateAscentPage = () => {
             enqueueSnackbar('Please select a tick type', { variant: 'warning' });
             return;
         }
+
+		let route = {
+			name: inputRouteName,
+			grade: inputRouteGrade,
+			colour: inputRouteColour,
+		};
+		  
+		if (inputRouteAreaName && inputRouteAreaName !== '') {
+			console.log(inputRouteAreaName)
+			route.area = { name: inputRouteAreaName };
+		}
         
         const newAscent = {
             date: new Date(date).toISOString(),
             notes,
-            route: {
-                name: inputRouteName,
-                grade: inputRouteGrade,
-                colour: inputRouteColour
-            },
+            route,
             tickType
         }
 
@@ -103,6 +116,21 @@ const CreateAscentPage = () => {
 
     }, []);
 
+	const [areasData, setAreasData] = useState([]);
+	useEffect(() => {
+		const fetchAreasData = async () => {
+			try {
+				const areas = await getAreas();
+				console.log(areas)
+				setAreasData(areas);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchAreasData();
+	}, [])
+
     // Fetch the prefill date from the server
     useEffect(() => {
         const fetchPrefillAscentDateData = async () => {
@@ -126,6 +154,11 @@ const CreateAscentPage = () => {
             setInputRouteGrade(route.grade);
             setInputRouteColour(route.colour);
             setGradeDisabled(true);
+			if (route.area) {
+				setInputRouteAreaName(route.area.name);
+			} else {
+				setInputRouteAreaName(null);
+			}
         } else {
             setInputRouteGrade('');
             setInputRouteColour('')
@@ -199,6 +232,21 @@ const CreateAscentPage = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                            </Grid>
+							<Grid item xs={12}>
+                                {!gradeDisabled && <Autocomplete
+                                    freeSolo
+                                    options={areasData}
+                                    getOptionLabel={(option) => option.name}
+                                    onInputChange={handleInputRouteAreaChange}
+                                    renderInput={(params) => <TextField {...params} label="Route Area" required fullWidth />}
+                                />}
+								{gradeDisabled && <TextField
+									label="Route Area"
+									value={inputRouteAreaName ? inputRouteAreaName.name : ''}
+									disabled
+									fullWidth
+								/>}
                             </Grid>
                             <Grid item xs={12}>
                                 <ToggleButtonGroup
