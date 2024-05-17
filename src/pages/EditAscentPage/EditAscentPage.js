@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-
+import { getAreas } from '../../apis/areas';
 
 function getTodayDate() {
     const today = new Date();
@@ -26,12 +26,31 @@ const EditAscentPage = () => {
     const [inputRouteName, setInputRouteName] = useState('');
     const [inputRouteGrade, setInputRouteGrade] = useState('');
     const [inputRouteColour, setInputRouteColour] = useState('');
+	const [inputRouteAreaName, setInputRouteAreaName] = useState('');
     const [tickType, setTickType] = useState('');
     const [routes, setRoutes] = useState([]);
     const [gradeDisabled, setGradeDisabled] = useState(false);
     const [isInitialRouteFirstAscent, setIsInitialRouteFirstAscent] = useState(false);
     const [initialRouteId, setInitialRouteId] = useState(null);
     const [showFlash, setShowFlash] = useState(false);
+
+	const [areasData, setAreasData] = useState([]);
+	useEffect(() => {
+		const fetchAreasData = async () => {
+			try {
+				const areas = await getAreas();
+				setAreasData(areas);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchAreasData();
+	}, [])
+
+	const handleInputRouteAreaChange = (e, value) => {
+        setInputRouteAreaName(value);
+    };
 
     const navigate = useNavigate();
 
@@ -78,6 +97,10 @@ const EditAscentPage = () => {
             },
             tickType
         }
+
+		if (inputRouteAreaName && inputRouteAreaName !== '') {
+			newAscent.route.area = { name: inputRouteAreaName };
+		}
 
         const token = localStorage.getItem('token');
         axios.put(`${baseUrl}/ascents/${id}`, newAscent, {
@@ -131,6 +154,12 @@ const EditAscentPage = () => {
                 setIsInitialRouteFirstAscent(ascent.isOnlyAscent);
                 setShowFlash(ascent.isOnlyAscent);
                 setTickType(ascent.tickType);
+
+				if (ascent.route.area) {
+					setInputRouteAreaName(ascent.route.area.name);
+				} else {
+					setInputRouteAreaName(null);
+				}
             })
             .catch(error => {
                 console.error(error);
@@ -226,6 +255,21 @@ const EditAscentPage = () => {
                                 </Select>
                             </FormControl>
                         </Grid>
+						<Grid item xs={12}>
+							{!gradeDisabled && <Autocomplete
+								freeSolo
+								options={areasData}
+								getOptionLabel={(option) => option.name}
+								onInputChange={handleInputRouteAreaChange}
+								renderInput={(params) => <TextField {...params} label="Route Area" required fullWidth />}
+							/>}
+							{gradeDisabled && <TextField
+								label="Route Area"
+								value={inputRouteAreaName ? inputRouteAreaName : ''}
+								disabled
+								fullWidth
+							/>}
+						</Grid>
                         <Grid item xs={12}>
                             <ToggleButtonGroup
                                 value={tickType}

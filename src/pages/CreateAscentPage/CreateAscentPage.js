@@ -241,7 +241,7 @@ const CreateAscentPage = () => {
                                 />}
 								{gradeDisabled && <TextField
 									label="Route Area"
-									value={inputRouteAreaName ? inputRouteAreaName.name : ''}
+									value={inputRouteAreaName ? inputRouteAreaName : ''}
 									disabled
 									fullWidth
 								/>}
