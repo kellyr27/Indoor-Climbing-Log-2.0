@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import { BarChart} from '@mui/x-charts/BarChart';
-import { LineChart } from '@mui/x-charts/LineChart';
+import { LineChart, areaElementClasses } from '@mui/x-charts/LineChart';
 import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
 import { Tooltip } from 'react-tooltip'
@@ -13,7 +13,22 @@ import Divider from '@mui/material/Divider';
 import Template1 from '../../templates/Template1';
 import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+// import { PieChart } from '@mui/x-charts';
+import { Chart, ArcElement, PieController } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
+import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import TimeAgo from 'javascript-time-ago'
 
+import en from 'javascript-time-ago/locale/en'
+
+TimeAgo.addDefaultLocale(en)
+
+// Create formatter (English).
+const timeAgo = new TimeAgo('en-US')
+
+Chart.register(ArcElement, PieController);
 
 
 function formatDataBarChart (data) {
@@ -83,7 +98,42 @@ function formatPerformanceRatings (data) {
     return performanceRatings;
 }
 
+function formatAreaStats (data) {
 
+	// For each area, group the gradeCounts by difficulty
+	const areaStats = data.map((area) => {
+		const gradeCountGroupByDifficulty = {
+			'easy': 0,
+			'moderate': 0,
+			'difficult': 0,
+			'hard': 0,
+			'very hard': 0,
+			'extreme': 0
+		}
+
+		for (const [grade, count] of Object.entries(area.gradeCounts)) {
+			if (grade <= 17) {
+				gradeCountGroupByDifficulty['easy'] += count;
+			} else if ((grade > 17) && (grade <= 20)) {
+				gradeCountGroupByDifficulty['moderate'] += count;
+			} else if ((grade > 20) && (grade <= 22)) {
+				gradeCountGroupByDifficulty['difficult'] += count;
+			} else if ((grade > 22) && (grade <= 25)) {
+				gradeCountGroupByDifficulty['hard'] += count;
+			} else {
+				gradeCountGroupByDifficulty['very hard'] += count;
+			}
+		}
+
+		return {
+			...area,
+			gradeCountGroupByDifficulty
+		}
+		
+	});
+
+	return areaStats;
+}
 
 const StatsPage = () => {
 
@@ -102,6 +152,7 @@ const StatsPage = () => {
         avgOtherGrades: []
     });
     const [performanceRatings, setPerformanceRatings] = useState(null);
+	const [areaStats, setAreaStats] = useState(null);
 
     useEffect(() => {
         const fetchGradePyramid = async () => {
@@ -163,6 +214,26 @@ const StatsPage = () => {
         fetchPerformanceRatings();
     }, []);
 
+	useEffect(() => {
+		const fetchAreaStats = async () => {
+			try {
+				const token = localStorage.getItem('token');
+				const response = await axios.get(`${baseUrl}/stats/area-stats`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				});
+				setAreaStats(formatAreaStats(response.data));
+				console.log(formatAreaStats(response.data));
+			}
+			catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchAreaStats();
+	}, [])
+
     return (
         <>
             <Template1>
@@ -170,6 +241,84 @@ const StatsPage = () => {
                     <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
                         Your Statistics
                     </Typography>
+					<Box>
+						<TableContainer>
+							<Table>
+								<TableHead>
+									<TableRow>
+										<TableCell>Area Name</TableCell>
+										<TableCell>Pie Chart</TableCell>
+										<TableCell>Total Ascents</TableCell>
+										<TableCell>Hardest Ascent</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{areaStats && areaStats.map((row) =>{ 
+
+										return (
+											<TableRow key={row.area}>
+												<TableCell>
+													{row.area}
+												</TableCell>
+												<TableCell>
+													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+														<Pie
+															data={{
+																labels: ['Easy', 'Moderate', 'Difficult', 'Hard', 'Very Hard'],
+																datasets: [
+																{
+																	data: Object.values(row.gradeCountGroupByDifficulty),
+																	backgroundColor: ['#66b320', '#f9e11a', '#f29a14', '#cc2c28', '#9f247b'],
+																},
+																],
+															}}
+															options={{
+																plugins: {
+																	legend: {
+																		display: false,
+																	},
+																},
+																tooltip: {
+																	enabled: true,
+																	callbacks: {
+																	  title: function(tooltipItem) {
+																		return tooltipItem[0].label;
+																	  },
+																	  label: function(tooltipItem) {
+																		return tooltipItem.raw;
+																	  },
+																	},
+																}
+															}}
+															width={10}
+															height={10}
+														/>
+													</div>
+												</TableCell>
+												<TableCell>{row.totalAscents}</TableCell>
+												<TableCell>
+													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
+														return (
+															<Box key={ascent.date}>
+																<TickTypeIcon tickType={ascent.tickType}/> <RouteGrade grade={ascent.route.grade}/> {ascent.route.name} {timeAgo.format(new Date(ascent.date))}
+															</Box>
+														)
+													})}
+													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent) => {
+														return (
+															<Box key={ascent.date}>
+																<TickTypeIcon tickType={ascent.tickType}/> <RouteGrade grade={ascent.route.grade}/> {ascent.route.name} {timeAgo.format(new Date(ascent.date))}
+															</Box>
+														)
+													})}
+												</TableCell>
+											</TableRow>
+										)
+									})}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Box>
                     <BarChart 
                         series={[
                             {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},

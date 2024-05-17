@@ -46,8 +46,6 @@ const RoutesPage = () => {
 					}
 				});
 
-				console.log(sortedData)
-
                 setRoutesData(sortedData);
 
             } catch (error) {

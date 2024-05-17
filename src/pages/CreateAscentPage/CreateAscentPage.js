@@ -63,7 +63,6 @@ const CreateAscentPage = () => {
 		};
 		  
 		if (inputRouteAreaName && inputRouteAreaName !== '') {
-			console.log(inputRouteAreaName)
 			route.area = { name: inputRouteAreaName };
 		}
         
@@ -121,7 +120,6 @@ const CreateAscentPage = () => {
 		const fetchAreasData = async () => {
 			try {
 				const areas = await getAreas();
-				console.log(areas)
 				setAreasData(areas);
 			} catch (error) {
 				console.error(error);
