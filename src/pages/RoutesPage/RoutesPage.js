@@ -41,6 +41,8 @@ const RoutesPage = () => {
                     return new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
                 });
 
+				console.log(sortedData)
+
                 setRoutesData(sortedData);
 
             } catch (error) {
@@ -118,6 +120,33 @@ const RoutesPage = () => {
                         )
                     },
                     headerAlign: 'center',
+                }, 
+				{
+                    field: 'area',
+                    headerName: 'Area',
+                    minWidth: 200,
+                    flex: 4,
+                    sortable: true,
+                    filterable: true,
+                    editable: false,
+                    type: 'string',
+					valueFormatter: (params) => {
+                        return params ? params.name : null;
+                    },
+					valueGetter: (params) => {
+                        return params ? params.name : null;
+                    },
+					renderCell: (params) => {
+                        return (
+                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+                                <Typography variant="body1">
+                                    {params.row.area ? params.row.area.name : null}
+                                </Typography>
+                            </Box>
+                        )
+                    },
+                    headerAlign: 'center',
+                    align: 'left',
                 }, 
                 {
                     field: 'lastAscentDate',
