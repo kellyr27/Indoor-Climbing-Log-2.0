@@ -11,6 +11,7 @@ import { Box,  Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Template1 from '../../templates/Template1';
+import Template4 from '../../templates/Template4';
 import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -22,6 +23,12 @@ import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import TimeAgo from 'javascript-time-ago'
 
 import en from 'javascript-time-ago/locale/en'
+import { useTheme } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+// ...
+
+
 
 TimeAgo.addDefaultLocale(en)
 
@@ -137,6 +144,9 @@ function formatAreaStats (data) {
 
 const StatsPage = () => {
 
+	const theme = useTheme();
+	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
     const { width, ref } = useResizeDetector();
 
     const [gradePyramid, setGradePyramid] = useState({
@@ -236,22 +246,22 @@ const StatsPage = () => {
 
     return (
         <>
-            <Template1>
+            <Template4>
                 <Paper ref={ref} sx={{minHeight: '92vh', borderRadius: 6, m: 2, bgcolor: 'rgba(254, 250, 250, 0.95)'}}>
                     <Typography variant="h3" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
                         Your Statistics
                     </Typography>
-					<Box>
+					<Box  sx={{p: 1}}>
 						<TableContainer>
 							<Table>
-								<TableHead>
-									<TableRow>
-										<TableCell>Area Name</TableCell>
-										<TableCell>Pie Chart</TableCell>
-										<TableCell>Total Ascents</TableCell>
-										<TableCell>Hardest Ascent</TableCell>
-									</TableRow>
-								</TableHead>
+							<TableHead style={{backgroundColor: '#f2f2f2'}}>
+								<TableRow>
+									<TableCell align="center" style={{fontWeight: 'bold'}}>Area Name</TableCell>
+									<TableCell align="center" style={{fontWeight: 'bold'}}>Difficulty</TableCell>
+									<TableCell align="center" style={{fontWeight: 'bold'}}>Total Ascents</TableCell>
+									<TableCell align="center" style={{fontWeight: 'bold'}}>Best Ascents</TableCell>
+								</TableRow>
+							</TableHead>
 								<TableBody>
 									{areaStats && areaStats.map((row) =>{ 
 
@@ -295,19 +305,49 @@ const StatsPage = () => {
 														/>
 													</div>
 												</TableCell>
-												<TableCell>{row.totalAscents}</TableCell>
+												<TableCell align="center">{row.totalAscents}</TableCell>
 												<TableCell>
 													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
 														return (
-															<Box key={ascent.date}>
-																<TickTypeIcon tickType={ascent.tickType}/> <RouteGrade grade={ascent.route.grade}/> {ascent.route.name} {timeAgo.format(new Date(ascent.date))}
+															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
+																<Box display="flex" flexDirection="row" >
+																	<Box sx={{mr: 2}}>
+																		<TickTypeIcon tickType={ascent.tickType}/> 
+																	</Box>
+																	<Box display="flex" flexDirection="row">
+																		<Box sx={{mr: 1}}>
+																			<RouteGrade grade={ascent.route.grade}/>
+																		</Box>
+																		<Box> 
+																			{ascent.route.name}
+																		</Box> 
+																	</Box>
+																</Box>
+																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
+																	{timeAgo.format(new Date(ascent.date))}
+																</Box>
 															</Box>
 														)
 													})}
 													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent) => {
 														return (
-															<Box key={ascent.date}>
-																<TickTypeIcon tickType={ascent.tickType}/> <RouteGrade grade={ascent.route.grade}/> {ascent.route.name} {timeAgo.format(new Date(ascent.date))}
+															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
+																<Box display="flex" flexDirection="row" >
+																	<Box sx={{mr: 2}}>
+																		<TickTypeIcon tickType={ascent.tickType}/> 
+																	</Box>
+																	<Box display="flex" flexDirection="row">
+																		<Box sx={{mr: 1}}>
+																			<RouteGrade grade={ascent.route.grade}/>
+																		</Box>
+																		<Box> 
+																			{ascent.route.name}
+																		</Box> 
+																	</Box>
+																</Box>
+																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
+																	{timeAgo.format(new Date(ascent.date))}
+																</Box>
 															</Box>
 														)
 													})}
@@ -374,7 +414,7 @@ const StatsPage = () => {
                         </Box>
                     </Box>         
                 </Paper>
-            </Template1>
+            </Template4>
             <CreateAscentFab />
         </>
     );
