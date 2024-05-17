@@ -10,7 +10,6 @@ import './heatmap.css';
 import { Box,  Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import Template1 from '../../templates/Template1';
 import Template4 from '../../templates/Template4';
 import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
@@ -25,8 +24,8 @@ import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PieChart } from '@mui/x-charts';
+import { Link } from 'react-router-dom';
 
-// ...
 
 
 
@@ -334,7 +333,11 @@ const StatsPage = () => {
 														/>
 													</div>
 												</TableCell>
-												<TableCell align="center">{row.totalAscents}</TableCell>
+												<TableCell align="center">
+													<Link to={'/routes'} state={ {defaultFilter: {items: [{ field: 'area', operatorValue: 'contains', value: row.area }]}}}>
+														{row.totalAscents}
+													</Link>
+												</TableCell>
 												<TableCell>
 													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
 														return (

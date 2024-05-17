@@ -12,9 +12,14 @@ import { Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
+import { useLocation } from 'react-router-dom';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
+	const location = useLocation();
+	const defaultFilter = location.state?.defaultFilter || {}
+	
+	console.log(defaultFilter)
 
     const [routesData, setRoutesData] = useState([]);
 
@@ -56,7 +61,7 @@ const RoutesPage = () => {
         fetchRoutesData();
     }, [])
 
-    const [columns, setColumns] = useState([])
+    const [columns, setColumns] = useState(null)
 
     useEffect(() => {
             
@@ -185,11 +190,10 @@ const RoutesPage = () => {
         }
     }, [routesData]);
 
-
     return (
         <>
             <Template2>
-                <StyledDataGrid
+                {columns && <StyledDataGrid
                     style={{ width: '100%' }}
                     rows={routesData}
                     columns={columns}
@@ -200,7 +204,15 @@ const RoutesPage = () => {
                     onRowDoubleClick={(params) => {
                         navigate(`/routes/${params.row.id}`);
                     }}
-                />
+					initialState={{
+						filter: {
+							filterModel: defaultFilter
+						}
+					}}
+                />}
+				{!columns && 'TODO: You have no routes to display.'
+					
+				}
             </Template2>
             <CreateAscentFab />
         </>
