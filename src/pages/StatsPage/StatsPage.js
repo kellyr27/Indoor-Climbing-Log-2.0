@@ -15,9 +15,8 @@ import Template4 from '../../templates/Template4';
 import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-// import { PieChart } from '@mui/x-charts';
-import { Chart, ArcElement, PieController } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+// import { Chart, ArcElement, PieController } from 'chart.js';
+// import { Pie } from 'react-chartjs-2';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import TimeAgo from 'javascript-time-ago'
@@ -25,6 +24,7 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { PieChart } from '@mui/x-charts';
 
 // ...
 
@@ -35,7 +35,7 @@ TimeAgo.addDefaultLocale(en)
 // Create formatter (English).
 const timeAgo = new TimeAgo('en-US')
 
-Chart.register(ArcElement, PieController);
+// Chart.register(ArcElement, PieController);
 
 
 function formatDataBarChart (data) {
@@ -132,9 +132,38 @@ function formatAreaStats (data) {
 			}
 		}
 
+		// Format it for the piechart
+		const gradeCountData = [
+			{
+				id: 0, 
+				value: gradeCountGroupByDifficulty['easy'],
+				label: 'Easy',
+			},
+			{
+				id: 1, 
+				value: gradeCountGroupByDifficulty['moderate'],
+				label: 'Moderate',
+			},
+			{
+				id: 2, 
+				value: gradeCountGroupByDifficulty['difficult'],
+				label: 'Difficult',
+			},
+			{
+				id: 3, 
+				value: gradeCountGroupByDifficulty['hard'],
+				label: 'Hard',
+			},
+			{
+				id: 4, 
+				value: gradeCountGroupByDifficulty['very hard'],
+				label: 'Very Hard',
+			},
+		]
+
 		return {
 			...area,
-			gradeCountGroupByDifficulty
+			gradeCountData
 		}
 		
 	});
@@ -234,7 +263,6 @@ const StatsPage = () => {
 					}
 				});
 				setAreaStats(formatAreaStats(response.data));
-				console.log(formatAreaStats(response.data));
 			}
 			catch (error) {
 				console.error(error);
@@ -272,36 +300,37 @@ const StatsPage = () => {
 												</TableCell>
 												<TableCell>
 													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-														<Pie
-															data={{
-																labels: ['Easy', 'Moderate', 'Difficult', 'Hard', 'Very Hard'],
-																datasets: [
-																{
-																	data: Object.values(row.gradeCountGroupByDifficulty),
-																	backgroundColor: ['#66b320', '#f9e11a', '#f29a14', '#cc2c28', '#9f247b'],
+														<PieChart
+															// series={{
+															// 	data: {
+															// 		labels: ['Easy', 'Moderate', 'Difficult', 'Hard', 'Very Hard'],
+															// 		datasets: [
+															// 		{
+															// 			data: Object.values(row.gradeCountGroupByDifficulty),
+															// 			backgroundColor: ['#66b320', '#f9e11a', '#f29a14', '#cc2c28', '#9f247b'],
+															// 		},
+															// 		],
+															// 	},
+															// 	highlightScope: { faded: 'global', highlighted: 'item' },
+															// 	faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+															// }}
+															series={[{
+																data: row.gradeCountData,
+																highlightScope: { faded: 'global', highlighted: 'item' },
+          														faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+															}]}
+															colors={['#66b320', '#f9e11a', '#f29a14', '#cc2c28', '#9f247b']}
+															
+															width={100}
+															height={100}
+															margin={{right: 5}}
+															slotProps={{
+																legend: {
+																	hidden: true,
 																},
-																],
 															}}
-															options={{
-																plugins: {
-																	legend: {
-																		display: false,
-																	},
-																},
-																tooltip: {
-																	enabled: true,
-																	callbacks: {
-																	  title: function(tooltipItem) {
-																		return tooltipItem[0].label;
-																	  },
-																	  label: function(tooltipItem) {
-																		return tooltipItem.raw;
-																	  },
-																	},
-																}
-															}}
-															width={10}
-															height={10}
+															// options={{ layout: { legend: 'none' } }}
+
 														/>
 													</div>
 												</TableCell>
@@ -359,17 +388,20 @@ const StatsPage = () => {
 							</Table>
 						</TableContainer>
 					</Box>
-                    <BarChart 
-                        series={[
-                            {data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
-                            {data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
-                            {data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
-                        ]}
-                        yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
-                        layout="horizontal"
-                        width={width}
-                        height={350}
-                    />
+					<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+						<BarChart 
+							series={[
+								{data: gradePyramid.flashGrades, stack: 'A', label: 'Flash', color: '#92d050'},
+								{data: gradePyramid.redpointGrades, stack: 'A', label: 'Redpoint', color: '#ff0000'},
+								{data: gradePyramid.otherGrades, stack: 'A', label: 'Other', color: '#d9d9d9'}
+							]}
+							yAxis={[{ scaleType: 'band', data: gradePyramid.gradesRange, label: 'Grades', curve: 'catmullRom' }]}
+							layout="horizontal"
+			
+							width={Math.min(width, 700)}
+							height={350}
+						/>
+					</Box>
                     <Divider sx={{mt: 2, mb: 2}} />
                     <LineChart
                         series={[
@@ -386,33 +418,35 @@ const StatsPage = () => {
                     <Typography variant="h5" align="center" sx={{  mb: 1 }}>
                         Activity Calendar
                     </Typography>
-                    <Box sx={{ width: width, height: '100%' }}>
-                        <Box sx={{p: 2, pb: 4, mb: 3}}>
-                            <Tooltip id="my-tooltip"/>
-                            {performanceRatings && <CalendarHeatmap
-                                startDate={new Date('2024-01-01')}
-                                endDate={new Date('2024-12-01')}
-                                values={performanceRatings}
-                                showMonthLabels
-                                tooltipDataAttrs={(value) => {
-                                    if (!value.totalPoints) {
-                                        return null;
-                                    } else {
-                                        return { 
-                                            'data-tooltip-content': `Performance rating: ${value.totalPoints}, Number of climbs: ${value.numClimbs}`, 
-                                            "data-tooltip-id": "my-tooltip"
-                                        }
-                                    }
-                                }}
-                                classForValue={value => {
-                                    if (!value) {
-                                    return 'color-empty';
-                                    }
-                                    return `color-github-${value.numClimbs}`;
-                                }}
-                            />}
-                        </Box>
-                    </Box>         
+					<Box sx={{display: 'flex', justifyContent: 'center'}}>
+						<Box sx={{ width: Math.min(700, width), height: '100%', }}>
+							<Box sx={{p: 2, pb: 4, mb: 3}}>
+									<Tooltip id="my-tooltip"/>
+									{performanceRatings && <CalendarHeatmap
+										startDate={new Date('2024-01-01')}
+										endDate={new Date('2024-12-01')}
+										values={performanceRatings}
+										showMonthLabels
+										tooltipDataAttrs={(value) => {
+											if (!value.totalPoints) {
+												return null;
+											} else {
+												return { 
+													'data-tooltip-content': `Performance rating: ${value.totalPoints}, Number of climbs: ${value.numClimbs}`, 
+													"data-tooltip-id": "my-tooltip"
+												}
+											}
+										}}
+										classForValue={value => {
+											if (!value) {
+											return 'color-empty';
+											}
+											return `color-github-${value.numClimbs}`;
+										}}
+									/>}
+							</Box>
+						</Box>  
+					</Box>        
                 </Paper>
             </Template4>
             <CreateAscentFab />
