@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import baseUrl from '../../utils/baseUrl';
 import { BarChart} from '@mui/x-charts/BarChart';
-import { LineChart, areaElementClasses } from '@mui/x-charts/LineChart';
+import { LineChart } from '@mui/x-charts/LineChart';
 import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
 import { Tooltip } from 'react-tooltip'
@@ -14,12 +14,9 @@ import Template4 from '../../templates/Template4';
 import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-// import { Chart, ArcElement, PieController } from 'chart.js';
-// import { Pie } from 'react-chartjs-2';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../components/RouteGrade/RouteGrade';
 import TimeAgo from 'javascript-time-ago'
-
 import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -27,15 +24,8 @@ import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
 
 
-
-
 TimeAgo.addDefaultLocale(en)
-
-// Create formatter (English).
 const timeAgo = new TimeAgo('en-US')
-
-// Chart.register(ArcElement, PieController);
-
 
 function formatDataBarChart (data) {
     // All the keys are grades
@@ -64,6 +54,80 @@ function formatDataBarChart (data) {
         otherGrades,
         gradesRange
     }
+}
+
+function formatTickTypeStats (data) {
+	// Reusing the API for the Grade bar chart
+
+	const tickTypeStats = [
+		{
+			tickType: 'flash',
+			totalAscents: data.tickTypeCountsTotal.flash,
+			topAscents: data.topAscents.flash
+
+		},
+		{
+			tickType: 'redpoint',
+			totalAscents: data.tickTypeCountsTotal.redpoint,
+			topAscents: data.topAscents.redpoint
+		}
+	]
+
+	for (const tickType of ['flash', 'redpoint']) {
+
+		const gradeCountGroupByDifficulty = {
+			'easy': 0,
+			'moderate': 0,
+			'difficult': 0,
+			'hard': 0,
+			'very hard': 0,
+			'extreme': 0
+		}
+
+		for (const [grade, tickTypeCount] of Object.entries(data.tickTypeCountsByGrade)) {
+			if (grade <= 17) {
+				gradeCountGroupByDifficulty['easy'] += tickTypeCount[tickType];
+			} else if ((grade > 17) && (grade <= 20)) {
+				gradeCountGroupByDifficulty['moderate'] += tickTypeCount[tickType];
+			} else if ((grade > 20) && (grade <= 22)) {
+				gradeCountGroupByDifficulty['difficult'] += tickTypeCount[tickType];
+			} else if ((grade > 22) && (grade <= 25)) {
+				gradeCountGroupByDifficulty['hard'] += tickTypeCount[tickType];
+			} else {
+				gradeCountGroupByDifficulty['very hard'] += tickTypeCount[tickType];
+			}
+		}
+
+		tickTypeStats.find((tickTypeStat) => tickTypeStat.tickType === tickType).gradeCountData = [
+			{
+				id: 0, 
+				value: gradeCountGroupByDifficulty['easy'],
+				label: 'Easy',
+			},
+			{
+				id: 1, 
+				value: gradeCountGroupByDifficulty['moderate'],
+				label: 'Moderate',
+			},
+			{
+				id: 2, 
+				value: gradeCountGroupByDifficulty['difficult'],
+				label: 'Difficult',
+			},
+			{
+				id: 3, 
+				value: gradeCountGroupByDifficulty['hard'],
+				label: 'Hard',
+			},
+			{
+				id: 4, 
+				value: gradeCountGroupByDifficulty['very hard'],
+				label: 'Very Hard',
+			},
+		]
+	}
+
+	return tickTypeStats;
 }
 
 function formatWeeklyStats (data) {
@@ -191,6 +255,7 @@ const StatsPage = () => {
     });
     const [performanceRatings, setPerformanceRatings] = useState(null);
 	const [areaStats, setAreaStats] = useState(null);
+	const [tickTypeStats, setTickTypeStats] = useState(null);
 
     useEffect(() => {
         const fetchGradePyramid = async () => {
@@ -203,6 +268,7 @@ const StatsPage = () => {
                 });
                 const data = response.data;
                 setGradePyramid(formatDataBarChart(data));
+
             } catch (error) {
                 console.error(error);
             }
@@ -271,6 +337,25 @@ const StatsPage = () => {
 		fetchAreaStats();
 	}, [])
 
+	useEffect(() => {
+		const fetchTickTypeStats = async () => {
+			try {
+				const token = localStorage.getItem('token');
+				const response = await axios.get(`${baseUrl}/stats/tickType-stats`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				});
+				setTickTypeStats(formatTickTypeStats(response.data));
+			}
+			catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchTickTypeStats();
+	}, [])
+
     return (
         <>
             <Template4>
@@ -281,12 +366,90 @@ const StatsPage = () => {
 					<Box  sx={{p: 1}}>
 						<TableContainer>
 							<Table>
+								<TableHead style={{backgroundColor: '#f2f2f2'}}>
+									<TableRow>
+										<TableCell key="tickType" align="center" style={{fontWeight: 'bold'}}>Tick Type</TableCell>
+										<TableCell key="difficulty" align="center" style={{fontWeight: 'bold'}}>Difficulty</TableCell>
+										<TableCell key="totalAscents" align="center" style={{fontWeight: 'bold'}}>Total Ascents</TableCell>
+										<TableCell key="bestAscents" align="center" style={{fontWeight: 'bold'}}>Best Ascents</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{tickTypeStats && tickTypeStats.map((row, index) =>{ 
+
+										return (
+											<TableRow key={index}>
+												<TableCell key="tickType">
+													{row.tickType}
+												</TableCell>
+												<TableCell key="difficulty">
+													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+														<PieChart
+															series={[{
+																data: row.gradeCountData,
+																highlightScope: { faded: 'global', highlighted: 'item' },
+          														faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+															}]}
+															colors={['#66b320', '#f9e11a', '#f29a14', '#cc2c28', '#9f247b']}
+															
+															width={100}
+															height={100}
+															margin={{right: 5}}
+															slotProps={{
+																legend: {
+																	hidden: true,
+																},
+															}}
+															// options={{ layout: { legend: 'none' } }}
+
+														/>
+													</div>
+												</TableCell>
+												<TableCell key="totalAscents" align="center">
+													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'tickType', operator: 'equals', value: row.tickType }]}}}>
+														{row.totalAscents}
+													</Link>
+												</TableCell>
+												<TableCell key="bestAscents">
+													{row.topAscents && row.topAscents.map((ascent) => {
+														return (
+															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
+																<Box display="flex" flexDirection="row" >
+																	<Box sx={{mr: 2}}>
+																		<TickTypeIcon tickType={ascent.tickType}/> 
+																	</Box>
+																	<Box display="flex" flexDirection="row">
+																		<Box sx={{mr: 1}}>
+																			<RouteGrade grade={ascent.route.grade}/>
+																		</Box>
+																		<Box> 
+																			{ascent.route.name}
+																		</Box> 
+																	</Box>
+																</Box>
+																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
+																	{timeAgo.format(new Date(ascent.date))}
+																</Box>
+															</Box>
+														)
+													})}
+												</TableCell>
+											</TableRow>
+										)
+									})}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Box>
+					<Box  sx={{p: 1}}>
+						<TableContainer>
+							<Table>
 							<TableHead style={{backgroundColor: '#f2f2f2'}}>
 								<TableRow>
-									<TableCell align="center" style={{fontWeight: 'bold'}}>Area Name</TableCell>
-									<TableCell align="center" style={{fontWeight: 'bold'}}>Difficulty</TableCell>
-									<TableCell align="center" style={{fontWeight: 'bold'}}>Total Ascents</TableCell>
-									<TableCell align="center" style={{fontWeight: 'bold'}}>Best Ascents</TableCell>
+									<TableCell key="areaName" align="center" style={{fontWeight: 'bold'}}>Area Name</TableCell>
+									<TableCell key="difficulty" align="center" style={{fontWeight: 'bold'}}>Difficulty</TableCell>
+									<TableCell key="totalAscents" align="center" style={{fontWeight: 'bold'}}>Total Ascents</TableCell>
+									<TableCell key="bestAscents" align="center" style={{fontWeight: 'bold'}}>Best Ascents</TableCell>
 								</TableRow>
 							</TableHead>
 								<TableBody>
@@ -294,10 +457,10 @@ const StatsPage = () => {
 
 										return (
 											<TableRow key={row.area}>
-												<TableCell>
+												<TableCell key="area">
 													{row.area}
 												</TableCell>
-												<TableCell>
+												<TableCell key="difficulty">
 													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 														<PieChart
 															// series={{
@@ -333,12 +496,12 @@ const StatsPage = () => {
 														/>
 													</div>
 												</TableCell>
-												<TableCell align="center">
-													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operatorValue: 'contains', value: row.area }]}}}>
+												<TableCell align="center" key="totalAscents">
+													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operator: 'contains', value: row.area }]}}}>
 														{row.totalAscents}
 													</Link>
 												</TableCell>
-												<TableCell>
+												<TableCell key="bestAscents">
 													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
 														return (
 															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>

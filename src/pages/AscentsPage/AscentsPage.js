@@ -42,8 +42,6 @@ const fetchAndPrepareAscents = async () => {
         }
     })
 
-	console.log('sortedAscents', sortedAscents)
-
     return sortedAscents;
 }
 
@@ -52,9 +50,7 @@ const AscentsPage = () => {
     const [ascentsData, setAscentsData] = useState([]);
 
 	const location = useLocation();
-	const initialFilterModel = location.state ? {filterModel: location.state.defaultFilter} : {}
-
-	console.log('initialFilterModel', initialFilterModel)
+	const initialFilterModel = location.state ? {filterModel: location.state.defaultFilter} : null
 
     useEffect(() => {
         const fetchAscentsData = async () => {
@@ -99,13 +95,36 @@ const AscentsPage = () => {
                     editable: false,
                     type: 'singleSelect',
                     valueOptions: ['flash', 'redpoint', 'hangdog', 'attempt'],
+					sortComparator: (v1, v2, cellParams1, cellParams2) => {
+						const order = ['flash', 'redpoint', 'hangdog', 'attempt'];
+						return order.indexOf(v1) - order.indexOf(v2);
+					},
                     renderCell: (params) => {
                         return (
                             <TickTypeIcon tickType={params.value} />
                         )
                     },
+					valueGetter: (params) => {
+						return params ? params : null;
+					},
                     headerAlign: 'center',
                     align: 'center',
+					filterOperators: [
+						{
+							value: 'equals',
+							getApplyFilterFn: (filterItem, column) => {
+
+								if (!filterItem.field || !filterItem.value || !filterItem.operator) {
+									return;
+								}
+								return (params) => {
+									const value = params;
+									const filterValue = filterItem.value;
+									return value === filterValue;
+								};
+							},
+						},
+					],
                 }, 
                 {
                     field: 'routeName',
@@ -217,9 +236,16 @@ const AscentsPage = () => {
 						filter: initialFilterModel
 					}}
                 />}
-				{!columns && 'TODO: This flashes Stop the flash! You have no ascents to display.'
-					
-				}
+				{!columns && <StyledDataGrid
+                    style={{ width: '100%' }}
+                    rows={[]}
+                    columns={[]}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
+					localeText={{noRowsLabel: 'No ascents to display!'}}
+				/>}
             </Template2>
             <CreateAscentFab />
         </>

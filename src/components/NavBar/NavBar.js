@@ -8,7 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import {useSnackbar} from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import { Menu, MenuItem } from '@mui/material';
-import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemIcon, ListItemText } from '@mui/material';
 
 const NavBar = () => {
     const theme = useTheme();
@@ -18,7 +18,7 @@ const NavBar = () => {
     const {enqueueSnackbar} = useSnackbar();
 
     const validPaths = ['/ascents', '/routes', '/stats', '/login', '/register'];
-const basePath = validPaths.includes(`/${location.pathname.split('/')[1]}`) ? `/${location.pathname.split('/')[1]}` : false;
+	const basePath = validPaths.includes(`/${location.pathname.split('/')[1]}`) ? `/${location.pathname.split('/')[1]}` : false;
 
     const handleTabClick = useCallback((route) => {
         navigate(route);

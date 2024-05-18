@@ -106,6 +106,7 @@ const RegisterPage = () => {
                                 helperText={username.length > 0 && validateUsername(username)}
                                 required
                                 fullWidth
+								autoComplete="username"
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -119,6 +120,7 @@ const RegisterPage = () => {
                                 helperText={password.length > 0 && validatePassword(password)}
                                 required
                                 fullWidth
+								autoComplete="new-password"
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -146,6 +148,7 @@ const RegisterPage = () => {
                                         </InputAdornment>
                                     )
                                 }}
+								autoComplete="new-password"
                             />
                         </Grid>
                         <Grid item xs={12}>

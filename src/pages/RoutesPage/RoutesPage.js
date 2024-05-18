@@ -207,9 +207,16 @@ const RoutesPage = () => {
 						filter: initialFilterModel
 					}}
                 />}
-				{!columns && 'TODO: This flashes Stop the flash! You have no routes to display.'
-					
-				}
+				{!columns && <StyledDataGrid
+                    style={{ width: '100%' }}
+                    rows={[]}
+                    columns={[]}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
+					localeText={{noRowsLabel: 'No routes to display!'}}
+                />}
             </Template2>
             <CreateAscentFab />
         </>
