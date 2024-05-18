@@ -9,7 +9,6 @@ import {  Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { getAscents } from '../../apis/ascents';
-import { Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
 const fetchAndPrepareAscents = async () => {
@@ -187,9 +186,9 @@ const AscentsPage = () => {
 					renderCell: (params) => {
                         return (
                             <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-                                <Typography variant="body1">
+                                {/* <Typography variant="body1"> */}
 									{params.formattedValue ? params.formattedValue : null}
-                                </Typography>
+                                {/* </Typography> */}
                             </Box>
                         )
                     },
