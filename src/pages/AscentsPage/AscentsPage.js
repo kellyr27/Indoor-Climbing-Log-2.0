@@ -9,18 +9,28 @@ import {  Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { getAscents } from '../../apis/ascents';
+import { Typography } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const fetchAndPrepareAscents = async () => {
     const ascents = await getAscents()
-
     // Add id, routeName, routeGrade, and routeColour to each ascent (flattening the route object)
-    const ascentsFlattened = ascents.map(item => ({
-        ...item,
-        id: item._id,
-        routeName: item.route.name,
-        routeGrade: item.route.grade,
-        routeColour: item.route.colour,
-    }));
+    const ascentsFlattened = ascents.map(item => {
+		const ascentFlattened = {
+			...item,
+			id: item._id,
+			routeName: item.route.name,
+			routeGrade: item.route.grade,
+			routeColour: item.route.colour,
+		}
+
+		if (item.route.area) {
+			ascentFlattened.routeAreaName = item.route.area.name;
+		}
+
+		return ascentFlattened;
+	
+	});
 
     // Sort the ascents by date then by createdAt, descending
     const sortedAscents = ascentsFlattened.sort((a, b) => {
@@ -32,12 +42,19 @@ const fetchAndPrepareAscents = async () => {
         }
     })
 
+	console.log('sortedAscents', sortedAscents)
+
     return sortedAscents;
 }
 
 const AscentsPage = () => {
     const navigate = useNavigate();
     const [ascentsData, setAscentsData] = useState([]);
+
+	const location = useLocation();
+	const initialFilterModel = location.state ? {filterModel: location.state.defaultFilter} : {}
+
+	console.log('initialFilterModel', initialFilterModel)
 
     useEffect(() => {
         const fetchAscentsData = async () => {
@@ -51,7 +68,7 @@ const AscentsPage = () => {
         fetchAscentsData();
     }, [])
 
-    const [columns, setColumns] = useState([])
+    const [columns, setColumns] = useState(null)
 
     useEffect(() => {
         if (ascentsData.length > 0) {
@@ -133,6 +150,33 @@ const AscentsPage = () => {
                     headerAlign: 'center',
                     align: 'center',
                 }, 
+				{
+                    field: 'routeAreaName',
+                    headerName: 'Area',
+                    minWidth: 200,
+                    flex: 4,
+                    sortable: true,
+                    filterable: true,
+                    editable: false,
+                    type: 'string',
+					valueFormatter: (params) => {
+                        return params ? params : null;
+                    },
+					valueGetter: (params) => {
+                        return params ? params : null;
+                    },
+					renderCell: (params) => {
+                        return (
+                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+                                <Typography variant="body1">
+									{params.formattedValue ? params.formattedValue : null}
+                                </Typography>
+                            </Box>
+                        )
+                    },
+                    headerAlign: 'center',
+                    align: 'left',
+                }, 
                 {
                     field: 'notes', 
                     headerName: 'Notes', 
@@ -158,7 +202,7 @@ const AscentsPage = () => {
     return (
         <>
             <Template2>
-                <StyledDataGrid
+				{columns && <StyledDataGrid
                     style={{ width: '100%' }}
                     rows={ascentsData}
                     columns={columns}
@@ -169,7 +213,13 @@ const AscentsPage = () => {
                     onRowDoubleClick={(params) => {
                         navigate(`/ascents/${params.row.id}`);
                     }}
-                />
+					initialState={{
+						filter: initialFilterModel
+					}}
+                />}
+				{!columns && 'TODO: This flashes Stop the flash! You have no ascents to display.'
+					
+				}
             </Template2>
             <CreateAscentFab />
         </>

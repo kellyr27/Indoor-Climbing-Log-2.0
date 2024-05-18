@@ -17,9 +17,8 @@ import { useLocation } from 'react-router-dom';
 const RoutesPage = () => {
     const navigate = useNavigate();
 	const location = useLocation();
-	const defaultFilter = location.state?.defaultFilter || {}
+	const initialFilterModel = location.state ? {filterModel: location.state.defaultFilter} : {}
 	
-	console.log(defaultFilter)
 
     const [routesData, setRoutesData] = useState([]);
 
@@ -205,12 +204,10 @@ const RoutesPage = () => {
                         navigate(`/routes/${params.row.id}`);
                     }}
 					initialState={{
-						filter: {
-							filterModel: defaultFilter
-						}
+						filter: initialFilterModel
 					}}
                 />}
-				{!columns && 'TODO: You have no routes to display.'
+				{!columns && 'TODO: This flashes Stop the flash! You have no routes to display.'
 					
 				}
             </Template2>

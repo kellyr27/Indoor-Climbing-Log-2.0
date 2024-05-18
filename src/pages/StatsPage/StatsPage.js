@@ -334,7 +334,7 @@ const StatsPage = () => {
 													</div>
 												</TableCell>
 												<TableCell align="center">
-													<Link to={'/routes'} state={ {defaultFilter: {items: [{ field: 'area', operatorValue: 'contains', value: row.area }]}}}>
+													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operatorValue: 'contains', value: row.area }]}}}>
 														{row.totalAscents}
 													</Link>
 												</TableCell>
