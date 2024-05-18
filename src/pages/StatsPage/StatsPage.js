@@ -380,7 +380,14 @@ const StatsPage = () => {
 										return (
 											<TableRow key={index}>
 												<TableCell key="tickType">
-													{row.tickType}
+													<Box display="flex" flexDirection="row" >
+														<Box sx={{mr: 1}}>
+															<TickTypeIcon tickType={row.tickType}/> 
+														</Box>
+														<Box display="flex" flexDirection="row">
+															{row.tickType.charAt(0).toUpperCase() + row.tickType.slice(1)}
+														</Box>
+													</Box>
 												</TableCell>
 												<TableCell key="difficulty">
 													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -406,7 +413,7 @@ const StatsPage = () => {
 													</div>
 												</TableCell>
 												<TableCell key="totalAscents" align="center">
-													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'tickType', operator: 'equals', value: row.tickType }]}}}>
+													<Link to={'/ascents'} style={{ textDecoration: 'none' }} state={ {defaultFilter: {items: [{ field: 'tickType', operator: 'equals', value: row.tickType }]}}}>
 														{row.totalAscents}
 													</Link>
 												</TableCell>
@@ -418,14 +425,16 @@ const StatsPage = () => {
 																	<Box sx={{mr: 2}}>
 																		<TickTypeIcon tickType={ascent.tickType}/> 
 																	</Box>
-																	<Box display="flex" flexDirection="row">
-																		<Box sx={{mr: 1}}>
-																			<RouteGrade grade={ascent.route.grade}/>
+																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
+																		<Box display="flex" flexDirection="row">
+																			<Box sx={{mr: 1}}>
+																				<RouteGrade grade={ascent.route.grade}/>
+																			</Box>
+																			<Box> 
+																				{ascent.route.name}
+																			</Box> 
 																		</Box>
-																		<Box> 
-																			{ascent.route.name}
-																		</Box> 
-																	</Box>
+																	</Link>
 																</Box>
 																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
 																	{timeAgo.format(new Date(ascent.date))}
@@ -497,7 +506,7 @@ const StatsPage = () => {
 													</div>
 												</TableCell>
 												<TableCell align="center" key="totalAscents">
-													<Link to={'/ascents'} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operator: 'contains', value: row.area }]}}}>
+													<Link to={'/ascents'} style={{ textDecoration: 'none' }} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operator: 'contains', value: row.area }]}}}>
 														{row.totalAscents}
 													</Link>
 												</TableCell>
@@ -509,14 +518,16 @@ const StatsPage = () => {
 																	<Box sx={{mr: 2}}>
 																		<TickTypeIcon tickType={ascent.tickType}/> 
 																	</Box>
-																	<Box display="flex" flexDirection="row">
-																		<Box sx={{mr: 1}}>
-																			<RouteGrade grade={ascent.route.grade}/>
+																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
+																		<Box display="flex" flexDirection="row">
+																			<Box sx={{mr: 1}}>
+																				<RouteGrade grade={ascent.route.grade}/>
+																			</Box>
+																			<Box> 
+																				{ascent.route.name}
+																			</Box> 
 																		</Box>
-																		<Box> 
-																			{ascent.route.name}
-																		</Box> 
-																	</Box>
+																	</Link>
 																</Box>
 																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
 																	{timeAgo.format(new Date(ascent.date))}
@@ -531,14 +542,16 @@ const StatsPage = () => {
 																	<Box sx={{mr: 2}}>
 																		<TickTypeIcon tickType={ascent.tickType}/> 
 																	</Box>
-																	<Box display="flex" flexDirection="row">
-																		<Box sx={{mr: 1}}>
-																			<RouteGrade grade={ascent.route.grade}/>
+																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
+																		<Box display="flex" flexDirection="row">
+																			<Box sx={{mr: 1}}>
+																				<RouteGrade grade={ascent.route.grade}/>
+																			</Box>
+																			<Box> 
+																				{ascent.route.name}
+																			</Box> 
 																		</Box>
-																		<Box> 
-																			{ascent.route.name}
-																		</Box> 
-																	</Box>
+																	</Link>
 																</Box>
 																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
 																	{timeAgo.format(new Date(ascent.date))}
