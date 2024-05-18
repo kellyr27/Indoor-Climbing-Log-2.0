@@ -12,9 +12,13 @@ import { Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
+import { useLocation } from 'react-router-dom';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
+	const location = useLocation();
+	const initialFilterModel = location.state ? {filterModel: location.state.defaultFilter} : {}
+	
 
     const [routesData, setRoutesData] = useState([]);
 
@@ -38,8 +42,13 @@ const RoutesPage = () => {
                 }));
 
                 const sortedData = dataWithIds.sort((a, b) => {
-                    return new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
-                });
+					const dateComparison = new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
+					if (dateComparison !== 0) {
+					  	return dateComparison;
+					} else {
+					  	return new Date(b.createdAt) - new Date(a.createdAt);
+					}
+				});
 
                 setRoutesData(sortedData);
 
@@ -51,7 +60,7 @@ const RoutesPage = () => {
         fetchRoutesData();
     }, [])
 
-    const [columns, setColumns] = useState([])
+    const [columns, setColumns] = useState(null)
 
     useEffect(() => {
             
@@ -119,6 +128,33 @@ const RoutesPage = () => {
                     },
                     headerAlign: 'center',
                 }, 
+				{
+                    field: 'area',
+                    headerName: 'Area',
+                    minWidth: 200,
+                    flex: 4,
+                    sortable: true,
+                    filterable: true,
+                    editable: false,
+                    type: 'string',
+					valueFormatter: (params) => {
+                        return params ? params.name : null;
+                    },
+					valueGetter: (params) => {
+                        return params ? params.name : null;
+                    },
+					renderCell: (params) => {
+                        return (
+                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+                                <Typography variant="body1">
+                                    {params.row.area ? params.row.area.name : null}
+                                </Typography>
+                            </Box>
+                        )
+                    },
+                    headerAlign: 'center',
+                    align: 'left',
+                }, 
                 {
                     field: 'lastAscentDate',
                     headerName: 'Last Ascent Date',
@@ -153,11 +189,10 @@ const RoutesPage = () => {
         }
     }, [routesData]);
 
-
     return (
         <>
             <Template2>
-                <StyledDataGrid
+                {columns && <StyledDataGrid
                     style={{ width: '100%' }}
                     rows={routesData}
                     columns={columns}
@@ -168,7 +203,20 @@ const RoutesPage = () => {
                     onRowDoubleClick={(params) => {
                         navigate(`/routes/${params.row.id}`);
                     }}
-                />
+					initialState={{
+						filter: initialFilterModel
+					}}
+                />}
+				{!columns && <StyledDataGrid
+                    style={{ width: '100%' }}
+                    rows={[]}
+                    columns={[]}
+                    pageSize={100}
+                    disableCellFocus
+                    rowHeight={70}
+                    sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
+					localeText={{noRowsLabel: 'No routes to display!'}}
+                />}
             </Template2>
             <CreateAscentFab />
         </>

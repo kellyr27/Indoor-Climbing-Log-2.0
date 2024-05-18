@@ -1,10 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, Autocomplete, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import baseUrl from "../../utils/baseUrl";
 import { useSnackbar } from "notistack";
 import Template3 from "../../templates/Template3";
+import { getAreas } from "../../apis/areas";
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -14,8 +15,13 @@ const EditRoutePage = () => {
     const [routeName, setRouteName] = useState('');
     const [routeGrade, setRouteGrade] = useState('');
     const [routeColour, setRouteColour] = useState('');
+	const [routeAreaName, setRouteAreaName] = useState(null);
     const { id } = useParams()
     const navigate = useNavigate();
+
+	const handleRouteAreaChange = (e, value) => {
+		setRouteAreaName(value)
+	}
 
 
     useEffect(() => {
@@ -29,20 +35,44 @@ const EditRoutePage = () => {
                 setRouteName(response.data.name);
                 setRouteGrade(response.data.grade);
                 setRouteColour(response.data.colour);
+
+				if (response.data.area) {
+					setRouteAreaName(response.data.area.name);
+				}
             })
             .catch(error => {
                 console.error(error);
             });
     }, [id]);
 
+	const [areasData, setAreasData] = useState([]);
+	useEffect(() => {
+		const fetchAreasData = async () => {
+			try {
+				const areas = await getAreas();
+				setAreasData(areas);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchAreasData();
+	}, [])
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
+
         const editedRoute = {
             name: routeName,
             grade: routeGrade,
             colour: routeColour,
         }
+
+		if (routeAreaName && routeAreaName !== '') {
+			editedRoute.area = { name: routeAreaName};
+		}
+
         const token = localStorage.getItem('token');
         axios.put(`${baseUrl}/routes/${id}`, editedRoute, {
             headers: {
@@ -124,6 +154,16 @@ const EditRoutePage = () => {
                                 </Select>
                             </FormControl>
                         </Grid>
+							<Grid item xs={12}>
+								<Autocomplete
+									freeSolo
+									options={areasData}
+									getOptionLabel={(option) => option ? option.name : ''}
+									onInputChange={handleRouteAreaChange}
+									value={areasData.find(route => route.name === routeAreaName) || ''}
+									renderInput={(params) => <TextField {...params} label="Route" fullWidth />}
+								/>
+                            </Grid>
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" fullWidth sx={{borderRadius: 3}}>Save Changes</Button>
                         </Grid>

@@ -8,7 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import {useSnackbar} from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import { Menu, MenuItem } from '@mui/material';
-import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemIcon, ListItemText } from '@mui/material';
 
 const NavBar = () => {
     const theme = useTheme();
@@ -17,7 +17,8 @@ const NavBar = () => {
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
     const {enqueueSnackbar} = useSnackbar();
 
-    const basePath = `/${location.pathname.split('/')[1]}`
+    const validPaths = ['/ascents', '/routes', '/stats', '/login', '/register'];
+	const basePath = validPaths.includes(`/${location.pathname.split('/')[1]}`) ? `/${location.pathname.split('/')[1]}` : false;
 
     const handleTabClick = useCallback((route) => {
         navigate(route);
@@ -92,45 +93,40 @@ const NavBar = () => {
                         )}
                     </Box>
                     {isAuthenticated && (
-                        <Tooltip title="Account">
-                            <Box>
-                                <Button onClick={handleMenu}>
-                                    <AccountCircleIcon/>
-                                </Button>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleMenuClose}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    }}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    }}
-                                >
-                                    <MenuItem onClick={() => handleMenuClick('/user/settings')}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <SettingsIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Settings" />
-                                        </ListItem>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleLogout}>
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <LogoutIcon />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Logout" />
-                                        </ListItem>
-                                    </MenuItem>
-                                </Menu>
-                                
-                            </Box>
-                        </Tooltip>
-                    )}
+						<Box>
+							<Tooltip title="Account">
+								<Button onClick={handleMenu}>
+									<AccountCircleIcon/>
+								</Button>
+							</Tooltip>
+							<Menu
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleMenuClose}
+								transformOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+								}}
+								anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'right',
+								}}
+							>
+								<MenuItem onClick={() => handleMenuClick('/user/settings')}>
+								<ListItemIcon>
+									<SettingsIcon />
+								</ListItemIcon>
+								<ListItemText primary="Settings" />
+								</MenuItem>
+								<MenuItem onClick={handleLogout}>
+								<ListItemIcon>
+									<LogoutIcon />
+								</ListItemIcon>
+								<ListItemText primary="Logout" />
+								</MenuItem>
+							</Menu>
+						</Box>
+					)}
                 </Box>
             </Toolbar>
         </AppBar>

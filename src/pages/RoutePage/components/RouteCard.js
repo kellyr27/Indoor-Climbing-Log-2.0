@@ -65,7 +65,8 @@ const RouteCard = () => {
                 }
             />
             <CardContent>
-                <Divider />
+				{routeData.area && <Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>{routeData.area.name}</Typography>}
+				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
                 <List>
                     {routeData.ascents && routeData.ascents.map((ascent, index) => {

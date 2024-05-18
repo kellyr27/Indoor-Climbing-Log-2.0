@@ -55,6 +55,7 @@ const LoginPage = () => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 fullWidth
+								autoComplete='username'
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -66,6 +67,7 @@ const LoginPage = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 fullWidth
+								autoComplete='current-password'
                             />
                         </Grid>
                         <Grid item xs={12}>
