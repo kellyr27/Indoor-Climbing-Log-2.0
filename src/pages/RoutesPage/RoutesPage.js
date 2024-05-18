@@ -34,7 +34,17 @@ const RoutesPage = () => {
                     }
                 });
 
-                const dataWithIds = response.data.map(item => ({
+
+
+				// Sort ascents (property of route) by date descending
+				const sortedAscents = response.data.map(item => {
+					item.ascents.sort((a, b) => new Date(b.date) - new Date(a.date));
+					return item;
+				})
+
+
+
+                const dataWithIds = sortedAscents.map(item => ({
                     ...item,
                     id: item._id,
                     lastAscentDate: item.ascents.length > 0 ? item.ascents[0].date : null,
@@ -146,9 +156,9 @@ const RoutesPage = () => {
 					renderCell: (params) => {
                         return (
                             <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-                                <Typography variant="body1">
+                                {/* <Typography variant="body1"> */}
                                     {params.row.area ? params.row.area.name : null}
-                                </Typography>
+                                {/* </Typography> */}
                             </Box>
                         )
                     },
