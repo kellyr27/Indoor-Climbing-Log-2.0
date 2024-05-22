@@ -1,8 +1,8 @@
-import { Box } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import {getDifficultyClassification, getDifficultyBackgroundColour} from '../../utils/helpers'
 import chroma from 'chroma-js';
 
-const RouteGrade = ({ grade }) => {
+const RouteGrade = ({ grade, fontSize = 'inherit' }) => {
 	const gradeClassification = getDifficultyClassification(grade);
 	const backgroundColor = getDifficultyBackgroundColour(grade);
 	const textColor = chroma(backgroundColor).luminance() > 0.4 ? 'black' : 'white';
@@ -20,16 +20,24 @@ const RouteGrade = ({ grade }) => {
 	}
 
     return (
-        <Box sx={{ 
-            alignItems: 'center',
-            border: '2px solid ' + borderColor,
-            bgcolor: backgroundColor,
-            color: textColor,
-            padding: '4px',
-            borderRadius: '7px',
-			...shinyEffectProps
-		}}>
-            {grade}
+        <Box 
+			sx={{
+				display: 'flex', 
+				justifyContent: 'center',
+				alignItems: 'center',
+				border: '2px solid ' + borderColor,
+				bgcolor: backgroundColor,
+				color: textColor,
+				padding: '4px',
+				borderRadius: '7px',
+				...shinyEffectProps,
+				minWidth: 20,
+				minHeight: 20
+			}}
+		>
+            <Typography sx={{fontSize}}>
+                {grade}
+            </Typography>
         </Box>
     )
 }

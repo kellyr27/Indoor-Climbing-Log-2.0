@@ -7,6 +7,7 @@ import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
 import { registerUser } from '../../apis/users/index';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import MyButton from '../../components/MyButton';
 
 const validateUsername = (username) => {
     return username.length < 6 ? "Username must be at least 6 characters long" : null;
@@ -94,7 +95,6 @@ const RegisterPage = () => {
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Register
                 </Typography>
-                <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -152,12 +152,15 @@ const RegisterPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}} disabled={!isFormValid}>
-                                Create new user
-                            </Button>
+							<MyButton
+								buttonText="Create new user"
+								color="primary"
+								handleClick={handleSubmit}
+								fullWidth
+								disabled={!isFormValid}
+							/>
                         </Grid>
                     </Grid>
-                </form>
             </Paper>
         </Template3>
     );

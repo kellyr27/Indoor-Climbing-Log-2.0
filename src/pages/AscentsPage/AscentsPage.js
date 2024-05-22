@@ -3,7 +3,7 @@ import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
-import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../components/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import {  Box } from '@mui/material';
 import Template2 from '../../templates/Template2';
@@ -160,10 +160,20 @@ const AscentsPage = () => {
                         return params
                     },
                     renderCell: (params) => {
-                        return (
-                            <RouteGrade grade={params.row.routeGrade} />
-                        )
-                    },
+						return (
+							<Box 
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									height: '100%',
+									width: '100%',
+								}}
+							>
+								<RouteGrade grade={params.row.routeGrade} />
+							</Box>
+						)
+					},
                     type: 'number',
                     headerAlign: 'center',
                     align: 'center',

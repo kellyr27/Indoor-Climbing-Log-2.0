@@ -10,6 +10,9 @@ import { Card, CardHeader, CardContent, CardActions, List, ListItem } from '@mui
 import DeleteButtonWithDialog from '../../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
 import { getAscent, deleteAscent } from '../../../services/apis';
 import MyButton from '../../../components/MyButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconWithText from '../../../components/IconWithText';
 
 const AscentCard = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -61,17 +64,41 @@ const AscentCard = () => {
 					<ListItem 
 						button 
 						onDoubleClick={() => navigate(`/routes/${ascentData.route?._id}`)} 
-						sx={{display: 'flex', justifyContent: 'space-evenly'}}
 					>
-						<Typography variant="h4">
-							<TickTypeIcon tickType={ascentData.tickType} style={{ width: '1em', height: '1em' }}/>
-						</Typography>
-						<Typography variant="h4" sx={{  textAlign: 'center' }}>
-								{ascentData.route?.name}
-						</Typography>
-						<Typography variant="h4">
-							<RouteGrade grade={ascentData.route?.grade} />
-						</Typography>
+						<Box sx={{display: 'flex', justifyContent: 'space-evenly', width: '100%'}}>
+							<Box
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									flex: 1
+								}}
+							>
+								<TickTypeIcon tickType={ascentData.tickType} style={{ width: '2em', height: '2em' }}/>
+							</Box>
+							<Box
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									flex: 3
+								}}
+							>
+								<Typography variant="h4" sx={{  textAlign: 'center' }}>
+									{ascentData.route?.name}
+								</Typography>
+							</Box>
+							<Box
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									flex: 1
+								}}
+							>
+								<RouteGrade grade={ascentData.route?.grade} fontSize="2rem" />
+							</Box>
+						</Box>
 					</ListItem>
 				</List>
 				<Box sx={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
@@ -85,11 +112,21 @@ const AscentCard = () => {
 				<MyButton 
 					color="primary" 
 					handleClick={handleEditClick}
-					buttonText="Edit" 
+					buttonText={
+						<IconWithText 
+							icon={<EditIcon/>}
+							text="Edit"
+						/>
+					}
 				/>
 				<DeleteButtonWithDialog
 					handleDelete={handleDelete}
-					buttonText="Delete"
+					buttonText={
+						<IconWithText 
+							icon={<DeleteIcon/>}
+							text="Delete"
+						/>
+					}
 					dialogText="Are you sure you want to delete this ascent?"
 				/>
 			</CardActions>

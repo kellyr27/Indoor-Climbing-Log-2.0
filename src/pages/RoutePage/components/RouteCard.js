@@ -8,7 +8,7 @@ import RouteColour from '../../../components/RouteColour/RouteColour';
 import baseUrl from '../../../utils/baseUrl';
 import Divider from '@mui/material/Divider'
 import { getRoute } from '../../../apis/routes';
-
+import MyButton from '../../../components/MyButton';
 
 const RouteCard = () => {
     const [routeData, setRouteData] = useState({});
@@ -85,9 +85,11 @@ const RouteCard = () => {
                 </List>
                 <Divider />
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
-                        Edit Route
-                    </Button>
+					<MyButton
+						color="primary"
+						buttonText="Edit Route"
+						handleClick={handleEditClick}
+					/>
                 </Box>
             </CardContent>
         </Card>
