@@ -10,9 +10,9 @@ const dateToDisplay = (date) => {
 }
 
 const getDifficultyClassification = (grade) => {
-    if (grade <= 17) {
+    if (grade <= 16) {
         return 0;
-    } else if ((grade > 17) && (grade <= 19)) {
+    } else if ((grade > 16) && (grade <= 19)) {
         return 1;
     } else if ((grade > 19) && (grade <= 22)) {
         return 2;

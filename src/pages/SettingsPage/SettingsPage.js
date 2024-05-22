@@ -4,26 +4,89 @@ import Template1 from '../../templates/Template1';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Paper, Typography } from '@mui/material';
 import DeleteButtonWithDialog from '../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
+import { getAreas, getRoutes, getAscents } from '../../services/apis';
+import * as XLSX from 'xlsx';
+import MyButton from '../../components/MyButton';
+
 
 const SettingsPage = () => {
 
     const handleDelete = () => {
-        // TODO
-        // const token = localStorage.getItem('token');
-        // axios.delete(`${baseUrl}/ascents/${id}`, {
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`
-        //     }
-        // })
-        //     .then(response => {
-        //         navigate('/ascents');
-        //         enqueueSnackbar('Ascent deleted successfully', { variant: 'success' });
-        //     })
-        //     .catch(error => {
-        //         console.error(error);
-        //         enqueueSnackbar('Failed to delete ascent', { variant: 'error' });
-        //     });
+        
     }
+
+	const handleExportExcel = async () => {
+		// Get all user data
+		const routesData = await getRoutes()
+		const ascentsData = await getAscents()
+
+		// Manipulate route data to fit excel format
+		routesData.forEach(route => {
+			delete route._id
+			delete route.__v
+			delete route.user
+			delete route.createdAt
+			delete route.updatedAt
+			delete route.id
+			delete route.ascents
+
+			route.area = route.area.name
+		})
+
+		// Manipulate ascent data to fit excel format
+		ascentsData.forEach(ascent => {
+			delete ascent._id
+			delete ascent.__v
+			delete ascent.user
+			delete ascent.createdAt
+			delete ascent.updatedAt
+
+			ascent.routeName = ascent.route.name
+			ascent.routeGrade = ascent.route.grade
+			ascent.routeArea = ascent.route.area.name
+
+			// Change route date to YYYY-MM-DD format
+			const date = new Date(ascent.date)
+			ascent.date = date.toISOString().split('T')[0]
+
+			delete ascent.route
+		})
+
+		const routesDataWithNewHeaders = routesData.map(route => {
+			return {
+				"Name": route.name,
+				"Grade": route.grade,
+				"Colour": route.colour,
+				"Area": route.area
+			}
+		})
+		const ascentsDataWithNewHeaders = ascentsData.map(ascent => {
+			return {
+				"Date": ascent.date,
+				"Route Name": ascent.routeName,
+				"Route Grade": ascent.routeGrade,
+				"Route Area": ascent.routeArea,
+				"Tick Type": ascent.tickType,
+				"Notes": ascent.notes
+			}
+		})
+
+
+		// Create a new workbook
+		const wb = XLSX.utils.book_new();
+
+		// Convert the data to worksheet
+		const routesWs = XLSX.utils.json_to_sheet(routesDataWithNewHeaders);
+		const ascentsWs = XLSX.utils.json_to_sheet(ascentsDataWithNewHeaders);
+	
+		// Add the worksheet to the workbook
+		XLSX.utils.book_append_sheet(wb, routesWs, "Routes");
+		XLSX.utils.book_append_sheet(wb, ascentsWs, "Ascents");
+	
+		// Write the workbook to a file
+		XLSX.writeFile(wb, "data.xlsx");
+
+	}
 
     return (
         <>
@@ -33,12 +96,15 @@ const SettingsPage = () => {
                     <Typography variant="h4" align="center" sx={{ pt: 2, mb: 3, fontWeight: 'bold' }}>
                         Your Settings
                     </Typography>
-
-                    <DeleteButtonWithDialog
+					<MyButton
+						buttonText='Export Data' 
+						handleClick={handleExportExcel}
+					/>
+                    {/* <DeleteButtonWithDialog
                         handleDelete={handleDelete}
                         buttonText="Delete Account"
                         dialogText="Are you sure you want to delete your account? This action cannot be undone."
-                    />
+                    /> */}
                 </Paper>
             </Template1>
             <CreateAscentFab />

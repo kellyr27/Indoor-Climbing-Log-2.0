@@ -15,18 +15,14 @@ import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../components/RouteGrade';
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
 import BestAscentDisplay from '../../components/BestAscentDisplay';
+import { getDifficultyClassification } from '../../utils/helpers';
 
 
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo('en-US')
 
 function formatDataBarChart (data) {
     // All the keys are grades
@@ -86,16 +82,26 @@ function formatTickTypeStats (data) {
 		}
 
 		for (const [grade, tickTypeCount] of Object.entries(data.tickTypeCountsByGrade)) {
-			if (grade <= 17) {
-				gradeCountGroupByDifficulty['easy'] += tickTypeCount[tickType];
-			} else if ((grade > 17) && (grade <= 20)) {
-				gradeCountGroupByDifficulty['moderate'] += tickTypeCount[tickType];
-			} else if ((grade > 20) && (grade <= 22)) {
-				gradeCountGroupByDifficulty['difficult'] += tickTypeCount[tickType];
-			} else if ((grade > 22) && (grade <= 25)) {
-				gradeCountGroupByDifficulty['hard'] += tickTypeCount[tickType];
-			} else {
-				gradeCountGroupByDifficulty['very hard'] += tickTypeCount[tickType];
+
+			const difficultyClassification = getDifficultyClassification(grade);
+			switch (difficultyClassification) {
+				case 0:
+					gradeCountGroupByDifficulty['easy'] += tickTypeCount[tickType];
+					break;
+				case 1:
+					gradeCountGroupByDifficulty['moderate'] += tickTypeCount[tickType];
+					break;
+				case 2:
+					gradeCountGroupByDifficulty['difficult'] += tickTypeCount[tickType];
+					break;
+				case 3:
+					gradeCountGroupByDifficulty['hard'] += tickTypeCount[tickType];
+					break;
+				case 4:
+					gradeCountGroupByDifficulty['very hard'] += tickTypeCount[tickType];
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -179,20 +185,29 @@ function formatAreaStats (data) {
 			'difficult': 0,
 			'hard': 0,
 			'very hard': 0,
-			'extreme': 0
 		}
 
 		for (const [grade, count] of Object.entries(area.gradeCounts)) {
-			if (grade <= 17) {
-				gradeCountGroupByDifficulty['easy'] += count;
-			} else if ((grade > 17) && (grade <= 20)) {
-				gradeCountGroupByDifficulty['moderate'] += count;
-			} else if ((grade > 20) && (grade <= 22)) {
-				gradeCountGroupByDifficulty['difficult'] += count;
-			} else if ((grade > 22) && (grade <= 25)) {
-				gradeCountGroupByDifficulty['hard'] += count;
-			} else {
-				gradeCountGroupByDifficulty['very hard'] += count;
+			const difficultyClassification = getDifficultyClassification(grade);
+			
+			switch (difficultyClassification) {
+				case 0:
+					gradeCountGroupByDifficulty['easy'] += count;
+					break;
+				case 1:
+					gradeCountGroupByDifficulty['moderate'] += count;
+					break;
+				case 2:
+					gradeCountGroupByDifficulty['difficult'] += count;
+					break;
+				case 3:
+					gradeCountGroupByDifficulty['hard'] += count;
+					break;
+				case 4:
+					gradeCountGroupByDifficulty['very hard'] += count;
+					break;
+				default:
+					break;
 			}
 		}
 

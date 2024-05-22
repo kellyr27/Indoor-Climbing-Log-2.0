@@ -5,3 +5,4 @@
 - Add Skeleton components for Stats
 - Add Tooltips for all TickType tags (allow for override for Ascents column in /routes)
 - Implement dark mode
+- Export to Excel**
