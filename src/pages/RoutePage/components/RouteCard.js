@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import { Card, CardContent, CardHeader, List, ListItem, Typography, Button, Box } from '@mui/material';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import {dateToDisplay} from '../../../utils/helpers';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../../components/RouteGrade';
 import { Divider } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { Card, CardHeader, CardContent, CardActions, List, ListItem } from '@mui/material';
 import DeleteButtonWithDialog from '../../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
 import { getAscent, deleteAscent } from '../../../services/apis';
-import StyledButton from '../../../themes/components/StyledButton';
+import MyButton from '../../../components/MyButton';
 
 const AscentCard = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -82,9 +82,11 @@ const AscentCard = () => {
 			</CardContent>
 			<Divider />
 			<CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
-				<StyledButton variant="contained" color="primary" onClick={handleEditClick}>
-					Edit
-				</StyledButton>
+				<MyButton 
+					color="primary" 
+					handleClick={handleEditClick}
+					buttonText="Edit" 
+				/>
 				<DeleteButtonWithDialog
 					handleDelete={handleDelete}
 					buttonText="Delete"
