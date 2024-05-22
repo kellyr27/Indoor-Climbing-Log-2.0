@@ -8,7 +8,8 @@ import { Divider } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { Card, CardHeader, CardContent, CardActions, List, ListItem } from '@mui/material';
 import DeleteButtonWithDialog from '../../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
-import { getAscent, deleteAscent } from '../../../apis/ascents';
+import { getAscent, deleteAscent } from '../../../services/apis';
+import StyledButton from '../../../themes/components/StyledButton';
 
 const AscentCard = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -18,7 +19,6 @@ const AscentCard = () => {
 
     useEffect(() => {
         const fetchAscentData = async () => {
-
             try {
                 const data = await getAscent(id);
                 setAscentData(data);
@@ -82,9 +82,9 @@ const AscentCard = () => {
 			</CardContent>
 			<Divider />
 			<CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
-				<Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
+				<StyledButton variant="contained" color="primary" onClick={handleEditClick}>
 					Edit
-				</Button>
+				</StyledButton>
 				<DeleteButtonWithDialog
 					handleDelete={handleDelete}
 					buttonText="Delete"

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import StyledButton from '../../themes/components/StyledButton';
 
 const DeleteButtonWithDialog = (props) => {
 
@@ -18,9 +17,9 @@ const DeleteButtonWithDialog = (props) => {
 
     return (
         <>
-            <StyledButton variant="contained" color="error" onClick={handleClickOpen} >
+            <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}} onClick={handleClickOpen} sx={{borderRadius: 3}}>
                 {buttonText ? buttonText : ''}
-            </StyledButton>
+            </Button>
 
             <Dialog
                 open={open}
