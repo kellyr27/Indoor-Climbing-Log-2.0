@@ -87,6 +87,8 @@ const EditRoutePage = () => {
                 console.error('Error:', error);
                 enqueueSnackbar('Failed to update route', { variant: 'error' });
             });
+
+		
         
     };
 

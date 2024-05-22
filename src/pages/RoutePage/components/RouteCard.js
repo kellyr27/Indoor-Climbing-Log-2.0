@@ -8,6 +8,7 @@ import RouteGrade from '../../../components/RouteGrade/RouteGrade';
 import RouteColour from '../../../components/RouteColour/RouteColour';
 import baseUrl from '../../../utils/baseUrl';
 import Divider from '@mui/material/Divider'
+import { getRoute } from '../../../apis/routes';
 
 
 const RouteCard = () => {
@@ -20,18 +21,13 @@ const RouteCard = () => {
         navigate(`/routes/${id}/edit`);
     };
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        
-        axios.get(`${baseUrl}/routes/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                const data = response.data;
+    useEffect(() => {	
 
-                // Sort ascents by date
+		const fetchRouteData = async () => {
+			try {
+				const data = await getRoute(id);
+				
+				// Sort ascents by date
                 const sortedData = {
                     ...data,
                     ascents: data.ascents.sort((a, b) => {
@@ -40,14 +36,18 @@ const RouteCard = () => {
                 }
 
                 setRouteData(sortedData);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchRouteData();
+
     }, [id]);
 
     return (
-        <Card sx={{minHeight: '300px', bgcolor: 'rgba(254, 250, 250, 0.85)', m: 2, borderRadius: 6}}>
+        <Card sx={{minHeight: '300px', bgcolor: 'rgba(254, 250, 250, 0.85)', m: 2, borderRadius: 6, boxShadow: 4}}>
             <CardHeader
                 sx={{pt: 4}}
                 title={

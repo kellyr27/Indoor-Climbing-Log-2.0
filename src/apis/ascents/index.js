@@ -42,3 +42,31 @@ export const getAscents = async () => {
         throw error;
     }
 }
+
+export const createAscent = async (ascent) => {
+	try {
+		const token = localStorage.getItem('token');
+		const response = await axios.post(`${baseUrl}/ascents`, ascent, {
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		return response.data;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export const editAscent = async (id, ascent) => {
+	try {
+		const token = localStorage.getItem('token');
+		const response = await axios.put(`${baseUrl}/ascents/${id}`, ascent, {
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		return response.data;
+	} catch (error) {
+		throw error;
+	}
+}

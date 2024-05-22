@@ -13,6 +13,7 @@ import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { useLocation } from 'react-router-dom';
+import { getRoutes } from '../../apis/routes';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -26,18 +27,14 @@ const RoutesPage = () => {
         // Fetch the ascents data from the server
         const fetchRoutesData = async () => {
             try {
-                const token = localStorage.getItem('token');
 
-                const response = await axios.get(`${baseUrl}/routes`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+
+				const data = await getRoutes()
 
 
 
 				// Sort ascents (property of route) by date descending
-				const sortedAscents = response.data.map(item => {
+				const sortedAscents = data.map(item => {
 					item.ascents.sort((a, b) => new Date(b.date) - new Date(a.date));
 					return item;
 				})

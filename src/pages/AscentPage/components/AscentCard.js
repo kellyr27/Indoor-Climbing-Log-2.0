@@ -17,7 +17,7 @@ const AscentCard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchAscentData = async () => {
 
             try {
                 const data = await getAscent(id);
@@ -29,7 +29,7 @@ const AscentCard = () => {
             }
         };
     
-        fetchData();
+        fetchAscentData();
     }, [id, navigate, enqueueSnackbar]);
 
     const handleDelete = async () => {
@@ -47,51 +47,52 @@ const AscentCard = () => {
     };
 
     return (
-        <Card sx={{minHeight: '300px', m: 2, bgcolor: 'rgba(254, 250, 250, 0.85)', borderRadius: 6}}>
-            <CardHeader
-                sx={{pt: 4}}
-                title={
-                    <Typography variant="h6" gutterBottom align="center" sx={{ mb: 1 }}>
-                        Ascended on the <span style={{ fontWeight: 'bold' }}>{dateToDisplay(ascentData.date)}</span>
-                    </Typography>
-                }
-            />
-            <CardContent>
-                <List>
-                    <ListItem 
-                        button 
-                        onDoubleClick={() => navigate(`/routes/${ascentData.route?._id}`)} 
-                        sx={{display: 'flex', justifyContent: 'space-evenly'}}
-                    >
-                        <Typography variant="h4">
-                            <TickTypeIcon tickType={ascentData.tickType} style={{ width: '1em', height: '1em' }}/>
-                        </Typography>
-                        <Typography variant="h4" sx={{  textAlign: 'center' }}>
-                                {ascentData.route?.name}
-                        </Typography>
-                        <Typography variant="h4">
-                            <RouteGrade grade={ascentData.route?.grade} />
-                        </Typography>
-                    </ListItem>
-                </List>
-                <Box sx={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
-                    <Typography variant="body1" gutterBottom align="center" sx={{marginBottom: '30px', marginTop: '30px'}}>
-                        {ascentData.notes}
-                    </Typography>
-                </Box>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
-                <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
-                    Edit
-                </Button>
-                <DeleteButtonWithDialog
-                    handleDelete={handleDelete}
-                    buttonText="Delete"
-                    dialogText="Are you sure you want to delete this ascent?"
-                />
-            </CardActions>
-        </Card>
+		<Card sx={{minHeight: '300px', m: 2, bgcolor: 'rgba(254, 250, 250, 0.85)', borderRadius: 6, boxShadow: 4}}>
+			<CardHeader
+				sx={{pt: 4}}
+				title={
+					<Typography variant="h6" gutterBottom align="center" sx={{ mb: 1 }}>
+						Ascended on the <span style={{ fontWeight: 'bold' }}>{dateToDisplay(ascentData.date)}</span>
+					</Typography>
+				}
+			/>
+			<CardContent>
+				<List>
+					<ListItem 
+						button 
+						onDoubleClick={() => navigate(`/routes/${ascentData.route?._id}`)} 
+						sx={{display: 'flex', justifyContent: 'space-evenly'}}
+					>
+						<Typography variant="h4">
+							<TickTypeIcon tickType={ascentData.tickType} style={{ width: '1em', height: '1em' }}/>
+						</Typography>
+						<Typography variant="h4" sx={{  textAlign: 'center' }}>
+								{ascentData.route?.name}
+						</Typography>
+						<Typography variant="h4">
+							<RouteGrade grade={ascentData.route?.grade} />
+						</Typography>
+					</ListItem>
+				</List>
+				<Box sx={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
+					<Typography variant="body1" gutterBottom align="center" sx={{marginBottom: '30px', marginTop: '30px'}}>
+						{ascentData.notes}
+					</Typography>
+				</Box>
+			</CardContent>
+			<Divider />
+			<CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
+				<Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
+					Edit
+				</Button>
+				<DeleteButtonWithDialog
+					handleDelete={handleDelete}
+					buttonText="Delete"
+					dialogText="Are you sure you want to delete this ascent?"
+				/>
+			</CardActions>
+		</Card>
+
     );
 }
 

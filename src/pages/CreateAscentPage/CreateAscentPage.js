@@ -7,6 +7,8 @@ import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
 import { getAreas } from '../../apis/areas';
+import { getRoutes } from '../../apis/routes';
+import {createAscent} from '../../apis/ascents';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -48,7 +50,7 @@ const CreateAscentPage = () => {
         setTickType(newTickType);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!tickType) {
@@ -73,20 +75,14 @@ const CreateAscentPage = () => {
             tickType
         }
 
-        const token = localStorage.getItem('token');
-        axios.post(`${baseUrl}/ascents`, newAscent, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                navigate('/ascents');
-                enqueueSnackbar('Ascent created successfully', { variant: 'success'})
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                enqueueSnackbar('Failed to create ascent', { variant: 'error' });
-            });
+		try {
+			await createAscent(newAscent);
+			navigate('/ascents')
+			enqueueSnackbar('Ascent created successfully', { variant: 'success'})
+		} catch (error) {
+			console.error(error);
+			enqueueSnackbar('Failed to create ascent', { variant: 'error' })
+		}
         
     };
 
@@ -97,13 +93,8 @@ const CreateAscentPage = () => {
         // Fetch the ascents data from the server
         const fetchRoutesData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`${baseUrl}/routes`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setRoutesData(response.data);
+				const data = await getRoutes();
+                setRoutesData(data);
 
             } catch (error) {
                 console.error(error);
