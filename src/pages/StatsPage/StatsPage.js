@@ -15,13 +15,14 @@ import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../components/RouteGrade';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
+import BestAscentDisplay from '../../components/BestAscentDisplay';
 
 
 TimeAgo.addDefaultLocale(en)
@@ -420,26 +421,13 @@ const StatsPage = () => {
 												<TableCell key="bestAscents">
 													{row.topAscents && row.topAscents.map((ascent) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
 												</TableCell>
@@ -513,50 +501,24 @@ const StatsPage = () => {
 												<TableCell key="bestAscents">
 													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
 													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
 												</TableCell>

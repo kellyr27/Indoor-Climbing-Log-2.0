@@ -1,2 +1,7 @@
 - Automate activity calendar start and end dates
-- Utilize useLocalStorage hook
+- Find and use Icons for Ascents, Routes and Areas*
+- Implement Setting for changing scale for grading. In Backend, change to allow grades 1 and up.*
+- Implement Area page, Edit Area page to change name and tags. Allow Area to be with Steepness tags.*
+- Add Skeleton components for Stats
+- Add Tooltips for all TickType tags (allow for override for Ascents column in /routes)
+- Implement dark mode

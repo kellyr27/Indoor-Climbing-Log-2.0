@@ -5,7 +5,7 @@ import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
-import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../components/RouteGrade';
 import {Tooltip} from '@mui/material';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import { Box } from '@mui/material';
@@ -103,9 +103,21 @@ const RoutesPage = () => {
                     type: 'number',
                     headerAlign: 'center',
                     align: 'center',
-                    renderCell: (params) => (
-                        <RouteGrade grade={params.value} />
-                    ),
+					renderCell: (params) => {
+						return (
+							<Box 
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									height: '100%',
+									width: '100%',
+								}}
+							>
+								<RouteGrade grade={params.value} />
+							</Box>
+						)
+					},
                 }, 
                 {
                     field: 'ascents',

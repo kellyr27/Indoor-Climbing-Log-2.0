@@ -9,6 +9,9 @@ import Template3 from '../../templates/Template3';
 import { getAreas } from '../../apis/areas';
 import { getRoutes } from '../../apis/routes';
 import {createAscent} from '../../apis/ascents';
+import MyButton from '../../components/MyButton';
+import IconWithText from '../../components/IconWithText';
+import CreateIcon from '@mui/icons-material/Create';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -274,8 +277,18 @@ const CreateAscentPage = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button type="submit" variant="contained" fullWidth sx={{borderRadius: 3}}>Create Ascent</Button>
-                            </Grid>
+								<MyButton
+									buttonText={
+										<IconWithText 
+											icon={<CreateIcon/>}
+											text="Create Ascent"
+										/>
+									}
+									color="primary"
+									handleClick={handleSubmit}
+									fullWidth
+								/>
+							</Grid>
                         </Grid>
                     </form>
                 </Paper>

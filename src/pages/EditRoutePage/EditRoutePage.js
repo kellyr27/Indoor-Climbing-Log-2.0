@@ -6,7 +6,10 @@ import baseUrl from "../../utils/baseUrl";
 import { useSnackbar } from "notistack";
 import Template3 from "../../templates/Template3";
 import { getAreas } from "../../apis/areas";
-
+import { editRoute, getRoute } from "../../apis/routes";
+import SaveIcon from '@mui/icons-material/Save';
+import MyButton from "../../components/MyButton";
+import IconWithText from "../../components/IconWithText";
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
 const EditRoutePage = () => {
@@ -25,24 +28,24 @@ const EditRoutePage = () => {
 
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        axios.get(`${baseUrl}/routes/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                setRouteName(response.data.name);
-                setRouteGrade(response.data.grade);
-                setRouteColour(response.data.colour);
 
-				if (response.data.area) {
-					setRouteAreaName(response.data.area.name);
+		const fetchRouteData = async () => {
+			try {
+				const data = await getRoute(id);
+				setRouteName(data.name);
+                setRouteGrade(data.grade);
+                setRouteColour(data.colour);
+
+				if (data.area) {
+					setRouteAreaName(data.area.name);
 				}
-            })
-            .catch(error => {
-                console.error(error);
-            });
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchRouteData();
+
     }, [id]);
 
 	const [areasData, setAreasData] = useState([]);
@@ -59,7 +62,7 @@ const EditRoutePage = () => {
 		fetchAreasData();
 	}, [])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
 
@@ -73,22 +76,14 @@ const EditRoutePage = () => {
 			editedRoute.area = { name: routeAreaName};
 		}
 
-        const token = localStorage.getItem('token');
-        axios.put(`${baseUrl}/routes/${id}`, editedRoute, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                navigate('/routes');
-                enqueueSnackbar('Route updated successfully', { variant: 'success'});
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                enqueueSnackbar('Failed to update route', { variant: 'error' });
-            });
-
-		
+		try {
+			await editRoute(id, editedRoute);
+			navigate('/routes');
+			enqueueSnackbar('Route updated successfully', { variant: 'success'});
+		} catch (error) {
+			console.error(error);
+			enqueueSnackbar('Failed to update route', { variant: 'error' });
+		}
         
     };
 
@@ -110,67 +105,76 @@ const EditRoutePage = () => {
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Edit Route
                 </Typography>
-                <form onSubmit={handleSubmit}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                type="text"
-                                label="Name"
-                                value={routeName}
-                                onChange={handleNameChange}
-                                required
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                type="number"
-                                label="Grade"
-                                value={routeGrade}
-                                onChange={handleGradeChange}
-                                required
-                                fullWidth
-                                inputProps={{min: 10, max: 40}}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl required fullWidth >
-                                <InputLabel id="route-colour-label">Route Colour</InputLabel>
-                                <Select
-                                    labelId="route-colour-label"
-                                    value={routeColour}
-                                    onChange={handleColourChange}
-                                >
-                                    {popularColors.map((color) => (
-                                        <MenuItem value={color} key={color}>
-                                            <Box
-                                                sx={{
-                                                    width: 80,
-                                                    height: 20,
-                                                    backgroundColor: color,
-                                                    border: '1px solid black',
-                                                }}
-                                            />
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-							<Grid item xs={12}>
-								<Autocomplete
-									freeSolo
-									options={areasData}
-									getOptionLabel={(option) => option ? option.name : ''}
-									onInputChange={handleRouteAreaChange}
-									value={areasData.find(route => route.name === routeAreaName) || ''}
-									renderInput={(params) => <TextField {...params} label="Route" fullWidth />}
+				<Grid container spacing={2}>
+					<Grid item xs={12}>
+						<TextField
+							type="text"
+							label="Name"
+							value={routeName}
+							onChange={handleNameChange}
+							required
+							fullWidth
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							type="number"
+							label="Grade"
+							value={routeGrade}
+							onChange={handleGradeChange}
+							required
+							fullWidth
+							inputProps={{min: 10, max: 40}}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<FormControl required fullWidth >
+							<InputLabel id="route-colour-label">Route Colour</InputLabel>
+							<Select
+								labelId="route-colour-label"
+								value={routeColour}
+								onChange={handleColourChange}
+							>
+								{popularColors.map((color) => (
+									<MenuItem value={color} key={color}>
+										<Box
+											sx={{
+												width: 80,
+												height: 20,
+												backgroundColor: color,
+												border: '1px solid black',
+											}}
+										/>
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+						<Grid item xs={12}>
+							<Autocomplete
+								freeSolo
+								options={areasData}
+								getOptionLabel={(option) => option ? option.name : ''}
+								onInputChange={handleRouteAreaChange}
+								value={areasData.find(route => route.name === routeAreaName) || ''}
+								renderInput={(params) => <TextField {...params} label="Route" fullWidth />}
+							/>
+						</Grid>
+					<Grid item xs={12}>
+						<MyButton
+							buttonText={
+								<IconWithText 
+									icon={<SaveIcon/>}
+									text="Save Changes"
 								/>
-                            </Grid>
-                        <Grid item xs={12}>
-                            <Button type="submit" variant="contained" fullWidth sx={{borderRadius: 3}}>Save Changes</Button>
-                        </Grid>
-                    </Grid>
-                </form>
+							}
+							color="primary"
+							handleClick={handleSubmit}
+							fullWidth
+						/>
+					
+					</Grid>
+				</Grid>
             </Paper>
         </Template3>
     );

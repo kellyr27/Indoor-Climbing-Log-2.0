@@ -31,8 +31,8 @@ const RouteGrade = ({ grade, fontSize = 'inherit' }) => {
 				padding: '4px',
 				borderRadius: '7px',
 				...shinyEffectProps,
-				minWidth: 20,
-				minHeight: 20
+				minWidth: 5,
+				minHeight: 5
 			}}
 		>
             <Typography sx={{fontSize}}>

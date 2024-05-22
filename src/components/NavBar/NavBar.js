@@ -9,6 +9,8 @@ import {useSnackbar} from 'notistack';
 import { useTheme } from '@mui/material/styles';
 import { Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText } from '@mui/material';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import IconWithText from '../IconWithText';
 
 const NavBar = () => {
     const theme = useTheme();
@@ -84,7 +86,7 @@ const NavBar = () => {
                                 {isAuthenticated ? [
                                     createTab("ascents", "Ascents", "/ascents"),
                                     createTab("routes", "Routes", "/routes"),
-                                    createTab("stats", "Stats", "/stats")
+                                    createTab("stats", <IconWithText icon={<BarChartIcon/>} text="Stats"/>, "/stats")
                                 ] : [
                                     createTab("login", "Login", "/login"),
                                     createTab("register", "Register", "/register")

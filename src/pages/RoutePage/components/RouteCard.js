@@ -3,12 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { Card, CardContent, CardHeader, List, ListItem, Typography, Button, Box } from '@mui/material';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../../components/RouteGrade';
 import RouteColour from '../../../components/RouteColour/RouteColour';
 import baseUrl from '../../../utils/baseUrl';
 import Divider from '@mui/material/Divider'
 import { getRoute } from '../../../apis/routes';
 import MyButton from '../../../components/MyButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconWithText from '../../../components/IconWithText';
 
 const RouteCard = () => {
     const [routeData, setRouteData] = useState({});
@@ -85,10 +88,15 @@ const RouteCard = () => {
                 </List>
                 <Divider />
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-					<MyButton
-						color="primary"
-						buttonText="Edit Route"
+					<MyButton 
+						color="primary" 
 						handleClick={handleEditClick}
+						buttonText={
+							<IconWithText 
+								icon={<EditIcon/>}
+								text="Edit"
+							/>
+						}
 					/>
                 </Box>
             </CardContent>
