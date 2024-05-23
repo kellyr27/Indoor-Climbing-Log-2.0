@@ -510,30 +510,30 @@ const StatsPage = () => {
 													</Link>
 												</TableCell>
 												<TableCell key="bestAscents">
-													{row.topAscents.flash && row.topAscents.flash.map((ascent, index) => {
-														return (
-															<BestAscentDisplay
-																key={index}
-																tickType={ascent.tickType}
-																date={ascent.date}
-																routeName={ascent.route.name}
-																routeGrade={ascent.route.grade}
-																routeId={ascent.route._id}
-															/>
-														)
-													})}
-													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent, index) => {
-														return (
-															<BestAscentDisplay
-																key={index}
-																tickType={ascent.tickType}
-																date={ascent.date}
-																routeName={ascent.route.name}
-																routeGrade={ascent.route.grade}
-																routeId={ascent.route._id}
-															/>
-														)
-													})}
+														{row.topAscents.flash && row.topAscents.flash.map((ascent, index) => {
+															return (
+																<BestAscentDisplay
+																	key={index}
+																	tickType={ascent.tickType}
+																	date={ascent.date}
+																	routeName={ascent.route.name}
+																	routeGrade={ascent.route.grade}
+																	routeId={ascent.route._id}
+																/>
+															)
+														})}
+														{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent, index) => {
+															return (
+																<BestAscentDisplay
+																	key={index}
+																	tickType={ascent.tickType}
+																	date={ascent.date}
+																	routeName={ascent.route.name}
+																	routeGrade={ascent.route.grade}
+																	routeId={ascent.route._id}
+																/>
+															)
+														})}
 												</TableCell>
 											</TableRow>
 										)
