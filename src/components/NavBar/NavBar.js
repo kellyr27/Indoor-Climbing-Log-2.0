@@ -107,29 +107,35 @@ const NavBar = () => {
 						sm: "space-between",
 					}
 				}}>
-					{!isSmallScreen && <>
+					{(!isSmallScreen && isAuthenticated) && <>
 						<Box>
 							<Tooltip title="Climbing Log">
 								<img src={logo} alt="logo" style={{height: 30, width: 30}}/>
 							</Tooltip>
 						</Box>
 						<Box>
-							{isAuthenticated !== null && (
-								<Tabs value={basePath}>
-									{isAuthenticated ? [
-										createTab("ascents", <IconWithText icon={<FlagIcon/>} text="Ascents"/>, "/ascents"),
-										createTab("routes", <IconWithText icon={<RouteIcon/>} text="Routes"/>, "/routes"),
-										createTab("areas", <IconWithText icon={<PlaceIcon/>} text="Areas"/>, "/areas"),
-										createTab("stats", <IconWithText icon={<BarChartIcon/>} text="Stats"/>, "/stats")
-									] : [
-										createTab("login", "Login", "/login"),
-										createTab("register", "Register", "/register")
-									]}
-								</Tabs>
-							)}
+							<Tabs value={basePath}>
+								{createTab("ascents", <IconWithText icon={<FlagIcon/>} text="Ascents"/>, "/ascents")}
+								{createTab("routes", <IconWithText icon={<RouteIcon/>} text="Routes"/>, "/routes")},
+								{createTab("areas", <IconWithText icon={<PlaceIcon/>} text="Areas"/>, "/areas")}
+								{createTab("stats", <IconWithText icon={<BarChartIcon/>} text="Stats"/>, "/stats")}
+							</Tabs>
 						</Box>
 					</>}
-					{isSmallScreen && <>
+					{(!isAuthenticated) &&  <>
+						<Box>
+							<Tooltip title="Climbing Log">
+								<img src={logo} alt="logo" style={{height: 30, width: 30}}/>
+							</Tooltip>
+						</Box>
+						<Box>
+							<Tabs value={basePath}>
+								{createTab("login", "Login", "/login")}
+								{createTab("register", "Register", "/register")}
+							</Tabs>
+						</Box>
+					</>}
+					{(isSmallScreen && isAuthenticated !== null && isAuthenticated) && <>
 						<Box>
 
 							<Button onClick={handleMenu2}>
