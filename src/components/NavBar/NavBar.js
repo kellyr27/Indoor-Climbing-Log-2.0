@@ -29,7 +29,7 @@ const NavBar = () => {
     const {enqueueSnackbar} = useSnackbar();
 
 	// Check if screen size is small or less using MUI
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+	const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const validPaths = ['/ascents', '/routes', '/areas', '/stats', '/login', '/register'];
 	const basePath = validPaths.includes(`/${location.pathname.split('/')[1]}`) ? `/${location.pathname.split('/')[1]}` : false;
