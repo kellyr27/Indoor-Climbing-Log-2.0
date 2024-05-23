@@ -11,6 +11,8 @@ import RoutesPage from '../pages/RoutesPage/RoutesPage';
 import StatsPage from '../pages/StatsPage/StatsPage';
 import { useAuthContext } from '../context/AuthContext';
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
+import AreasPage from '../pages/AreasPage';
+import EditAreaPage from '../pages/EditAreaPage';
 
 export const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuthContext();
@@ -41,6 +43,8 @@ const AppRoutes = () => {
             <Route path="/ascents/:id" element={<ProtectedRoute><AscentPage /></ProtectedRoute>} />
             <Route path="/ascents" element={<ProtectedRoute><AscentsPage /></ProtectedRoute>} />
             <Route path="/stats" element={<ProtectedRoute><StatsPage /></ProtectedRoute>} />
+			<Route path="/areas/:id/edit" element={<ProtectedRoute><EditAreaPage /></ProtectedRoute>} />
+			<Route path="/areas" element={<ProtectedRoute><AreasPage /></ProtectedRoute>} />
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
             <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
             <Route path="/user/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />

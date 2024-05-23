@@ -19,6 +19,7 @@ const SettingsPage = () => {
 		// Get all user data
 		const routesData = await getRoutes()
 		const ascentsData = await getAscents()
+		const areasData = await getAreas()
 
 		// Manipulate route data to fit excel format
 		routesData.forEach(route => {
@@ -52,6 +53,16 @@ const SettingsPage = () => {
 			delete ascent.route
 		})
 
+		// Manipulate area data to fit excel format
+		areasData.forEach(area => {
+			delete area._id
+			delete area.__v
+			delete area.user
+			delete area.createdAt
+			delete area.updatedAt
+			delete area.id
+		})
+
 		const routesDataWithNewHeaders = routesData.map(route => {
 			return {
 				"Name": route.name,
@@ -70,7 +81,13 @@ const SettingsPage = () => {
 				"Notes": ascent.notes
 			}
 		})
-
+		const areasDataWithNewHeaders = areasData.map(area => {
+			return {
+				"Name": area.name,
+				"Steepness": area.steepnessTags.join(", ")
+			}
+		})
+		console.log(areasDataWithNewHeaders)
 
 		// Create a new workbook
 		const wb = XLSX.utils.book_new();
@@ -78,13 +95,19 @@ const SettingsPage = () => {
 		// Convert the data to worksheet
 		const routesWs = XLSX.utils.json_to_sheet(routesDataWithNewHeaders);
 		const ascentsWs = XLSX.utils.json_to_sheet(ascentsDataWithNewHeaders);
-	
+		const areasWs = XLSX.utils.json_to_sheet(areasDataWithNewHeaders);
+
 		// Add the worksheet to the workbook
 		XLSX.utils.book_append_sheet(wb, routesWs, "Routes");
 		XLSX.utils.book_append_sheet(wb, ascentsWs, "Ascents");
+		XLSX.utils.book_append_sheet(wb, areasWs, "Areas");
 	
 		// Write the workbook to a file
-		XLSX.writeFile(wb, "data.xlsx");
+
+		// get todays date YYYY-MM-DD
+		const today = new Date();
+		const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+		XLSX.writeFile(wb, `ClimbingLog-${date}.xlsx`);
 
 	}
 

@@ -19,7 +19,7 @@ const NavBar = () => {
     const { isAuthenticated, setIsAuthenticated } = useAuthContext();
     const {enqueueSnackbar} = useSnackbar();
 
-    const validPaths = ['/ascents', '/routes', '/stats', '/login', '/register'];
+    const validPaths = ['/ascents', '/routes', '/areas', '/stats', '/login', '/register'];
 	const basePath = validPaths.includes(`/${location.pathname.split('/')[1]}`) ? `/${location.pathname.split('/')[1]}` : false;
 
     const handleTabClick = useCallback((route) => {
@@ -86,6 +86,7 @@ const NavBar = () => {
                                 {isAuthenticated ? [
                                     createTab("ascents", "Ascents", "/ascents"),
                                     createTab("routes", "Routes", "/routes"),
+									createTab("areas", "Areas", "/areas"),
                                     createTab("stats", <IconWithText icon={<BarChartIcon/>} text="Stats"/>, "/stats")
                                 ] : [
                                     createTab("login", "Login", "/login"),
