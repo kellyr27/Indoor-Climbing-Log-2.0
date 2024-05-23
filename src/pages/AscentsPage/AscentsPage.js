@@ -5,10 +5,10 @@ import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
 import RouteGrade from '../../components/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import {  Box } from '@mui/material';
+import {  Box, Tooltip } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
-import { getAscents } from '../../apis/ascents';
+import { getAscents } from '../../services/apis';
 import { useLocation } from 'react-router-dom';
 
 const fetchAndPrepareAscents = async () => {
@@ -100,7 +100,11 @@ const AscentsPage = () => {
 					},
                     renderCell: (params) => {
                         return (
-                            <TickTypeIcon tickType={params.value} />
+							<Tooltip title={params.value} arrow>
+								<span>
+									<TickTypeIcon tickType={params.value} />
+								</span>
+							</Tooltip>
                         )
                     },
 					valueGetter: (params) => {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import StyledDataGrid from '../../styles/StyledDataGrid';
 import Template5 from '../../templates/Template5';
@@ -25,7 +24,6 @@ const AreasPage = () => {
 				// Order area by name ascending
 				areas.sort((a, b) => a.name.localeCompare(b.name))
 
-				console.log(areas)
                 setAreasData(areas);
             } catch (error) {
                 console.error(error);

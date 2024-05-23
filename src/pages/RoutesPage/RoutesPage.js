@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import baseUrl from '../../utils/baseUrl';
 import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
@@ -13,7 +11,7 @@ import Template2 from '../../templates/Template2';
 import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { useLocation } from 'react-router-dom';
-import { getRoutes } from '../../apis/routes';
+import { getRoutes } from '../../services/apis';
 
 const RoutesPage = () => {
     const navigate = useNavigate();

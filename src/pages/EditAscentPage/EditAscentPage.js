@@ -6,9 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-import { getAreas } from '../../apis/areas';
-import { getRoutes } from '../../apis/routes';
-import { editAscent } from '../../apis/ascents';
+import { getAreas, getRoutes, editAscent } from '../../services/apis';
 
 function getTodayDate() {
     const today = new Date();

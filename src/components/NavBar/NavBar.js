@@ -11,6 +11,9 @@ import { Menu, MenuItem } from '@mui/material';
 import { ListItemIcon, ListItemText } from '@mui/material';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import IconWithText from '../IconWithText';
+import PlaceIcon from '@mui/icons-material/Place';
+import RouteIcon from '@mui/icons-material/Route';
+import FlagIcon from '@mui/icons-material/Flag';
 
 const NavBar = () => {
     const theme = useTheme();
@@ -84,9 +87,9 @@ const NavBar = () => {
                         {isAuthenticated !== null && (
                             <Tabs value={basePath}>
                                 {isAuthenticated ? [
-                                    createTab("ascents", "Ascents", "/ascents"),
-                                    createTab("routes", "Routes", "/routes"),
-									createTab("areas", "Areas", "/areas"),
+                                    createTab("ascents", <IconWithText icon={<FlagIcon/>} text="Ascents"/>, "/ascents"),
+                                    createTab("routes", <IconWithText icon={<RouteIcon/>} text="Routes"/>, "/routes"),
+									createTab("areas", <IconWithText icon={<PlaceIcon/>} text="Areas"/>, "/areas"),
                                     createTab("stats", <IconWithText icon={<BarChartIcon/>} text="Stats"/>, "/stats")
                                 ] : [
                                     createTab("login", "Login", "/login"),

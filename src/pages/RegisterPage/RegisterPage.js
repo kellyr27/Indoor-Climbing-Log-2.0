@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, InputAdornment, IconButton } from '@mui/material';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Grid, Paper, Typography } from '@mui/material';
 import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
-import { registerUser } from '../../apis/users/index';
+import { registerUser } from '../../services/apis';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import MyButton from '../../components/MyButton';
 

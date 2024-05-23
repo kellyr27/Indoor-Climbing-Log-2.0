@@ -15,8 +15,6 @@ import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
-import { useTheme } from '@mui/system';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
 import BestAscentDisplay from '../../components/BestAscentDisplay';
@@ -252,9 +250,6 @@ function formatAreaStats (data) {
 
 const StatsPage = () => {
 
-	const theme = useTheme();
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-
     const { width, ref } = useResizeDetector();
 
     const [gradePyramid, setGradePyramid] = useState({
@@ -434,9 +429,10 @@ const StatsPage = () => {
 													</Link>
 												</TableCell>
 												<TableCell key="bestAscents">
-													{row.topAscents && row.topAscents.map((ascent) => {
+													{row.topAscents && row.topAscents.map((ascent, index) => {
 														return (
 															<BestAscentDisplay
+																key={index}
 																tickType={ascent.tickType}
 																date={ascent.date}
 																routeName={ascent.route.name}
@@ -514,9 +510,10 @@ const StatsPage = () => {
 													</Link>
 												</TableCell>
 												<TableCell key="bestAscents">
-													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
+													{row.topAscents.flash && row.topAscents.flash.map((ascent, index) => {
 														return (
 															<BestAscentDisplay
+																key={index}
 																tickType={ascent.tickType}
 																date={ascent.date}
 																routeName={ascent.route.name}
@@ -525,9 +522,10 @@ const StatsPage = () => {
 															/>
 														)
 													})}
-													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent) => {
+													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent, index) => {
 														return (
 															<BestAscentDisplay
+																key={index}
 																tickType={ascent.tickType}
 																date={ascent.date}
 																routeName={ascent.route.name}

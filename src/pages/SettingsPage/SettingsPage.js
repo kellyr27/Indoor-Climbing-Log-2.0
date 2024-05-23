@@ -3,17 +3,13 @@ import React from 'react';
 import Template1 from '../../templates/Template1';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Paper, Typography } from '@mui/material';
-import DeleteButtonWithDialog from '../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
+// import DeleteButtonWithDialog from '../../components/DeleteButtonWithDialog/DeleteButtonWithDialog';
 import { getAreas, getRoutes, getAscents } from '../../services/apis';
 import * as XLSX from 'xlsx';
 import MyButton from '../../components/MyButton';
 
 
 const SettingsPage = () => {
-
-    const handleDelete = () => {
-        
-    }
 
 	const handleExportExcel = async () => {
 		// Get all user data
@@ -87,7 +83,6 @@ const SettingsPage = () => {
 				"Steepness": area.steepnessTags.join(", ")
 			}
 		})
-		console.log(areasDataWithNewHeaders)
 
 		// Create a new workbook
 		const wb = XLSX.utils.book_new();

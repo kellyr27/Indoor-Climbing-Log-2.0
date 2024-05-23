@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Paper, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-import { getAreas } from '../../apis/areas';
-import { getRoutes } from '../../apis/routes';
-import {createAscent} from '../../apis/ascents';
+import {createAscent, getRoutes, getAreas} from '../../services/apis';
 import MyButton from '../../components/MyButton';
 import IconWithText from '../../components/IconWithText';
 import CreateIcon from '@mui/icons-material/Create';

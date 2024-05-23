@@ -1,12 +1,9 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, FormControl, Grid, InputLabel, Autocomplete, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
-import baseUrl from "../../utils/baseUrl";
+import { Box,  FormControl, Grid, InputLabel, Autocomplete, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import Template3 from "../../templates/Template3";
-import { getAreas } from "../../apis/areas";
-import { editRoute, getRoute } from "../../apis/routes";
+import { editRoute, getRoute, getAreas } from "../../services/apis";
 import SaveIcon from '@mui/icons-material/Save';
 import MyButton from "../../components/MyButton";
 import IconWithText from "../../components/IconWithText";
