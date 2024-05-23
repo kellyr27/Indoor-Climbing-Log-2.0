@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Paper, TextField, Button, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-import { getAreas } from '../../apis/areas';
+import {createAscent, getRoutes, getAreas} from '../../services/apis';
+import MyButton from '../../components/MyButton';
+import IconWithText from '../../components/IconWithText';
+import CreateIcon from '@mui/icons-material/Create';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -48,7 +51,7 @@ const CreateAscentPage = () => {
         setTickType(newTickType);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!tickType) {
@@ -73,20 +76,14 @@ const CreateAscentPage = () => {
             tickType
         }
 
-        const token = localStorage.getItem('token');
-        axios.post(`${baseUrl}/ascents`, newAscent, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                navigate('/ascents');
-                enqueueSnackbar('Ascent created successfully', { variant: 'success'})
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                enqueueSnackbar('Failed to create ascent', { variant: 'error' });
-            });
+		try {
+			await createAscent(newAscent);
+			navigate('/ascents')
+			enqueueSnackbar('Ascent created successfully', { variant: 'success'})
+		} catch (error) {
+			console.error(error);
+			enqueueSnackbar('Failed to create ascent', { variant: 'error' })
+		}
         
     };
 
@@ -97,13 +94,8 @@ const CreateAscentPage = () => {
         // Fetch the ascents data from the server
         const fetchRoutesData = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`${baseUrl}/routes`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setRoutesData(response.data);
+				const data = await getRoutes();
+                setRoutesData(data);
 
             } catch (error) {
                 console.error(error);
@@ -283,8 +275,18 @@ const CreateAscentPage = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button type="submit" variant="contained" fullWidth sx={{borderRadius: 3}}>Create Ascent</Button>
-                            </Grid>
+								<MyButton
+									buttonText={
+										<IconWithText 
+											icon={<CreateIcon/>}
+											text="Create Ascent"
+										/>
+									}
+									color="primary"
+									handleClick={handleSubmit}
+									fullWidth
+								/>
+							</Grid>
                         </Grid>
                     </form>
                 </Paper>

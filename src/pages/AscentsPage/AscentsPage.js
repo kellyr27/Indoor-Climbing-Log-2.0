@@ -3,12 +3,12 @@ import { dateToDisplay } from '../../utils/helpers';
 import {useNavigate} from 'react-router-dom';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
 import RouteColour from '../../components/RouteColour/RouteColour';
-import RouteGrade from '../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../components/RouteGrade';
 import StyledDataGrid from '../../styles/StyledDataGrid';
-import {  Box } from '@mui/material';
+import {  Box, Tooltip } from '@mui/material';
 import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
-import { getAscents } from '../../apis/ascents';
+import { getAscents } from '../../services/apis';
 import { useLocation } from 'react-router-dom';
 
 const fetchAndPrepareAscents = async () => {
@@ -100,7 +100,11 @@ const AscentsPage = () => {
 					},
                     renderCell: (params) => {
                         return (
-                            <TickTypeIcon tickType={params.value} />
+							<Tooltip title={params.value} arrow>
+								<span>
+									<TickTypeIcon tickType={params.value} />
+								</span>
+							</Tooltip>
                         )
                     },
 					valueGetter: (params) => {
@@ -160,10 +164,20 @@ const AscentsPage = () => {
                         return params
                     },
                     renderCell: (params) => {
-                        return (
-                            <RouteGrade grade={params.row.routeGrade} />
-                        )
-                    },
+						return (
+							<Box 
+								sx={{
+									display: 'flex', 
+									justifyContent: 'center',
+									alignItems: 'center', 
+									height: '100%',
+									width: '100%',
+								}}
+							>
+								<RouteGrade grade={params.row.routeGrade} />
+							</Box>
+						)
+					},
                     type: 'number',
                     headerAlign: 'center',
                     align: 'center',

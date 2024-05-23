@@ -1,2 +1,4 @@
 - Automate activity calendar start and end dates
-- Utilize useLocalStorage hook
+- Implement Setting for changing scale for grading. In Backend, change to allow grades 1 and up.*
+- Add Skeleton components for Stats
+- Implement dark mode

@@ -15,17 +15,12 @@ import { useResizeDetector } from 'react-resize-detector';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import TickTypeIcon from '../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../components/RouteGrade/RouteGrade';
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
-import { useTheme } from '@mui/system';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
+import BestAscentDisplay from '../../components/BestAscentDisplay';
+import { getDifficultyClassification } from '../../utils/helpers';
 
 
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo('en-US')
 
 function formatDataBarChart (data) {
     // All the keys are grades
@@ -85,16 +80,26 @@ function formatTickTypeStats (data) {
 		}
 
 		for (const [grade, tickTypeCount] of Object.entries(data.tickTypeCountsByGrade)) {
-			if (grade <= 17) {
-				gradeCountGroupByDifficulty['easy'] += tickTypeCount[tickType];
-			} else if ((grade > 17) && (grade <= 20)) {
-				gradeCountGroupByDifficulty['moderate'] += tickTypeCount[tickType];
-			} else if ((grade > 20) && (grade <= 22)) {
-				gradeCountGroupByDifficulty['difficult'] += tickTypeCount[tickType];
-			} else if ((grade > 22) && (grade <= 25)) {
-				gradeCountGroupByDifficulty['hard'] += tickTypeCount[tickType];
-			} else {
-				gradeCountGroupByDifficulty['very hard'] += tickTypeCount[tickType];
+
+			const difficultyClassification = getDifficultyClassification(grade);
+			switch (difficultyClassification) {
+				case 0:
+					gradeCountGroupByDifficulty['easy'] += tickTypeCount[tickType];
+					break;
+				case 1:
+					gradeCountGroupByDifficulty['moderate'] += tickTypeCount[tickType];
+					break;
+				case 2:
+					gradeCountGroupByDifficulty['difficult'] += tickTypeCount[tickType];
+					break;
+				case 3:
+					gradeCountGroupByDifficulty['hard'] += tickTypeCount[tickType];
+					break;
+				case 4:
+					gradeCountGroupByDifficulty['very hard'] += tickTypeCount[tickType];
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -178,20 +183,29 @@ function formatAreaStats (data) {
 			'difficult': 0,
 			'hard': 0,
 			'very hard': 0,
-			'extreme': 0
 		}
 
 		for (const [grade, count] of Object.entries(area.gradeCounts)) {
-			if (grade <= 17) {
-				gradeCountGroupByDifficulty['easy'] += count;
-			} else if ((grade > 17) && (grade <= 20)) {
-				gradeCountGroupByDifficulty['moderate'] += count;
-			} else if ((grade > 20) && (grade <= 22)) {
-				gradeCountGroupByDifficulty['difficult'] += count;
-			} else if ((grade > 22) && (grade <= 25)) {
-				gradeCountGroupByDifficulty['hard'] += count;
-			} else {
-				gradeCountGroupByDifficulty['very hard'] += count;
+			const difficultyClassification = getDifficultyClassification(grade);
+			
+			switch (difficultyClassification) {
+				case 0:
+					gradeCountGroupByDifficulty['easy'] += count;
+					break;
+				case 1:
+					gradeCountGroupByDifficulty['moderate'] += count;
+					break;
+				case 2:
+					gradeCountGroupByDifficulty['difficult'] += count;
+					break;
+				case 3:
+					gradeCountGroupByDifficulty['hard'] += count;
+					break;
+				case 4:
+					gradeCountGroupByDifficulty['very hard'] += count;
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -235,9 +249,6 @@ function formatAreaStats (data) {
 }
 
 const StatsPage = () => {
-
-	const theme = useTheme();
-	const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const { width, ref } = useResizeDetector();
 
@@ -418,28 +429,16 @@ const StatsPage = () => {
 													</Link>
 												</TableCell>
 												<TableCell key="bestAscents">
-													{row.topAscents && row.topAscents.map((ascent) => {
+													{row.topAscents && row.topAscents.map((ascent, index) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																key={index}
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
 												</TableCell>
@@ -511,52 +510,28 @@ const StatsPage = () => {
 													</Link>
 												</TableCell>
 												<TableCell key="bestAscents">
-													{row.topAscents.flash && row.topAscents.flash.map((ascent) => {
+													{row.topAscents.flash && row.topAscents.flash.map((ascent, index) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																key={index}
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
-													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent) => {
+													{row.topAscents.redpoint && row.topAscents.redpoint.map((ascent, index) => {
 														return (
-															<Box key={ascent.date} display="flex" justifyContent="space-between" flexDirection={isSmallScreen ? "column" : "row"} sx={{mb: 1}}>
-																<Box display="flex" flexDirection="row" >
-																	<Box sx={{mr: 2}}>
-																		<TickTypeIcon tickType={ascent.tickType}/> 
-																	</Box>
-																	<Link to={`/routes/${ascent.route._id}`} style={{ textDecoration: 'none' }}>
-																		<Box display="flex" flexDirection="row">
-																			<Box sx={{mr: 1}}>
-																				<RouteGrade grade={ascent.route.grade}/>
-																			</Box>
-																			<Box> 
-																				{ascent.route.name}
-																			</Box> 
-																		</Box>
-																	</Link>
-																</Box>
-																<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic' }}>
-																	{timeAgo.format(new Date(ascent.date))}
-																</Box>
-															</Box>
+															<BestAscentDisplay
+																key={index}
+																tickType={ascent.tickType}
+																date={ascent.date}
+																routeName={ascent.route.name}
+																routeGrade={ascent.route.grade}
+																routeId={ascent.route._id}
+															/>
 														)
 													})}
 												</TableCell>

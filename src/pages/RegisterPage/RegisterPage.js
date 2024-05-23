@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, InputAdornment, IconButton } from '@mui/material';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
 import { useNavigate} from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext'; 
 import { Grid, Paper, Typography } from '@mui/material';
 import {useSnackbar} from 'notistack';
 import Template3 from '../../templates/Template3';
-import { registerUser } from '../../apis/users/index';
+import { registerUser } from '../../services/apis';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import MyButton from '../../components/MyButton';
 
 const validateUsername = (username) => {
     return username.length < 6 ? "Username must be at least 6 characters long" : null;
@@ -94,7 +95,6 @@ const RegisterPage = () => {
                 <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
                     Register
                 </Typography>
-                <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -152,12 +152,15 @@ const RegisterPage = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{borderRadius: 3}} disabled={!isFormValid}>
-                                Create new user
-                            </Button>
+							<MyButton
+								buttonText="Create new user"
+								color="primary"
+								handleClick={handleSubmit}
+								fullWidth
+								disabled={!isFormValid}
+							/>
                         </Grid>
                     </Grid>
-                </form>
             </Paper>
         </Template3>
     );

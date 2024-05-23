@@ -1,5 +1,5 @@
 import axios from 'axios';
-import baseUrl from '../../utils/baseUrl'
+import baseUrl from '../../../utils/baseUrl'
 
 export const getAscent = async (id) => {    
     try {
@@ -41,4 +41,32 @@ export const getAscents = async () => {
     } catch (error) {
         throw error;
     }
+}
+
+export const createAscent = async (ascent) => {
+	try {
+		const token = localStorage.getItem('token');
+		const response = await axios.post(`${baseUrl}/ascents`, ascent, {
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		return response.data;
+	} catch (error) {
+		throw error;
+	}
+}
+
+export const editAscent = async (id, ascent) => {
+	try {
+		const token = localStorage.getItem('token');
+		const response = await axios.put(`${baseUrl}/ascents/${id}`, ascent, {
+			headers: {
+				'Authorization': `Bearer ${token}`
+			}
+		});
+		return response.data;
+	} catch (error) {
+		throw error;
+	}
 }

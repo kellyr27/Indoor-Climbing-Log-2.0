@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
-import { getAreas } from '../../apis/areas';
+import { getAreas, getRoutes, editAscent } from '../../services/apis';
 
 function getTodayDate() {
     const today = new Date();
@@ -78,7 +78,7 @@ const EditAscentPage = () => {
         setTickType(newTickType);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!tickType) {
@@ -102,39 +102,31 @@ const EditAscentPage = () => {
 			newAscent.route.area = { name: inputRouteAreaName };
 		}
 
-        const token = localStorage.getItem('token');
-        axios.put(`${baseUrl}/ascents/${id}`, newAscent, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => {
-                // Handle the response
-                navigate('/ascents');
-                enqueueSnackbar('Ascent updated successfully', { variant: 'success' });
-            })
-            .catch((error) => {
-                // Handle the error
-                console.error('Error:', error);
-                enqueueSnackbar('Failed to update ascent', { variant: 'error' });
-            });
+		try {
+			await editAscent(id, newAscent);
+			navigate('/ascents');
+            enqueueSnackbar('Ascent updated successfully', { variant: 'success' });
+		} catch (error) {
+			console.error(error);
+			enqueueSnackbar('Failed to update ascent', { variant: 'error' });
+		}
 
     };
 
     useEffect(() => {
-        // Fetch routes from API
-        const token = localStorage.getItem('token');
-        axios.get(`${baseUrl}/routes`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                setRoutes(response.data);
-            })
-            .catch(error => {
+
+		// Fetch the ascents data from the server
+        const fetchRoutesData = async () => {
+            try {
+				const data = await getRoutes();
+                setRoutes(data);
+
+            } catch (error) {
                 console.error(error);
-            });
+            }
+        };
+
+        fetchRoutesData()
 
     }, []);
 

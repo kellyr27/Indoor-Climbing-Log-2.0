@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import MyButton from '../MyButton';
 
 const DeleteButtonWithDialog = (props) => {
 
@@ -17,9 +18,11 @@ const DeleteButtonWithDialog = (props) => {
 
     return (
         <>
-            <Button variant="contained" style={{backgroundColor: 'red', color: 'white'}} onClick={handleClickOpen} sx={{borderRadius: 3}}>
-                {buttonText ? buttonText : ''}
-            </Button>
+			<MyButton 
+				color="error" 
+				handleClick={handleClickOpen}
+				buttonText={buttonText}
+			/>
 
             <Dialog
                 open={open}

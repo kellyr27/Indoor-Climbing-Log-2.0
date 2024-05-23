@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { format, parseISO } from 'date-fns';
-import { Card, CardContent, CardHeader, List, ListItem, Typography, Button, Box } from '@mui/material';
+import { Card, CardContent, CardHeader, List, ListItem, Typography, Box } from '@mui/material';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
-import RouteGrade from '../../../components/RouteGrade/RouteGrade';
+import RouteGrade from '../../../components/RouteGrade';
 import RouteColour from '../../../components/RouteColour/RouteColour';
-import baseUrl from '../../../utils/baseUrl';
 import Divider from '@mui/material/Divider'
-
+import { getRoute } from '../../../services/apis';
+import MyButton from '../../../components/MyButton';
+import EditIcon from '@mui/icons-material/Edit';
+import IconWithText from '../../../components/IconWithText';
 
 const RouteCard = () => {
     const [routeData, setRouteData] = useState({});
@@ -20,18 +21,13 @@ const RouteCard = () => {
         navigate(`/routes/${id}/edit`);
     };
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        
-        axios.get(`${baseUrl}/routes/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                const data = response.data;
+    useEffect(() => {	
 
-                // Sort ascents by date
+		const fetchRouteData = async () => {
+			try {
+				const data = await getRoute(id);
+				
+				// Sort ascents by date
                 const sortedData = {
                     ...data,
                     ascents: data.ascents.sort((a, b) => {
@@ -40,14 +36,18 @@ const RouteCard = () => {
                 }
 
                 setRouteData(sortedData);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+
+			} catch (error) {
+				console.error(error);
+			}
+		}
+
+		fetchRouteData();
+
     }, [id]);
 
     return (
-        <Card sx={{minHeight: '300px', bgcolor: 'rgba(254, 250, 250, 0.85)', m: 2, borderRadius: 6}}>
+        <Card sx={{minHeight: '300px', bgcolor: 'rgba(254, 250, 250, 0.85)', m: 2, borderRadius: 6, boxShadow: 4}}>
             <CardHeader
                 sx={{pt: 4}}
                 title={
@@ -86,9 +86,16 @@ const RouteCard = () => {
                 </List>
                 <Divider />
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                    <Button variant="contained" color="primary" onClick={handleEditClick} sx={{borderRadius: 3}}>
-                        Edit Route
-                    </Button>
+					<MyButton 
+						color="primary" 
+						handleClick={handleEditClick}
+						buttonText={
+							<IconWithText 
+								icon={<EditIcon/>}
+								text="Edit"
+							/>
+						}
+					/>
                 </Box>
             </CardContent>
         </Card>
