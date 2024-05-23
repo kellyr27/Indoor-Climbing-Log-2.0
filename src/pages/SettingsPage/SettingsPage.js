@@ -115,7 +115,7 @@ const SettingsPage = () => {
                         Your Settings
                     </Typography>
 					<MyButton
-						buttonText='Export Data' 
+						buttonText='Export Data to Excel' 
 						handleClick={handleExportExcel}
 					/>
                     {/* <DeleteButtonWithDialog
