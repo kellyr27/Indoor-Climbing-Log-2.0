@@ -41,14 +41,24 @@ const AreasPage = () => {
                 {
                     field: 'name', 
                     headerName: 'Name', 
-                    minWidth: 200,
-                    flex: 4,
+                    minWidth: 250,
+                    flex: 5,
                     sortable: true,
                     filterable: true,
                     editable: false,
                     type: 'string',
                     headerAlign: 'center',
                     align: 'left',
+					valueFormatter: (params) => {
+                        return params ? params : null;
+                    },
+					renderCell: (params) => {
+                        return (
+                            <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+								{params.formattedValue ? params.formattedValue : null}
+                            </Box>
+                        )
+                    },
                 },
 				{
                     field: 'steepnessTags', 
