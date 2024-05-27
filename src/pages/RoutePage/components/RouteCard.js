@@ -55,7 +55,7 @@ const RouteCard = () => {
                         <Box>
                             <RouteColour colour={routeData.colour} />
                         </Box>
-                        <Box sx={{  textAlign: 'center' }}>
+                        <Box sx={{  textAlign: 'center', wordBreak: 'break-word' }}>
                             {routeData.name}
                         </Box>
                         <Box>

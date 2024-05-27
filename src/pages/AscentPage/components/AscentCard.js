@@ -84,7 +84,7 @@ const AscentCard = () => {
 									flex: 3
 								}}
 							>
-								<Typography variant="h4" sx={{  textAlign: 'center' }}>
+								<Typography variant="h4" sx={{  textAlign: 'center', wordBreak: 'break-word' }}>
 									{ascentData.route?.name}
 								</Typography>
 							</Box>
