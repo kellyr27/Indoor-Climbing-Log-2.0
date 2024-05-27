@@ -10,6 +10,20 @@ import { useMediaQuery } from '@mui/material';
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
+function formatTimeAgo(date) {
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfYesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+
+    if (date >= startOfToday) {
+        return 'today';
+    } else if (date >= startOfYesterday) {
+        return 'yesterday';
+    } else {
+        return timeAgo.format(date);
+    }
+}
+
 const BestAscentDisplay = ({ tickType, date, routeName, routeGrade, routeId }) => {
 
 	const theme = useTheme();
@@ -33,7 +47,7 @@ const BestAscentDisplay = ({ tickType, date, routeName, routeGrade, routeId }) =
 				</Link>
 			</Box>
 			<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-				{timeAgo.format(new Date(date))}
+				{formatTimeAgo(new Date(date))}
 			</Box>
 		</Box>
 	)

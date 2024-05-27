@@ -107,7 +107,7 @@ const NavBar = () => {
 						sm: "space-between",
 					}
 				}}>
-					{(!isSmallScreen && isAuthenticated) && <>
+					{(!isSmallScreen && isAuthenticated !== null && isAuthenticated) && <>
 						<Box>
 							<Tooltip title="Climbing Log">
 								<img src={logo} alt="logo" style={{height: 30, width: 30}}/>
@@ -122,7 +122,7 @@ const NavBar = () => {
 							</Tabs>
 						</Box>
 					</>}
-					{(!isAuthenticated) &&  <>
+					{(isAuthenticated !== null && !isAuthenticated) &&  <>
 						<Box>
 							<Tooltip title="Climbing Log">
 								<img src={logo} alt="logo" style={{height: 30, width: 30}}/>
@@ -186,7 +186,7 @@ const NavBar = () => {
 							</Tooltip>
 						</Box>
 					</>}
-					{isAuthenticated && (
+					{isAuthenticated !== null && isAuthenticated && (
 						<Box>
 							<Tooltip title="Account">
 								<Button onClick={handleMenu}>
