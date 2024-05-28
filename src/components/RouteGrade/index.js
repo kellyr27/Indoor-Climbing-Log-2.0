@@ -2,10 +2,18 @@ import { Box, Typography } from "@mui/material"
 import {getDifficultyClassification, getDifficultyBackgroundColour} from '../../utils/helpers'
 import chroma from 'chroma-js';
 
+const getTextColor = (gradeClassification) => {
+	if (gradeClassification < 3) {
+		return 'black';
+	} else {
+		return 'white';
+	}
+}
+
 const RouteGrade = ({ grade, fontSize = 'inherit' }) => {
 	const gradeClassification = getDifficultyClassification(grade);
 	const backgroundColor = getDifficultyBackgroundColour(grade);
-	const textColor = chroma(backgroundColor).luminance() > 0.4 ? 'black' : 'white';
+	const textColor = getTextColor(gradeClassification);
     const borderColor = chroma(backgroundColor).darken(2).hex();
 
 
