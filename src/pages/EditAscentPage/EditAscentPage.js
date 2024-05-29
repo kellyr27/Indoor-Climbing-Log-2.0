@@ -7,6 +7,7 @@ import baseUrl from '../../utils/baseUrl';
 import { useSnackbar } from 'notistack';
 import Template3 from '../../templates/Template3';
 import { getAreas, getRoutes, editAscent } from '../../services/apis';
+import {sortAreasAscendingName} from '../../services/dataManipulation';
 
 function getTodayDate() {
     const today = new Date();
@@ -39,7 +40,8 @@ const EditAscentPage = () => {
 		const fetchAreasData = async () => {
 			try {
 				const areas = await getAreas();
-				setAreasData(areas);
+				const sortedAreas = sortAreasAscendingName(areas);
+				setAreasData(sortedAreas);
 			} catch (error) {
 				console.error(error);
 			}

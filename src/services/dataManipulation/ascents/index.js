@@ -5,7 +5,7 @@
  * @param {Array} ascents - The array of ascent objects to be sorted. Each object should have 'date' and 'createdAt' properties.
  * @returns {Array} The sorted array of ascents in descending order.
  */
-export const sortAscentsDescending = (ascents) => {
+export const sortAscentsDescendingDate = (ascents) => {
     const sortedAscents = ascents.sort((a, b) => {
         const dateDifference = new Date(b.date) - new Date(a.date);
         if (dateDifference !== 0) {

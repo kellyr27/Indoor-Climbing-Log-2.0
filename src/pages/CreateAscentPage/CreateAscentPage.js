@@ -10,6 +10,7 @@ import {createAscent, getRoutes, getAreas} from '../../services/apis';
 import MyButton from '../../components/MyButton';
 import IconWithText from '../../components/IconWithText';
 import CreateIcon from '@mui/icons-material/Create';
+import {sortAreasAscendingName} from '../../services/dataManipulation';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -112,7 +113,8 @@ const CreateAscentPage = () => {
 		const fetchAreasData = async () => {
 			try {
 				const areas = await getAreas();
-				setAreasData(areas);
+				const sortedAreas = sortAreasAscendingName(areas);
+				setAreasData(sortedAreas);
 			} catch (error) {
 				console.error(error);
 			}
