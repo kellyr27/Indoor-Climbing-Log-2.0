@@ -45,7 +45,6 @@ const RoutesPage = () => {
                     lastAscentDate: item.ascents.length > 0 ? item.ascents[0].date : null,
                     firstAscentDate: item.ascents.length > 0 ? item.ascents[item.ascents.length - 1].date : null,
                 }));
-				console.log(dataWithIds)
 				// Sort by last ascent date, then by created date for the last ascent
                 const sortedData = dataWithIds.sort((a, b) => {
 					const dateComparison = new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
