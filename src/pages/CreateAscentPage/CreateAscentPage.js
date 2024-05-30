@@ -189,7 +189,14 @@ const CreateAscentPage = () => {
                                     options={routesData}
                                     getOptionLabel={(option) => option.name}
                                     onInputChange={handleInputRouteNameChange}
-                                    renderInput={(params) => <TextField {...params} label="Route" required fullWidth />}
+                                    renderInput={(params) => 
+										<TextField 
+											{...params} 
+											label="Route" 
+											required 
+											fullWidth 
+										/>
+									}
                                 />
                             </Grid>
                             <Grid item xs={12}>

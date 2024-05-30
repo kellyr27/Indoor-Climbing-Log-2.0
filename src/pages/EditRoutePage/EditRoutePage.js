@@ -7,6 +7,7 @@ import { editRoute, getRoute, getAreas } from "../../services/apis";
 import SaveIcon from '@mui/icons-material/Save';
 import MyButton from "../../components/MyButton";
 import IconWithText from "../../components/IconWithText";
+import {sortAreasAscendingName} from '../../services/dataManipulation';
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
 const EditRoutePage = () => {
@@ -50,7 +51,8 @@ const EditRoutePage = () => {
 		const fetchAreasData = async () => {
 			try {
 				const areas = await getAreas();
-				setAreasData(areas);
+				const sortedAreas = sortAreasAscendingName(areas);
+				setAreasData(sortedAreas);
 			} catch (error) {
 				console.error(error);
 			}
