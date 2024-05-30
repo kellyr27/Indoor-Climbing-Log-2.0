@@ -20,7 +20,14 @@ import { Link } from 'react-router-dom';
 import BestAscentDisplay from '../../components/BestAscentDisplay';
 import { getDifficultyClassification } from '../../utils/helpers';
 
+function formatDateActivityCalendarTooltip (date) {
+	const dateObject = new Date(date);
+	const day = new Intl.DateTimeFormat('en-US', { day: '2-digit' }).format(dateObject);
+	const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(dateObject);
+	const formattedDate = `${day} ${month}`;
 
+	return formattedDate
+}
 
 function formatDataBarChart (data) {
     // All the keys are grades
@@ -586,7 +593,7 @@ const StatsPage = () => {
 												return null;
 											} else {
 												return { 
-													'data-tooltip-content': `Performance rating: ${value.totalPoints}, Number of climbs: ${value.numClimbs}`, 
+													'data-tooltip-content': `Performance rating: ${value.totalPoints}, Number of climbs: ${value.numClimbs} on ${formatDateActivityCalendarTooltip(value.date)}`, 
 													"data-tooltip-id": "my-tooltip"
 												}
 											}
