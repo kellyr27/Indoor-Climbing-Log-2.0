@@ -22,20 +22,20 @@ import { getDifficultyClassification } from '../../utils/helpers';
 
 function formatDateActivityCalendarTooltip (date) {
 
-	function getOrdinalSuffix(day) {
-		if (day % 10 === 1 && day !== 11) {
-			return day + 'st';
-		} else if (day % 10 === 2 && day !== 12) {
-			return day + 'nd';
-		} else if (day % 10 === 3 && day !== 13) {
-			return day + 'rd';
-		} else {
-			return day + 'th';
-		}
-	}
+    function getOrdinalSuffix(day) {
+        if (day % 10 === 1 && day !== 11) {
+            return day + 'st';
+        } else if (day % 10 === 2 && day !== 12) {
+            return day + 'nd';
+        } else if (day % 10 === 3 && day !== 13) {
+            return day + 'rd';
+        } else {
+            return day + 'th';
+        }
+    }
 
-	const dateObject = new Date(date);
-    const day = new Intl.DateTimeFormat('en-US', { day: '2-digit' }).format(dateObject);
+    const dateObject = new Date(date);
+    const day = parseInt(new Intl.DateTimeFormat('en-US', { day: '2-digit' }).format(dateObject), 10);
     const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(dateObject);
     const formattedDate = `${getOrdinalSuffix(day)} ${month}`;
 
