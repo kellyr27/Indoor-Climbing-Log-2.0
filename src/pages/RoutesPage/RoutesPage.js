@@ -33,7 +33,16 @@ const RoutesPage = () => {
 
 				// Sort ascents (property of route) by date descending
 				const sortedAscents = data.map(item => {
-					item.ascents.sort((a, b) => new Date(b.date) - new Date(a.date));
+					
+					item.ascents.sort((a, b) => {
+						const dateDifference = new Date(b.date) - new Date(a.date);
+						if (dateDifference !== 0) {
+							return dateDifference;
+						} else {
+							return new Date(b.createdAt) - new Date(a.createdAt);
+						}
+					});
+
 					return item;
 				})
 

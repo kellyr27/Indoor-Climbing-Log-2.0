@@ -31,7 +31,12 @@ const RouteCard = () => {
                 const sortedData = {
                     ...data,
                     ascents: data.ascents.sort((a, b) => {
-                        return new Date(b.date) - new Date(a.date);
+						const dateDifference = new Date(b.date) - new Date(a.date);
+						if (dateDifference !== 0) {
+							return dateDifference;
+						} else {
+							return new Date(b.createdAt) - new Date(a.createdAt);
+						}
                     })
                 }
 
