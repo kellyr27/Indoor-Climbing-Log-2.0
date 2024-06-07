@@ -10,6 +10,7 @@ import Template2 from '../../templates/Template2';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { getAscents } from '../../services/apis';
 import { useLocation } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 
 const fetchAndPrepareAscents = async () => {
     const ascents = await getAscents()
@@ -141,13 +142,17 @@ const AscentsPage = () => {
                         return params
                     },
                     renderCell: (params) => {
-                        return (
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <RouteColour colour={params.row.routeColour} />
-                                {params.row.routeName}
-                            </div>
-                        )
-                    },
+						return (
+							<Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
+								<Link to={`/routes/${params.row.route?.id}`} style={{ textDecoration: 'none' }}>
+									<div style={{ display: 'flex', alignItems: 'center' }}>
+										<RouteColour colour={params.row.routeColour} />
+										{params.row.routeName}
+									</div>
+								</Link>
+							</Box>
+						)
+					},
                     type: 'string',
                     headerAlign: 'center',
                     align: 'left',
@@ -200,9 +205,9 @@ const AscentsPage = () => {
 					renderCell: (params) => {
                         return (
                             <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-                                {/* <Typography variant="body1"> */}
+								<Link to={`/areas/${params.row.route?.area?.id}`} style={{ textDecoration: 'none' }}>
 									{params.formattedValue ? params.formattedValue : null}
-                                {/* </Typography> */}
+                                </Link>
                             </Box>
                         )
                     },

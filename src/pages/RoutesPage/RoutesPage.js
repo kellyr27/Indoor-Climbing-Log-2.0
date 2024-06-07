@@ -12,6 +12,7 @@ import {Typography} from '@mui/material';
 import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { useLocation } from 'react-router-dom';
 import { getRoutes } from '../../services/apis';
+import { Link } from 'react-router-dom';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -172,9 +173,9 @@ const RoutesPage = () => {
 					renderCell: (params) => {
                         return (
                             <Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-                                {/* <Typography variant="body1"> */}
+								<Link to={`/areas/${params.row.area?.id}`} style={{ textDecoration: 'none' }}>
                                     {params.row.area ? params.row.area.name : null}
-                                {/* </Typography> */}
+                                </Link>
                             </Box>
                         )
                     },

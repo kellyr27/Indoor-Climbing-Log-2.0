@@ -9,11 +9,9 @@ import MyButton from '../../../components/MyButton';
 import EditIcon from '@mui/icons-material/Edit';
 import IconWithText from '../../../components/IconWithText';
 import SteepnessIcon from '../../../components/SteepnessIcon';
-import { Link } from 'react-router-dom';
 import RouteColour from '../../../components/RouteColour/RouteColour';
 import RouteGrade from '../../../components/RouteGrade';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
-import { dateToDisplay } from '../../../utils/helpers';
 
 const AreaCard = () => {
     const {enqueueSnackbar} = useSnackbar();
@@ -99,8 +97,7 @@ const AreaCard = () => {
                                 button 
                                 onDoubleClick={() => navigate(`/routes/${route._id}`)} 
                             >
-								<Box sx={{display: 'flex', alignItems: 'center', width: '100%' }}>
-									<Box sx={{flex: 1}}>
+									<span style={{minWidth: '70px'}}>
 										<Box 
 											sx={{
 												display: 'flex', 
@@ -112,25 +109,20 @@ const AreaCard = () => {
 										>
 											<RouteGrade grade={route.grade} />
 										</Box>
-									</Box>
-									<Box sx={{display: 'flex', alignItems: 'center', flex: 4 }}>
+									</span>
+									<span style={{ minWidth: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 										<RouteColour colour={route.colour} />
+									</span>
+									<span  style={{ minWidth: '200px' }}>
 										{route.name}
-									</Box>
-									<Box sx={{flex: 1}}>
-										<Box sx={{ whiteSpace: 'normal', overflowWrap: 'break-word', lineHeight: "normal", display: 'flex', alignItems: 'center', height: '100%' }}>
-											{route.ascents.map((ascent, index) => {
-												return (
-													<Tooltip key={index} title={dateToDisplay(ascent.date)}>
-														<span>
-															<TickTypeIcon tickType={ascent.tickType} />
-														</span>
-													</Tooltip>
-												)
-											})}
-										</Box>
-									</Box>
-								</Box>
+									</span>
+									<span>
+										{route.ascents.map((ascent, index) => {
+											return (
+												<TickTypeIcon key={index} tickType={ascent.tickType} />
+											)
+										})}
+									</span>
                             </ListItem>
                         )
                     })}
