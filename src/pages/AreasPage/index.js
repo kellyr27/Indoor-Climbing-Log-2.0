@@ -107,7 +107,7 @@ const AreasPage = () => {
                     rowHeight={70}
                     sx={{height: '90vh', bgcolor: 'rgba(254, 250, 250, 0.92)'}}
 					onRowDoubleClick={(params) => {
-                        navigate(`/areas/${params.row.id}/edit`);
+                        navigate(`/areas/${params.row.id}`);
                     }}
 					initialState={{
 						filter: initialFilterModel
