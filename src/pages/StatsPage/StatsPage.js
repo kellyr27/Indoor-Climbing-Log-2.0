@@ -264,7 +264,6 @@ function formatAreaStats (data) {
 		}
 		
 	});
-
 	return areaStats;
 }
 
@@ -484,9 +483,11 @@ const StatsPage = () => {
 									{areaStats && areaStats.map((row) =>{ 
 
 										return (
-											<TableRow key={row.area}>
+											<TableRow key={row.area.id}>
 												<TableCell key="area">
-													{row.area}
+													<Link to={`/areas/${row.area.id}`} style={{ textDecoration: 'none' }}>
+														{row.area.name}
+													</Link>
 												</TableCell>
 												<TableCell key="difficulty">
 													<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -525,7 +526,7 @@ const StatsPage = () => {
 													</div>
 												</TableCell>
 												<TableCell align="center" key="totalAscents">
-													<Link to={'/ascents'} style={{ textDecoration: 'none' }} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operator: 'contains', value: row.area }]}}}>
+													<Link to={'/ascents'} style={{ textDecoration: 'none' }} state={ {defaultFilter: {items: [{ field: 'routeAreaName', operator: 'contains', value: row.area.name }]}}}>
 														{row.totalAscents}
 													</Link>
 												</TableCell>

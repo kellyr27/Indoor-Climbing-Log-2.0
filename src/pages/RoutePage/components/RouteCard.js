@@ -10,6 +10,7 @@ import { getRoute } from '../../../services/apis';
 import MyButton from '../../../components/MyButton';
 import EditIcon from '@mui/icons-material/Edit';
 import IconWithText from '../../../components/IconWithText';
+import { Link } from 'react-router-dom';
 
 const RouteCard = () => {
     const [routeData, setRouteData] = useState({});
@@ -70,7 +71,9 @@ const RouteCard = () => {
                 }
             />
             <CardContent>
-				{routeData.area && <Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>{routeData.area.name}</Typography>}
+				<Link to={`/areas/${routeData.area?.id}`} style={{ textDecoration: 'none' }}>
+					{routeData.area && <Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>{routeData.area.name}</Typography>}
+				</Link>
 				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
                 <List>
