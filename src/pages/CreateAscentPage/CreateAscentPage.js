@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup, Badge } from '@mui/material';
 import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,11 @@ import MyButton from '../../components/MyButton';
 import IconWithText from '../../components/IconWithText';
 import CreateIcon from '@mui/icons-material/Create';
 import {sortAreasAscendingName} from '../../services/dataManipulation';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpIcon from '@mui/icons-material/Help';
+import {Tooltip} from '@mui/material';
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from '@mui/material';
+import {Button} from '@mui/material';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -158,13 +163,44 @@ const CreateAscentPage = () => {
         }
     }, [inputRouteName, routesData]);
 
+	const [open, setOpen] = useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const [isHovered, setIsHovered] = useState(false);
+
+	const handleMouseEnter = () => {
+		setIsHovered(true);
+	};
+
+	const handleMouseLeave = () => {
+		setIsHovered(false);
+	};
+
     return (
         <>
             <Template3>
                 <Paper sx={{ padding: 2,  borderRadius: 4, m: 2, bgcolor: 'rgba(254, 250, 250, 0.95)' }}>
-                    <Typography variant="h4" align="center" sx={{ mt: 1, mb: 3, fontWeight: 'bold' }}>
-                        Create New Ascent
-                    </Typography>
+					<Box align="center" sx={{ mt: 1, mb: 3, position: 'relative' }}>
+						<Typography variant="h4" sx={{mr: 2, fontWeight: 'bold'}}>
+							Create New Ascent
+						</Typography>
+						<IconButton 
+							onClick={handleClickOpen} 
+							sx={{ position: 'absolute', right: 0, top: 0 }}
+							onMouseEnter={handleMouseEnter} 
+  							onMouseLeave={handleMouseLeave}
+						>
+							{(isHovered || open) ? <HelpIcon color="primary" /> : <HelpOutlineIcon color="primary" />}
+						</IconButton>
+					</Box>
+					
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -303,6 +339,47 @@ const CreateAscentPage = () => {
                     </form>
                 </Paper>
             </Template3>
+			<Dialog open={open} onClose={handleClose}>
+				<DialogTitle>What are the tick type?</DialogTitle>
+				<DialogContent>
+					<Box sx={{display: 'flex'}}>
+						<Box sx={{ml: 2, mr: 2}}>
+							<FlashSVG />
+						</Box>
+						<Box>
+							<b>Flash:</b> Climbing a route on the first attempt without falling or resting on the rope. This is only available when creating an ascent for a route that has not been climbed before.
+						</Box>
+					</Box>
+					<Box sx={{display: 'flex'}}>
+						<Box sx={{ml: 2, mr: 2}}>
+							<RedpointSVG />
+						</Box>
+						<Box>
+							<b>Redpoint:</b> Climbing a route without falling or resting on the rope after having previously attempted the route.
+						</Box>
+					</Box>
+					<Box sx={{display: 'flex'}}>
+						<Box sx={{ml: 2, mr: 2}}>
+							<HangdogSVG />
+						</Box>
+						<Box>
+							
+							<b>Hangdog:</b> Climbing a route to the top with rests on the rope or falling.
+						</Box>
+					</Box>
+					<Box sx={{display: 'flex'}}>
+						<Box sx={{ml: 2, mr: 2}}>
+							<AttemptSVG />
+						</Box>
+						<Box>
+							<b>Attempt:</b> Climbing a route without reaching the top.
+						</Box>
+					</Box>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose}>Close</Button>
+				</DialogActions>
+			</Dialog>
         </>
     );
 };
