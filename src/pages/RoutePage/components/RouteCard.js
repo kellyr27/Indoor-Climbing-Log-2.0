@@ -80,19 +80,21 @@ const RouteCard = () => {
 				}
 				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
-                <List>
+                <List sx={{maxHeight: '200px', overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                     {routeData.ascents && routeData.ascents.map((ascent, index) => {
                         const date = format(parseISO(ascent.date), 'd MMM yyyy');
                         return (
                             <ListItem 
-                                key={index}
-                                button 
-                                onDoubleClick={() => navigate(`/ascents/${ascent._id}`)} 
-                            >
-                                <span style={{ marginRight: '10px' }}><TickTypeIcon tickType={ascent.tickType}/></span>
-                                <span style={{ marginRight: '10px', minWidth: '100px' }}>{date}</span>
-                                <span>{ascent.notes}</span>
-                            </ListItem>
+								key={index}
+								button 
+								onDoubleClick={() => navigate(`/ascents/${ascent._id}`)} 
+							>									
+								<span style={{ marginRight: '10px' }}><TickTypeIcon tickType={ascent.tickType}/></span>
+								<span style={{ marginRight: '10px', minWidth: '100px' }}>{date}</span>
+								<span style={{wordWrap: 'break-word'}}>
+									{ascent.notes}
+								</span>
+							</ListItem>
                         )
                     })}
                 </List>

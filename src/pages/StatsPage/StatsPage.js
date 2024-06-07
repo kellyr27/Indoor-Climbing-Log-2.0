@@ -585,7 +585,7 @@ const StatsPage = () => {
                             { data: weeklyStats.avgOtherGrades, label: 'Avg Other Grade', color: '#d9d9d9', connectNulls: true }
                         ]}
                         xAxis={[{ data: weeklyStats.weeksRange, label: 'Weeks' }]}
-                        yAxis={[{ min: 15, max: 28 }]}
+                        yAxis={[{ min: 10, max: 28 }]}
                         width={width}
                         height={350}
                     />

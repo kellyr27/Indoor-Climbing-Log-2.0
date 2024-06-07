@@ -12,12 +12,18 @@ import SteepnessIcon from '../../../components/SteepnessIcon';
 import RouteColour from '../../../components/RouteColour/RouteColour';
 import RouteGrade from '../../../components/RouteGrade';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 const AreaCard = () => {
     const {enqueueSnackbar} = useSnackbar();
     const [areaData, setAreaData] = useState({});
     const { id } = useParams()
     const navigate = useNavigate();
+
+	// Check if screen size is small or less using MUI
+	const theme = useTheme();
+	const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     useEffect(() => {
         const fetchAreaData = async () => {
@@ -89,44 +95,51 @@ const AreaCard = () => {
 				
 				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Routes</Typography>
-                <List>
-                    {areaData.routes && areaData.routes.map((route, index) => {
-                        return (
-                            <ListItem 
-                                key={index}
-                                button 
-                                onDoubleClick={() => navigate(`/routes/${route._id}`)} 
-                            >
-									<span style={{minWidth: '70px'}}>
-										<Box 
-											sx={{
-												display: 'flex', 
-												justifyContent: 'center',
-												alignItems: 'center', 
-												height: '100%',
-												width: '100%',
-											}}
-										>
-											<RouteGrade grade={route.grade} />
-										</Box>
-									</span>
-									<span style={{ minWidth: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-										<RouteColour colour={route.colour} />
-									</span>
-									<span  style={{ minWidth: '200px' }}>
-										{route.name}
-									</span>
-									<span>
-										{route.ascents.map((ascent, index) => {
-											return (
-												<TickTypeIcon key={index} tickType={ascent.tickType} />
-											)
-										})}
-									</span>
-                            </ListItem>
-                        )
-                    })}
-                </List>
+                <Box sx={{width: '100%', overflowX: 'auto'}}>
+					<List sx={{maxHeight: '200px', width: '100%', minWidth: 'max-content'}}>
+						{areaData.routes && areaData.routes.map((route, index) => {
+							return (
+								<ListItem 
+									key={index}
+									button 
+									sx={{p: 1}}
+									onDoubleClick={() => navigate(`/routes/${route._id}`)}
+								>
+										<span style={{minWidth: '70px'}}>
+											<Box 
+												sx={{
+													display: 'flex', 
+													justifyContent: 'center',
+													alignItems: 'center', 
+													height: '100%',
+												}}
+											>
+												<RouteGrade grade={route.grade} />
+											</Box>
+										</span>
+										<span style={{ minWidth: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+											<RouteColour colour={route.colour} />
+										</span>
+										{!isSmallScreen && 
+											<span style={{ minWidth: '150px', maxWidth: '150px', marginRight: '5px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+												{route.name}
+											</span>
+										}
+										{isSmallScreen && <span  style={{ minWidth: '100px', maxWidth: '100px', marginRight: '5px', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+											{route.name}
+										</span>}
+										<span style={{ display: 'flex', flexWrap: 'nowrap', width: 'max-content' }}>
+											{route.ascents.map((ascent, index) => {
+												return (
+													<TickTypeIcon key={index} tickType={ascent.tickType} />
+												)
+											})}
+										</span>
+								</ListItem>
+							)
+						})}
+					</List>
+				</Box>
             </CardContent>
 			<Divider />
 			<CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
