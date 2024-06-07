@@ -71,9 +71,13 @@ const RouteCard = () => {
                 }
             />
             <CardContent>
-				<Link to={`/areas/${routeData.area?.id}`} style={{ textDecoration: 'none' }}>
-					{routeData.area && <Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>{routeData.area.name}</Typography>}
-				</Link>
+				{routeData.area && 
+					<Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>
+						<Link to={`/areas/${routeData.area?.id}`} style={{ textDecoration: 'none' }}>
+							{routeData.area.name}
+						</Link>
+					</Typography>
+				}
 				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
                 <List>

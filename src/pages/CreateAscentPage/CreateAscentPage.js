@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup, Badge } from '@mui/material';
+import { Typography, Grid, Paper, TextField, Select, MenuItem, FormControl, InputLabel, Box, Autocomplete, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { AttemptSVG, FlashSVG, RedpointSVG, HangdogSVG } from '../../assets/tickTypeIcons/index';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import {sortAreasAscendingName} from '../../services/dataManipulation';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import HelpIcon from '@mui/icons-material/Help';
-import {Tooltip} from '@mui/material';
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from '@mui/material';
+import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from '@mui/material';
 import {Button} from '@mui/material';
 
 const popularColors = ['black', 'white', 'blue', 'red', 'gray', 'green', 'yellow', 'purple', 'orange', 'pink'];
