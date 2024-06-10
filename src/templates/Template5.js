@@ -11,9 +11,9 @@ const Template2 = ({children}) => {
 
     return (
         <>
-            <div style={{position: 'relative', overflow: 'hidden', width: '100vw', height: '100vh'}}>
+            <div style={{position: 'relative', overflow: 'hidden', width: '100vw', height: '100vh', backgroundColor: '#feffde'}}>
                 {holdSVGs}
-                <Container maxWidth="100vw" style={{paddingLeft: 0, paddingRight: 0}} sx={{bgcolor: '#feffde'}}>
+                <Container maxWidth="100vw" style={{paddingLeft: 0, paddingRight: 0}}>
 
                     <Container maxWidth="lg" style={{
                             paddingLeft: 0, 
