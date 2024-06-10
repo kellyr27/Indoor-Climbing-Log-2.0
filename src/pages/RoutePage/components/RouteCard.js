@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { Card, CardContent, CardHeader, List, ListItem, Typography, Box } from '@mui/material';
+import { Card, CardContent, CardHeader, CardActions, List, ListItem, Typography, Box } from '@mui/material';
 import TickTypeIcon from '../../../components/TickTypeIcon/TickTypeIcon';
 import RouteGrade from '../../../components/RouteGrade';
 import RouteColour from '../../../components/RouteColour/RouteColour';
@@ -70,7 +70,6 @@ const RouteCard = () => {
                     </Box>
                 }
             />
-            <CardContent>
 				{routeData.area && 
 					<Typography variant="body1" align="center" sx={{mb: 2, fontStyle: 'italic'}}>
 						<Link to={`/areas/${routeData.area?.id}`} style={{ textDecoration: 'none' }}>
@@ -78,7 +77,8 @@ const RouteCard = () => {
 						</Link>
 					</Typography>
 				}
-				<Divider />
+			<Divider />
+            <CardContent>
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Ascents</Typography>
                 <List sx={{maxHeight: '200px', overflow: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
                     {routeData.ascents && routeData.ascents.map((ascent, index) => {
@@ -98,20 +98,20 @@ const RouteCard = () => {
                         )
                     })}
                 </List>
-                <Divider />
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-					<MyButton 
-						color="primary" 
-						handleClick={handleEditClick}
-						buttonText={
-							<IconWithText 
-								icon={<EditIcon/>}
-								text="Edit"
-							/>
-						}
-					/>
-                </Box>
             </CardContent>
+			<Divider />
+			<CardActions sx={{ justifyContent: 'space-evenly', mt: 1, mb: 1 }}>
+				<MyButton 
+					color="primary" 
+					handleClick={handleEditClick}
+					buttonText={
+						<IconWithText 
+							icon={<EditIcon/>}
+							text="Edit"
+						/>
+					}
+				/>
+			</CardActions>
         </Card>
     );
 }

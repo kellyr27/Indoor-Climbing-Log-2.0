@@ -91,9 +91,8 @@ const AreaCard = () => {
 					</>
 				}
 			/>
+			<Divider />
 			<CardContent>
-				
-				<Divider />
                 <Typography variant="h6" align="center" sx={{fontWeight: 'bold'}}>List of Routes</Typography>
                 <Box sx={{width: '100%', overflowX: 'auto'}}>
 					<List sx={{maxHeight: '200px', width: '100%', minWidth: 'max-content'}}>
