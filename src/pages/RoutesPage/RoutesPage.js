@@ -13,6 +13,8 @@ import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { useLocation } from 'react-router-dom';
 import { getRoutes } from '../../services/apis';
 import { Link } from 'react-router-dom';
+import { Bookmark } from '@mui/icons-material';
+import BookmarkedAscentsFab from '../../components/BookmarkedAscentsFAB';
 
 const RoutesPage = () => {
     const navigate = useNavigate();
@@ -94,7 +96,9 @@ const RoutesPage = () => {
                     renderCell: (params) => (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <RouteColour colour={params.row.colour} />
-                            {params.value}
+                            <Link to={`/routes/${params.row.id}`} style={{ textDecoration: 'none' }}>
+                                {params.value}
+                            </Link>
                         </div>
                     ),
                     headerAlign: 'center',
@@ -246,6 +250,7 @@ const RoutesPage = () => {
                 />}
             </Template2>
             <CreateAscentFab />
+            <BookmarkedAscentsFab />
         </>
     );
 }

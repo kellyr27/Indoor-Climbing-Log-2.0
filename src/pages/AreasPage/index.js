@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import SteepnessIcon from "../../components/SteepnessIcon";
 import { Box, Typography} from '@mui/material';
 import { Tooltip } from '@mui/material';
+import BookmarkedAscentsFab from '../../components/BookmarkedAscentsFAB';
 
 const AreasPage = () => {
     const navigate = useNavigate();
@@ -125,6 +126,7 @@ const AreasPage = () => {
 				/>}
             </Template5>
             <CreateAscentFab />
+            <BookmarkedAscentsFab />
         </>
     );
 }

@@ -19,6 +19,7 @@ import { PieChart } from '@mui/x-charts';
 import { Link } from 'react-router-dom';
 import BestAscentDisplay from '../../components/BestAscentDisplay';
 import { getDifficultyClassification } from '../../utils/helpers';
+import BookmarkedAscentsFab from '../../components/BookmarkedAscentsFAB';
 
 function formatDateActivityCalendarTooltip (date) {
 
@@ -625,6 +626,7 @@ const StatsPage = () => {
                 </Paper>
             </Template4>
             <CreateAscentFab />
+						<BookmarkedAscentsFab />
         </>
     );
 }

@@ -7,6 +7,7 @@ import { Paper, Typography } from '@mui/material';
 import { getAreas, getRoutes, getAscents } from '../../services/apis';
 import * as XLSX from 'xlsx';
 import MyButton from '../../components/MyButton';
+import BookmarkedAscentsFab from '../../components/BookmarkedAscentsFAB';
 
 
 const SettingsPage = () => {
@@ -126,6 +127,7 @@ const SettingsPage = () => {
                 </Paper>
             </Template1>
             <CreateAscentFab />
+						<BookmarkedAscentsFab />
         </>
     );
 }

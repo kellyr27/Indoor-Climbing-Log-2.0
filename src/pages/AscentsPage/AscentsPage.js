@@ -11,6 +11,7 @@ import CreateAscentFab from '../../components/CreateAscentFab/CreateAscentFab';
 import { getAscents } from '../../services/apis';
 import { useLocation } from 'react-router-dom';
 import {Link } from 'react-router-dom';
+import BookmarkedAscentsFab from '../../components/BookmarkedAscentsFAB';
 
 const fetchAndPrepareAscents = async () => {
     const ascents = await getAscents()
@@ -266,6 +267,7 @@ const AscentsPage = () => {
 				/>}
             </Template2>
             <CreateAscentFab />
+            <BookmarkedAscentsFab />
         </>
     );
 }

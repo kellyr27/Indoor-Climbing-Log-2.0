@@ -42,3 +42,17 @@ export const editRoute = async (id, editedRoute) => {
 		throw error;
 	}
 }
+
+export const bookmarkRoute = async (id) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post(`${baseUrl}/routes/${id}/bookmark`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
