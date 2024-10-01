@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, Tooltip } from "@mui/material"
 import { Link } from "react-router-dom"
 import TickTypeIcon from "../TickTypeIcon/TickTypeIcon"
 import RouteGrade from "../RouteGrade"
@@ -6,6 +6,7 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { useTheme } from '@mui/system';
 import { useMediaQuery } from '@mui/material';
+import {dateToDisplay} from '../../utils/helpers'
 
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -47,7 +48,9 @@ const BestAscentDisplay = ({ tickType, date, routeName, routeGrade, routeId }) =
 				</Link>
 			</Box>
 			<Box textAlign="right" sx={{ letterSpacing: 0.5, fontSize: 10, fontStyle: 'italic', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-				{formatTimeAgo(new Date(date))}
+				<Tooltip title={dateToDisplay(date)}>
+					{formatTimeAgo(new Date(date))}
+				</Tooltip>
 			</Box>
 		</Box>
 	)
