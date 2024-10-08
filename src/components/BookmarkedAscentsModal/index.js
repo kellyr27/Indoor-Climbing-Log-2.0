@@ -9,67 +9,8 @@ import RouteGrade from "../RouteGrade";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 
-const BookmarkedAscentsModal = ({ isOpen, onClose }) => {
-  const [routesData, setRoutesData] = useState([]);
+const BookmarkedAscentsModal = ({ isOpen, onClose, routesData, refresh }) => {
 
-  const fetchRoutesData = async () => {
-    try {
-      const data = await getRoutes();
-
-      // Filter out routes that have not been bookmarked
-      const bookmarkedRoutes = data.filter((item) => item.bookmarked);
-
-      // Sort ascents (property of route) by date descending
-      const sortedAscents = bookmarkedRoutes.map((item) => {
-        item.ascents.sort((a, b) => {
-          const dateDifference = new Date(b.date) - new Date(a.date);
-          if (dateDifference !== 0) {
-            return dateDifference;
-          } else {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          }
-        });
-
-        return item;
-      });
-
-      const dataWithIds = sortedAscents.map((item) => ({
-        ...item,
-        id: item._id,
-        lastAscentDate: item.ascents.length > 0 ? item.ascents[0].date : null,
-        firstAscentDate:
-          item.ascents.length > 0
-            ? item.ascents[item.ascents.length - 1].date
-            : null,
-      }));
-
-      // Sort by last ascent date, then by created date for the last ascent
-      const sortedData = dataWithIds.sort((a, b) => {
-        const dateComparison =
-          new Date(b.lastAscentDate) - new Date(a.lastAscentDate);
-        if (dateComparison !== 0) {
-          return dateComparison;
-        } else {
-          return (
-            new Date(b.ascents[0].createdAt) -
-            new Date(a.ascents[0].createdAt)
-          );
-        }
-      });
-
-      console.log('sortedData', sortedData);
-
-      setRoutesData(sortedData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch the ascents data from the server
-
-    fetchRoutesData();
-  }, [isOpen]);
 
   return (
     <Modal
@@ -121,11 +62,11 @@ const BookmarkedAscentsModal = ({ isOpen, onClose }) => {
               >
                 <Box sx={{mr: 1}}>
                   {route.bookmarked ? (
-                    <IconButton onClick={async () => {await bookmarkRoute(route.id); await fetchRoutesData()}}>
+                    <IconButton onClick={async () => {await bookmarkRoute(route.id); refresh()}}>
                       <BookmarkIcon color="primary" fontSize="large" />
                     </IconButton>
                   ) : (
-                    <IconButton onClick={async () => {await bookmarkRoute(route.id); await fetchRoutesData()}}>
+                    <IconButton onClick={async () => {await bookmarkRoute(route.id); refresh()}}>
                       <BookmarkBorderIcon color="primary" fontSize="large"/>
                     </IconButton>
                   )
